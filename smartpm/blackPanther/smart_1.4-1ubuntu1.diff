@@ -1,0 +1,1052 @@
+--- smart-1.4.orig/debian/smartpm-core.dirs
++++ smart-1.4/debian/smartpm-core.dirs
+@@ -0,0 +1,3 @@
++usr/bin
++usr/lib/smart
++var/lib/smart
+--- smart-1.4.orig/debian/changelog
++++ smart-1.4/debian/changelog
+@@ -0,0 +1,307 @@
++smart (1.4-1ubuntu1) oneiric; urgency=low
++
++  * Switch to dh_python2.  (LP: #788514)
++
++ -- Barry Warsaw <barry@ubuntu.com>  Wed, 10 Aug 2011 18:30:32 -0400
++
++smart (1.4-1) unstable; urgency=low
++
++  * New upstream release
++  * Drop several patches (02_fix_fetcher_test, 03_setup,
++    06_CVE-2009-3560.patch and 06_CVE-2009-3720.patch) as they were
++    all merged upstream
++
++ -- Free Ekanayaka <freee@debian.org>  Tue, 31 May 2011 16:04:52 +0200
++
++smart (1.3-1.3) unstable; urgency=low
++
++  * Non-maintainer upload.
++  * Fix my own upload, make smartpm installable again:
++    drop debian/pyversions from 1.3-1.2 again.
++
++ -- Andreas Barth <aba@not.so.argh.org>  Mon, 28 Jun 2010 18:24:59 +0000
++
++smart (1.3-1.2) unstable; urgency=low
++
++  [ tony mancill ]
++  * Non-maintainer upload. 
++  * Thanks to Sandro Tosi and Jakub Wilk 
++  * debian/control:
++    - Set XS-Python-Version: all (Closes: #570572)
++  * debian/rules:
++    - Fix-up the shebang in /usr/bin/smart to remove the python version.
++
++  [ Andreas Barth ]
++  * uploading to unstable.
++
++ -- Andreas Barth <aba@not.so.argh.org>  Fri, 25 Jun 2010 18:43:46 +0000
++
++smart (1.3-1) unstable; urgency=low
++
++  * Imported Upstream version 1.3
++  * Drop 05_curl_timeout patch, merged upstream
++  * Drop 04_detect_plugins patch, merged upstream
++
++ -- Free Ekanayaka <freee@debian.org>  Fri, 05 Mar 2010 10:43:19 +0100
++
++smart (1.2-5.1) unstable; urgency=medium
++
++  * Non-maintainer upload by the security team.
++  * Add 06_CVE-2009-3560 patch to address a minor security issue
++    (Closes: #560953).
++
++ -- Thijs Kinkhorst <thijs@debian.org>  Sun, 14 Feb 2010 14:23:15 +0100
++
++smart (1.2-5) unstable; urgency=low
++
++  * Add 06_CVE-2009-3720 patch (Closes: #560953)
++  * Switch from pycentral to pysupport
++
++ -- Free Ekanayaka <freee@debian.org>  Mon, 25 Jan 2010 14:32:42 +0100
++
++smart (1.2-4) unstable; urgency=low
++
++  * Add 04_detect_plugins and 05_curl_timeout patches
++
++ -- Free Ekanayaka <freee@debian.org>  Fri, 19 Jun 2009 09:17:07 +0200
++
++smart (1.2-3) unstable; urgency=low
++
++  * Workaround for cdbs breaking backward compatibility
++    in #525436 (Closes: #529598)
++
++ -- Free Ekanayaka <freee@debian.org>  Thu, 28 May 2009 23:46:58 +0200
++
++smart (1.2-2) unstable; urgency=low
++
++  * Relax Conflicts to allow backports
++  * Drop smart-update wrapper, now included in landscape-client (Ubuntu)
++
++ -- Free Ekanayaka <freee@debian.org>  Fri, 15 May 2009 12:06:47 +0200
++
++smart (1.2-1ubuntu1) UNRELEASED; urgency=low
++
++  * Install the smart main program unders usr/share/smart
++
++ -- Free Ekanayaka <free@64studio.com>  Fri, 15 May 2009 12:06:46 +0200
++
++smart (1.2-1) unstable; urgency=low
++
++  * New upstream release
++  * Imported changes from Ubuntu (version 1.2-0ubuntu0.9.04)
++    - split the package in smartpm, smartpm-core, python-smartpm
++    - support python2.6
++  * Switch to cdbs
++  * Add 03_setup.patch (it was previously in diff.gz)
++  * Fix spelling error in description, python->Python
++  * Depend on cdbs, dont't depend on dpatch anymore
++  * Install smart-update as setuid binary
++  * Conflict with previous version (gtk/__init__.py was in python-smartpm)
++  * Add myself to Uploaders
++
++ -- Free Ekanayaka <freee@debian.org>  Wed, 06 May 2009 12:48:02 +0200
++
++smart (1.0-1) unstable; urgency=low
++
++  * New upstream release
++
++ -- Michael Vogt <mvo@debian.org>  Sat, 16 Aug 2008 00:47:17 +0200
++
++smart (0.52-2) unstable; urgency=low
++
++  * fix incorrect maintainer address
++
++ -- Michael Vogt <mvo@debian.org>  Mon, 10 Dec 2007 14:23:08 +0100
++
++smart (0.52-1) unstable; urgency=low
++
++  * New upstream release
++  * drop 02_etc_auto_misc, taken upstream
++
++ -- Michael Vogt <mvo@debian.org>  Mon, 10 Dec 2007 12:49:56 +0100
++
++smart (0.50-0ubuntu2) gutsy; urgency=low
++
++  * added freedesktop-compliant .desktop file 
++  * install .desktop file (LP #116222)
++  * provide an icon
++
++ -- Mario Bonino <mariobonino@ubuntu-it.org>  Sun, 26 Aug 2007 14:18:02 +0200
++
++smart (0.50-0ubuntu1) feisty; urgency=low
++
++  * new upstream version
++  * changed maintainer field to follow new policy
++
++ -- Michael Vogt <michael.vogt@ubuntu.com>  Thu, 22 Feb 2007 09:55:20 +0100
++
++smart (0.50~rc1-1ubuntu1) feisty; urgency=low
++
++  * Make the build independent from the python version.
++
++ -- Matthias Klose <doko@ubuntu.com>  Sat, 13 Jan 2007 12:20:42 +0100
++
++smart (0.50~rc1-1) unstable; urgency=low
++
++  * New upstream release
++  * includes smart manpage (closes: #380039)
++  * don't fail if /etc/auto.misc is not readable (closes: #36429)
++  * fix copyright file
++
++ -- Michael Vogt <mvo@debian.org>  Fri, 15 Dec 2006 11:21:54 +0100
++
++smart (0.42-0ubuntu2) edgy; urgency=low
++
++  * added missing python-rpm dependency (lp: #47788)
++  * use python-central to build the package
++
++ -- Michael Vogt <michael.vogt@ubuntu.com>  Tue, 17 Oct 2006 10:55:00 +0200
++
++smart (0.42-0ubuntu1) edgy; urgency=low
++
++  [Lorenzo Villani]
++  * Patched __init__.py in interfaces/gtk to reflect the new package status
++  * New upstream release
++  * Splitted packages
++  [Michael Vogt]
++  * made the split into smartpm, smartpm-core
++
++ -- Michael Vogt <michael.vogt@ubuntu.com>  Thu, 27 Jul 2006 12:58:28 +0200
++
++smart (0.41+svn727-1ubuntu1) edgy; urgency=low
++
++  * updated the dependencies to reflect edgy
++
++ -- Michael Vogt <michael.vogt@ubuntu.com>  Wed, 21 Jun 2006 12:56:41 +0200
++
++smart (0.41+svn727-1) unstable; urgency=low
++
++  * new svn snapshot
++
++ -- Michael Vogt <mvo@debian.org>  Thu, 15 Jun 2006 09:11:25 +0200
++
++smart (0.41-0ubuntu4) edgy; urgency=low
++
++  * 02_apt_sync_plugin.dpatch: 
++    - added plugin to keep the smart channels in sync with 
++      /etc/apt/sources.list automatically, removed the default
++      channels, those will be taken from the sources.list. This   
++      can be enabled/disabled via the sysconfig "sync-apt-sources" 
++      option.
++
++ -- Michael Vogt <michael.vogt@ubuntu.com>  Thu,  8 Jun 2006 16:57:17 +0200
++
++smart (0.41-0ubuntu3) dapper; urgency=low
++
++  * Fixed wrong default channel for dapper (ubuntu #41123) 
++
++ -- Yves Junqueira (nictuku) <yves@cetico.org>  Mon, 24 Apr 2006 19:39:23 -0300
++
++smart (0.41-0ubuntu2) dapper; urgency=low
++
++  * fixed FTBFS
++
++ -- Michael Vogt <michael.vogt@ubuntu.com>  Wed,  4 Jan 2006 16:19:06 +0100
++
++smart (0.41-0ubuntu1) dapper; urgency=low
++
++  * New upstream release
++
++ -- Michael Vogt <michael.vogt@ubuntu.com>  Wed, 28 Dec 2005 12:50:39 +0100
++
++smart (0.40-0ubuntu1) dapper; urgency=low
++
++  * New upstream release
++
++ -- Michael Vogt <michael.vogt@ubuntu.com>  Thu,  3 Nov 2005 11:53:10 -0500
++
++smart (0.39-1) unstable; urgency=low
++
++  * New upstream release
++
++ -- Michael Vogt <mvo@debian.org>  Tue, 13 Sep 2005 16:59:27 +0200
++
++smart (0.37-1) unstable; urgency=low
++
++  * New upstream release
++
++ -- Michael Vogt <mvo@debian.org>  Wed, 17 Aug 2005 09:33:15 +0200
++
++smart (0.36-1) unstable; urgency=low
++
++  * New upstream release
++
++ -- Michael Vogt <mvo@debian.org>  Mon, 20 Jun 2005 11:28:11 +0200
++
++smart (0.35-1) unstable; urgency=low
++
++  * New upstream release
++  * uses dpatch 
++
++ -- Michael Vogt <mvo@debian.org>  Wed, 25 May 2005 12:14:18 +0200
++
++smart (0.30-1) unstable; urgency=low
++
++  * New upstream release
++
++ -- Michael Vogt <mvo@debian.org>  Fri, 25 Mar 2005 11:02:09 +0100
++
++smart (0.29.2-1) unstable; urgency=low
++
++  * New upstream release
++  * fixed FTBFS (pbuilder clean) (closes: #299299)
++  * improved the package description somewhat (closes: #299882)
++
++ -- Michael Vogt <mvo@debian.org>  Thu, 17 Mar 2005 17:46:40 +0100
++
++smart (0.28-7) unstable; urgency=low
++
++  * changed rebuild the ubuntu smart package for debian
++
++ -- Michael Vogt <mvo@debian.org>  Thu, 30 Dec 2004 11:34:36 +0100
++
++smart (0.28-6) hoary; urgency=low
++
++  * cleaned build/ from the source tree
++
++ -- Michael Vogt <mvo@debian.org>  Tue, 28 Dec 2004 13:13:19 +0100
++
++smart (0.28-5) hoary; urgency=low
++
++  * /var/lib/smart added to debian/dirs
++  * remove /var/lib/smart on purge
++  * fixed setup.py properly to work with --prefix
++
++ -- Michael Vogt <mvo@debian.org>  Tue, 28 Dec 2004 12:12:02 +0100
++
++smart (0.28-4) hoary; urgency=low
++
++  * rebuild for python2.4
++
++ -- Michael Vogt <mvo@debian.org>  Thu, 23 Dec 2004 18:58:04 +0100
++
++smart (0.28-3) hoary; urgency=low
++
++  * fixed build-dependencies, 
++    I'll never upload a package without checking it with pbuilder 
++
++ -- Michael Vogt <mvo@debian.org>  Thu, 16 Dec 2004 11:03:05 +0100
++
++smart (0.28-2) hoary; urgency=low
++
++  * missing fnmatch.py added
++
++ -- Michael Vogt <mvo@debian.org>  Wed, 15 Dec 2004 22:43:59 +0100
++
++smart (0.28-1) hoary; urgency=low
++
++  * New upstream release, initial hoary release
++
++ -- Michael Vogt <mvo@debian.org>  Wed,  8 Dec 2004 17:05:57 +0100
++
++smart (0.27-1) unstable; urgency=low
++
++  * Initial Release.
++
++ -- Michael Vogt <mvo@debian.org>  Fri,  3 Dec 2004 22:10:41 +0100
++
+--- smart-1.4.orig/debian/rules
++++ smart-1.4/debian/rules
+@@ -0,0 +1,20 @@
++#!/usr/bin/make -f
++
++include /usr/share/cdbs/1/rules/debhelper.mk
++include /usr/share/cdbs/1/rules/simple-patchsys.mk
++include /usr/share/cdbs/1/class/python-distutils.mk
++
++DEB_PYTHON_DISTUTILS_INSTALLDIR_SKEL = /usr/lib/@PYTHONBINARY@/dist-packages/
++
++common-binary-arch common-binary-indep:: smartpm-movefiles
++smartpm-movefiles: install/python-smartpm install/smartpm install/smartpm-core
++	dh_movefiles -psmartpm
++	dh_movefiles -psmartpm-core
++	dh_movefiles -ppython-smartpm
++	mv $(CURDIR)/debian/tmp/usr/bin/smart $(CURDIR)/debian/python-smartpm/usr/share/smart/smart
++	# use default Python version in shebang
++	sed -i -e '1s,usr/bin/.*,usr/bin/python,' $(CURDIR)/debian/python-smartpm/usr/share/smart/smart
++
++clean::
++	rm -f locale/*/LC_MESSAGES/smart.mo
++
+--- smart-1.4.orig/debian/distro.py.conectiva
++++ smart-1.4/debian/distro.py.conectiva
+@@ -0,0 +1,41 @@
++
++if not sysconf.getReadOnly():
++    if not sysconf.has("channels"):
++        sysconf.set(("channels", "rpm-sys"),
++                    {"type": "rpm-sys",
++                     "name": "RPM Database"})
++
++        import socket
++        try:
++            socket.gethostbyname("mapi8.distro.conectiva")
++        except socket.error:
++            sysconf.set(("channels", "mapi8"),
++                        {"type": "apt-rpm",
++                         "name": "Conectiva Linux Snapshot",
++                         "baseurl": "ftp://ftp.conectiva.com.br/"
++                                    "pub/conectiva/snapshot/i386/",
++                         "components": "all"})
++            sysconf.set(("channels", "mirrors"),
++                        {"type": "mirrors",
++                         "name": "Conectiva Snapshot Mirrors",
++                         "url": "ftp://ftp.conectiva.com.br/pub/"
++                                "conectiva/snapshot/i386/base/mirrors.txt"})
++        else:
++            sysconf.set(("channels", "mapi8"),
++                        {"type": "apt-rpm",
++                         "name": "Conectiva Linux Snapshot",
++                         "baseurl": "ftp://mapi8.distro.conectiva/"
++                                    "pub/snapshot/conectiva",
++                         "components": "all"})
++
++    for type in ["", "BOOT", "enterprise", "smp", "highmem", "highmem-smp",
++                 "uml", "uml-smp"]:
++        if type:
++            kernel = "kernel26-%s" % type
++        else:
++            kernel = "kernel26"
++        pkgconf.setFlag("multi-version", kernel)
++        for module in ["madwifi", "hsfmodem", "slmodem",
++                       "nvidia", "ndiswrapper"]:
++            pkgconf.setFlag("multi-version", "%s-module-%s" % (kernel, module))
++
+--- smart-1.4.orig/debian/distro.py
++++ smart-1.4/debian/distro.py
+@@ -0,0 +1,15 @@
++
++if not sysconf.getReadOnly():
++    if not sysconf.has("sync-apt-sources"):
++        sysconf.set("sync-apt-sources", True, weak=True)
++    if not sysconf.has("detect-sys-channels"):
++        sysconf.set("detect-sys-channels", "deb", weak=True)
++    if sysconf.has("channels.rpm-sys"):
++        if sysconf.get("channels.rpm-sys.name") == "RPM System":
++            # Likely auto-detected in an old installation.  Let's remove it
++            # to prevent dependency issues.
++            sysconf.remove("channels.rpm-sys")
++
++    # Import proxy information from Landscape if available and not
++    # explicitly set in Smart itself.
++    sysconf.set("use-landscape-proxies", True, weak=True)
+--- smart-1.4.orig/debian/smartpm-core.postrm
++++ smart-1.4/debian/smartpm-core.postrm
+@@ -0,0 +1,16 @@
++#!/bin/sh
++
++set -e
++
++case "$1" in
++	remove)
++	  ;;
++	purge)
++	  if [ -d /var/lib/smart ]; then
++		rm -rf /var/lib/smart
++	  fi
++	  ;;
++esac
++
++
++#DEBHELPER#
+--- smart-1.4.orig/debian/smartpm.files
++++ smart-1.4/debian/smartpm.files
+@@ -0,0 +1,2 @@
++usr/lib/python*/*-packages/smart/interfaces/gtk/
++usr/lib/python*/*-packages/smart/interfaces/images/*.png
+--- smart-1.4.orig/debian/README.Debian
++++ smart-1.4/debian/README.Debian
+@@ -0,0 +1,8 @@
++smart for Debian
++----------------
++
++Smart is a package managment application with a lot of the features
++that apt has and more. Smart can work as a cli application or as a GUI
++application with a gtk frontend. It supports deb, rpm, slack packages.
++
++ -- Michael Vogt <mvo@debian.org>, Fri, 16 Jun 2006 10:40:02 +0200
+--- smart-1.4.orig/debian/compat
++++ smart-1.4/debian/compat
+@@ -0,0 +1 @@
++5
+--- smart-1.4.orig/debian/copyright
++++ smart-1.4/debian/copyright
+@@ -0,0 +1,119 @@
++This package was debianized by Michael Vogt <mvo@debian.org> on
++Fri,  3 Dec 2004 22:10:41 +0100.
++
++It was downloaded from http://labix.org/smart
++
++Upstream Author: Gustavo Niemeyer <gustavo@niemeyer.net>
++
++Copyright: (c) 2004 Conectiva, Inc.
++           (c) 2005,2006 Canonical
++
++# Smart Package Manager is free software; you can redistribute it and/or
++# modify it under the terms of the GNU General Public License as published
++# by the Free Software Foundation; either version 2 of the License, or (at
++# your option) any later version.
++#
++# Smart Package Manager is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++# General Public License for more details.
++#
++# You should have received a copy of the GNU General Public License along
++# with this program; if not, write to the Free Software Foundation, Inc.,
++# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++
++The full license text is available under /usr/share/common-licenses/GPL-2
++
++
++Also include ElementTree:
++-------------------------
++Upstream Author: Fredrik Lundh <fredrik@pythonware.com>
++
++License:
++
++By obtaining, using, and/or copying this software and/or its
++associated documentation, you agree that you have read, understood,
++and will comply with the following terms and conditions:
++
++Permission to use, copy, modify, and distribute this software and its
++associated documentation for any purpose and without fee is hereby
++granted, provided that the above copyright notice appears in all
++copies, and that both that copyright notice and this permission notice
++appear in supporting documentation, and that the name of Secret Labs
++AB or the author not be used in advertising or publicity pertaining to
++distribution of the software without specific, written prior
++permission.
++
++SECRET LABS AB AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO
++THIS SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
++FITNESS.  IN NO EVENT SHALL SECRET LABS AB OR THE AUTHOR BE LIABLE FOR
++ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
++WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
++ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
++OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
++
++
++Also include cElementTree:
++--------------------------
++Upstream Author: Fredrik Lundh <fredrik@pythonware.com>
++
++License:
++
++The ElementTree package and the cElementTree accelerator are
++
++Copyright (c) 1999-2005 by Secret Labs AB
++Copyright (c) 1999-2005 by Fredrik Lundh
++
++By obtaining, using, and/or copying this software and/or its
++associated documentation, you agree that you have read, understood,
++and will comply with the following terms and conditions:
++
++Permission to use, copy, modify, and distribute this software and its
++associated documentation for any purpose and without fee is hereby
++granted, provided that the above copyright notice appears in all
++copies, and that both that copyright notice and this permission notice
++appear in supporting documentation, and that the name of Secret Labs
++AB or the author not be used in advertising or publicity pertaining to
++distribution of the software without specific, written prior
++permission.
++
++SECRET LABS AB AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO
++THIS SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
++FITNESS.  IN NO EVENT SHALL SECRET LABS AB OR THE AUTHOR BE LIABLE FOR
++ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
++WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
++ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
++OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
++
++
++Also includes smart/util/optparse.py:
++-------------------------------------
++Copyright (c) 2001-2004 Gregory P. Ward.  All rights reserved.
++Copyright (c) 2002-2004 Python Software Foundation.  All rights reserved.
++
++Redistribution and use in source and binary forms, with or without 
++modification, are permitted provided that the following conditions are
++met:
++  
++  * Redistributions of source code must retain the above copyright
++    notice, this list of conditions and the following disclaimer.
++  
++  * Redistributions in binary form must reproduce the above copyright
++    notice, this list of conditions and the following disclaimer in the
++    documentation and/or other materials provided with the distribution.
++  
++  * Neither the name of the author nor the names of its
++    contributors may be used to endorse or promote products derived from
++    this software without specific prior written permission.
++
++THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
++IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
++TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A 
++PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR
++CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
++EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
++PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
++PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
++LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
++NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
++SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+--- smart-1.4.orig/debian/control
++++ smart-1.4/debian/control
+@@ -0,0 +1,49 @@
++Source: smart
++Section: admin
++Priority: optional
++Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
++XSBC-Original-Maintainer: Michael Vogt <mvo@debian.org>
++Uploaders: Free Ekanayaka <freee@debian.org>
++Build-Depends: debhelper (>= 5.0.37.2), python-all-dev (>= 2.6.6-3~), cdbs (>= 0.4.90~)
++Standards-Version: 3.8.0
++
++Package: smartpm
++Architecture: all
++Depends: ${python:Depends}, ${shlibs:Depends}, smartpm-core (>= ${source:Version}), python-gtk2
++Provides: ${python:Provides}
++Conflicts: python-smartpm (<= 1.2-0ubuntu0.9.04), smartpm-core (<= 1.1.1)
++Description: An alternative package manager that works with dpkg/rpm
++ The Smart Package Manager project has the ambitious objective of
++ creating smart and portable algorithms for solving adequately the
++ problem of managing software upgrading and installation. This tool
++ works in all major distributions (APT, APT-RPM, YUM, URPMI, etc).
++ .
++ This package contains the GTK2 frontend for Smart.
++
++Package: smartpm-core
++Architecture: any
++Depends: ${python:Depends}, ${shlibs:Depends}, python-smartpm
++Suggests: python-rpm
++Provides: ${python:Provides}
++Replaces: smartpm (<< 0.52-2)
++Description: An alternative package manager that works with dpkg/rpm
++ The Smart Package Manager project has the ambitious objective of
++ creating smart and portable algorithms for solving adequately the
++ problem of managing software upgrading and installation. This tool
++ works in all major distributions (APT, APT-RPM, YUM, URPMI, etc).
++ .
++ This package contains the command line functionality.
++
++Package: python-smartpm
++Architecture: any
++Depends: ${python:Depends}, ${shlibs:Depends}, python-pycurl, python-pexpect
++Provides: ${python:Provides}
++Replaces: smartpm-core (<= 1.1.1)
++Description: Python library of the Smart Package Manager
++ An alternative package manager that works with dpkg/rpm
++ The Smart Package Manager project has the ambitious objective of
++ creating smart and portable algorithms for solving adequately the
++ problem of managing software upgrading and installation. This tool
++ works in all major distributions (APT, APT-RPM, YUM, URPMI, etc).
++ .
++ This package contains a Python library for Smart.
+--- smart-1.4.orig/debian/smartpm-core.postinst
++++ smart-1.4/debian/smartpm-core.postinst
+@@ -0,0 +1,22 @@
++#!/bin/sh
++
++set -e
++
++
++#DEBHELPER#
++
++case "$1" in
++    configure)
++	# run it once to activate the aptchannelsync plugin
++	smart > /dev/null || true
++    ;;
++
++    abort-upgrade|abort-remove|abort-deconfigure)
++
++    ;;
++
++    *)
++        echo "postinst called with unknown argument \`$1'" >&2
++        exit 1
++    ;;
++esac
+--- smart-1.4.orig/debian/smart.desktop
++++ smart-1.4/debian/smart.desktop
+@@ -0,0 +1,6 @@
++[Desktop Entry]
++Name=Smart Package Manager
++Exec=gksu -- smart --gui
++Icon=smart
++Type=Application
++Categories=System;
+--- smart-1.4.orig/debian/smart.xpm
++++ smart-1.4/debian/smart.xpm
+@@ -0,0 +1,312 @@
++/* XPM */
++static char * smart2_xpm[] = {
++"32 32 277 2",
++"  	c None",
++". 	c #D9DEE2",
++"+ 	c #C3CCD2",
++"@ 	c #C0C9C6",
++"# 	c #E3EAD1",
++"$ 	c #D0D8CA",
++"% 	c #CBCED1",
++"& 	c #B6B2A2",
++"* 	c #D5A959",
++"= 	c #A49C86",
++"- 	c #C7CBCA",
++"; 	c #CEC9A8",
++"> 	c #FBECB4",
++", 	c #FCEFBD",
++"' 	c #FAF5C9",
++") 	c #ABB5B0",
++"! 	c #A9A799",
++"~ 	c #DCAE59",
++"{ 	c #DCAC55",
++"] 	c #D5A654",
++"^ 	c #9E9379",
++"/ 	c #C8BC95",
++"( 	c #F9D68A",
++"_ 	c #F8DA96",
++": 	c #F9E0A2",
++"< 	c #F9E4AA",
++"[ 	c #D7B97E",
++"} 	c #D7A955",
++"| 	c #DEAE56",
++"1 	c #D9A954",
++"2 	c #D3A251",
++"3 	c #9F8D6B",
++"4 	c #BABCB9",
++"5 	c #E8C073",
++"6 	c #F7CD7B",
++"7 	c #E0B76F",
++"8 	c #B57F3C",
++"9 	c #AE7027",
++"0 	c #C18430",
++"a 	c #DAA952",
++"b 	c #D4A452",
++"c 	c #CE9D50",
++"d 	c #A48E67",
++"e 	c #AE9D7B",
++"f 	c #B67F3B",
++"g 	c #9A6127",
++"h 	c #9E6528",
++"i 	c #A86D28",
++"j 	c #B77829",
++"k 	c #B87C2E",
++"l 	c #D7A44F",
++"m 	c #D8A854",
++"n 	c #D0A051",
++"o 	c #C9984E",
++"p 	c #A48A61",
++"q 	c #A7B5C8",
++"r 	c #9F8371",
++"s 	c #925B25",
++"t 	c #965F28",
++"u 	c #A16828",
++"v 	c #B27429",
++"w 	c #AE7129",
++"x 	c #B0762E",
++"y 	c #D4A24E",
++"z 	c #DBAB55",
++"A 	c #D3A352",
++"B 	c #CB9B4F",
++"C 	c #BE914F",
++"D 	c #8B8B84",
++"E 	c #A5B8D4",
++"F 	c #83AEF9",
++"G 	c #A08B80",
++"H 	c #8E5725",
++"I 	c #9A6228",
++"J 	c #AC7029",
++"K 	c #A86D29",
++"L 	c #A56B28",
++"M 	c #A66D2B",
++"N 	c #CD9B4A",
++"O 	c #D7A754",
++"P 	c #C99D53",
++"Q 	c #7F7C72",
++"R 	c #7CAAFD",
++"S 	c #82ADFB",
++"T 	c #9F9291",
++"U 	c #945D28",
++"V 	c #A66C28",
++"W 	c #A36928",
++"X 	c #A06628",
++"Y 	c #9C6428",
++"Z 	c #9A6229",
++"` 	c #C08F46",
++" .	c #6F7167",
++"..	c #999EA2",
++"+.	c #D9D9D9",
++"@.	c #C9C9C9",
++"#.	c #D0D0D0",
++"$.	c #C5C5C5",
++"%.	c #A3ABB6",
++"&.	c #7A9EE0",
++"*.	c #7BA9FF",
++"=.	c #82ADFC",
++"-.	c #A69DA0",
++";.	c #A26929",
++">.	c #9E6428",
++",.	c #965E27",
++"'.	c #AB7736",
++").	c #D2A14F",
++"!.	c #D9AD59",
++"~.	c #CAA65F",
++"{.	c #A29368",
++"].	c #879299",
++"^.	c #EDEDED",
++"/.	c #F6F6F6",
++"(.	c #F1F1F1",
++"_.	c #DEDEDE",
++":.	c #DDDDDC",
++"<.	c #D1D2D2",
++"[.	c #839BC9",
++"}.	c #85AFFE",
++"|.	c #8EB6FE",
++"1.	c #AFA9AD",
++"2.	c #996129",
++"3.	c #9A632C",
++"4.	c #B68543",
++"5.	c #CD9D50",
++"6.	c #D2A252",
++"7.	c #D3A556",
++"8.	c #978965",
++"9.	c #919394",
++"0.	c #DADADA",
++"a.	c #F0F0F0",
++"b.	c #FCFCFC",
++"c.	c #F8F8F8",
++"d.	c #F3F3F3",
++"e.	c #E1E1E1",
++"f.	c #E3E3E3",
++"g.	c #F3F4F8",
++"h.	c #DDDFE2",
++"i.	c #7A98D3",
++"j.	c #94B9FF",
++"k.	c #9CBFFF",
++"l.	c #C2BEC3",
++"m.	c #A38D7F",
++"n.	c #A78769",
++"o.	c #AB8760",
++"p.	c #AE8D64",
++"q.	c #6F7679",
++"r.	c #BABABA",
++"s.	c #D6D6D6",
++"t.	c #FBFBFB",
++"u.	c #E8E8E8",
++"v.	c #EFF0F2",
++"w.	c #F8FAFF",
++"x.	c #F8F9FE",
++"y.	c #AAB3C5",
++"z.	c #729FF3",
++"A.	c #A1C1FF",
++"B.	c #BDD3FF",
++"C.	c #9FBFFF",
++"D.	c #A0BFFF",
++"E.	c #A7C0ED",
++"F.	c #A5A7A9",
++"G.	c #EAEAEA",
++"H.	c #F5F5F5",
++"I.	c #ECECEC",
++"J.	c #F8FAFD",
++"K.	c #F5F8FF",
++"L.	c #D9DCE3",
++"M.	c #7198E3",
++"N.	c #7BA8FF",
++"O.	c #C3D7FF",
++"P.	c #A1BEFF",
++"Q.	c #A7C2FF",
++"R.	c #ACC6FF",
++"S.	c #B1C6EB",
++"T.	c #ADB0B2",
++"U.	c #DDDDDD",
++"V.	c #EBEBEB",
++"W.	c #EEEEEE",
++"X.	c #B8B8B8",
++"Y.	c #B8B8B9",
++"Z.	c #EEEFF1",
++"`.	c #EBECEE",
++" +	c #E0E1E2",
++".+	c #D2D2D1",
++"++	c #7A97CE",
++"@+	c #7AA7FF",
++"#+	c #CBDCFF",
++"$+	c #AEC8FF",
++"%+	c #ABCEFF",
++"&+	c #ACD0FF",
++"*+	c #B9CDEB",
++"=+	c #D5D5D5",
++"-+	c #DADBDB",
++";+	c #E4E5E7",
++">+	c #EDEFF1",
++",+	c #F0F1F3",
++"'+	c #979797",
++")+	c #9D9D9D",
++"!+	c #E4E4E4",
++"~+	c #D6D6D4",
++"{+	c #7D97C7",
++"]+	c #7EAAFF",
++"^+	c #D4E3FF",
++"/+	c #B7D2FF",
++"(+	c #AFD3FF",
++"_+	c #ADD3FF",
++":+	c #C2D3EB",
++"<+	c #D3D4D4",
++"[+	c #EFF3F8",
++"}+	c #F7F9FC",
++"|+	c #E4E4E5",
++"1+	c #E6E6E6",
++"2+	c #F4F4F4",
++"3+	c #D6D7D6",
++"4+	c #7A9AD8",
++"5+	c #82ADFF",
++"6+	c #DEE9FF",
++"7+	c #C0D9FF",
++"8+	c #A3D1FF",
++"9+	c #A1D1FF",
++"0+	c #CAD9EB",
++"a+	c #E5E5E5",
++"b+	c #DEE0E1",
++"c+	c #F6F9FF",
++"d+	c #F8F9FF",
++"e+	c #F1F2F4",
++"f+	c #F7F7F7",
++"g+	c #FAFAFA",
++"h+	c #F2F2F2",
++"i+	c #BFC0C1",
++"j+	c #98B3E5",
++"k+	c #86AEFF",
++"l+	c #E7EFFF",
++"m+	c #C7DEFF",
++"n+	c #9DCFFF",
++"o+	c #ABD6FF",
++"p+	c #D5E0EB",
++"q+	c #ADAFB2",
++"r+	c #C1C1C2",
++"s+	c #F5F8FC",
++"t+	c #F3F6FA",
++"u+	c #E7E7E7",
++"v+	c #8B949F",
++"w+	c #D8E2F5",
++"x+	c #C4D8FF",
++"y+	c #F0F6FF",
++"z+	c #D8E9FF",
++"A+	c #D6EAFF",
++"B+	c #F2F6FF",
++"C+	c #B6C2DB",
++"D+	c #B2B4B6",
++"E+	c #E6E7E8",
++"F+	c #979898",
++"G+	c #909FB3",
++"H+	c #E0E7F4",
++"I+	c #FCFDFF",
++"J+	c #F9FAFF",
++"K+	c #DCE3F4",
++"L+	c #8897B4",
++"M+	c #8F959D",
++"N+	c #CCCCCC",
++"O+	c #A3A3A3",
++"P+	c #C6C6C6",
++"Q+	c #CBCBCB",
++"R+	c #878787",
++"S+	c #A0A0A0",
++"T+	c #95A3B5",
++"U+	c #D7E0F2",
++"V+	c #A1B0C9",
++"W+	c #828B99",
++"X+	c #AEAEAE",
++"Y+	c #909090",
++"Z+	c #9B9B9B",
++"`+	c #A4ABB4",
++" @	c #B1B3B4",
++"                                                                ",
++"                                                                ",
++"                                                                ",
++"                                                                ",
++"                                                                ",
++"                            . +                                 ",
++"                          @ # $ %   & * =                       ",
++"                      - ; > , ' ) ! ~ { ] ^                     ",
++"                      / ( _ : < [ } | | 1 2 3                   ",
++"                      4 5 6 7 8 9 0 a | { b c d                 ",
++"                        e f g h i j k l | m n o p               ",
++"                        q r s t u v w x y z A B C D             ",
++"                        E F G H I J K L M N O P Q               ",
++"                        E R S T U V W X Y Z `  ...              ",
++"                +.@.#.$.%.&.*.=.-.;.>.I ,.'.).!.~.{.].          ",
++"              #.^./.(._.:.<.[.}.|.1.2.3.4.5.6.7.8.9.            ",
++"            0.a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.              ",
++"            s.d.t.b./.u.v.w.x.y.z.A.B.C.C.D.E.F.                ",
++"          e.f.G.d.t.H.I.J.w.K.L.M.N.O.P.Q.R.S.T.                ",
++"          s.U.f.V.W.X.Y.Z.`. +.+++@+#+$+%+&+*+T.                ",
++"          =+-+;+>+,+'+)+u.I.!+~+{+]+^+/+(+_+:+T.                ",
++"          <+[+K.w.}+|+1+c.2+V.3+4+5+6+7+8+9+0+T.                ",
++"          a+b+c+d+e+V.f+g+t.h+i+j+k+l+m+n+o+p+q+                ",
++"            r+s+t+f.u+2+f+g+2+v+w+x+y+z+A+B+C+D+                ",
++"              r+E++.!+(.H.c.)+F+G+H+I+J+K+L+M+                  ",
++"              N+O+P+a+V.Q+R+S+    T+U+V+W+                      ",
++"                  X+'+Y+Z+          `+ @                        ",
++"                                                                ",
++"                                                                ",
++"                                                                ",
++"                                                                ",
++"                                                                "};
+--- smart-1.4.orig/debian/python-smartpm.dirs
++++ smart-1.4/debian/python-smartpm.dirs
+@@ -0,0 +1 @@
++usr/share/smart
+\ No newline at end of file
+--- smart-1.4.orig/debian/python-smartpm.files
++++ smart-1.4/debian/python-smartpm.files
+@@ -0,0 +1,2 @@
++usr/lib/python*/*-packages/smart/
++usr/lib/python*/*-packages/smart-*-info
+--- smart-1.4.orig/debian/smartpm-core.docs
++++ smart-1.4/debian/smartpm-core.docs
+@@ -0,0 +1,2 @@
++README
++TODO
+--- smart-1.4.orig/debian/python-smartpm.install
++++ smart-1.4/debian/python-smartpm.install
+@@ -0,0 +1 @@
++debian/distro.py usr/lib/smart/
+--- smart-1.4.orig/debian/smartpm-core.files
++++ smart-1.4/debian/smartpm-core.files
+@@ -0,0 +1 @@
++usr/share/man/man8/smart.8
+--- smart-1.4.orig/debian/smartpm.install
++++ smart-1.4/debian/smartpm.install
+@@ -0,0 +1,2 @@
++debian/smart.desktop usr/share/applications
++debian/smart.xpm usr/share/pixmaps
+--- smart-1.4.orig/debian/smartpm-core.links
++++ smart-1.4/debian/smartpm-core.links
+@@ -0,0 +1 @@
++usr/share/smart/smart usr/bin/smart
+\ No newline at end of file
+--- smart-1.4.orig/debian/smartpm.dirs
++++ smart-1.4/debian/smartpm.dirs
+@@ -0,0 +1,2 @@
++usr/share/pixmaps
++usr/share/applications
+--- smart-1.4.orig/debian/patches/01_inform_about_split.patch
++++ smart-1.4/debian/patches/01_inform_about_split.patch
+@@ -0,0 +1,48 @@
++diff -urNad smart-0.42~/smart/interfaces/gtk/__init__.py smart-0.42/smart/interfaces/gtk/__init__.py
++--- smart-0.42~/smart/interfaces/gtk/__init__.py	2005-12-21 16:12:42.000000000 +0100
+++++ smart-0.42/smart/interfaces/gtk/__init__.py	2006-07-27 12:45:26.000000000 +0200
++@@ -23,6 +23,7 @@
++ from smart.interface import getImagePath
++ from smart import *
++ import os
+++import sys
++ 
++ try:
++     import pygtk
++@@ -35,13 +36,27 @@
++         traceback.print_exc()
++     raise Error, _("System has no support for gtk python interface")
++ 
+++def splitted_error():
+++	print _("ERROR: The Smartpm package is splitted in two subpackages")
+++	print _(" - smartpm-core: Core of the Smart Package Manager")
+++	print _(" - smartpm: The GUI frontend")
+++	print _("It seems that you tried to run the GUI frontend which is not installed yet")
+++	print _("You need to install the smartpm package in order to use the GUI frontend")
+++	sys.exit(1)
+++
++ def create(ctrl, command=None, argv=None):
++     if command:
++-        from smart.interfaces.gtk.command import GtkCommandInterface
++-        return GtkCommandInterface(ctrl)
+++        try:
+++            from smart.interfaces.gtk.command import GtkCommandInterface
+++            return GtkCommandInterface(ctrl)
+++        except ImportError:
+++            splitted_error()
++     else:
++-        from smart.interfaces.gtk.interactive import GtkInteractiveInterface
++-        return GtkInteractiveInterface(ctrl)
+++        try:
+++           from smart.interfaces.gtk.interactive import GtkInteractiveInterface
+++           return GtkInteractiveInterface(ctrl)
+++        except ImportError:
+++           splitted_error()
++     
++ _pixbuf = {}
++ 
++@@ -62,3 +77,4 @@
++           r"automatically registered."
++ warnings.filterwarnings("ignore", MESSAGE)
++ 
+++

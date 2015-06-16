@@ -1,0 +1,28 @@
+=== modified file 'smart/fetcher.py'
+--- smart/fetcher.py	2009-06-27 17:24:53 +0000
++++ smart/fetcher.py	2009-09-27 07:38:03 +0000
+@@ -280,7 +280,7 @@
+                 else:
+                     item.setSucceeded(uncomppath)
+             prog.show()
+-            time.sleep(0.1)
++            time.sleep(handler._sleep)
+         for handler in handlers:
+             handler.stop()
+         if not progress:
+@@ -671,6 +671,7 @@
+         self._fetcher = fetcher
+         self._queue = []
+         self._cancel = False
++        self._sleep = 0.1
+ 
+     def getQueue(self):
+         return self._queue
+@@ -1495,6 +1496,7 @@
+         self._running = False
+         self._multi = pycurl.CurlMulti()
+         self._lock = thread.allocate_lock()
++        self._sleep = 0
+ 
+     def tick(self):
+         import pycurl

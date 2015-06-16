@@ -1,0 +1,39 @@
+--- smart/backends/rpm/base.py	2006-11-07 22:22:46 +0000
++++ smart/backends/rpm/base.py	2009-09-27 14:28:59 +0000
+@@ -137,7 +141,8 @@
+             return False
+         selfver, selfarch = splitarch(self.version)
+         otherver, otherarch = splitarch(other.version)
+-        if getArchColor(selfarch) != getArchColor(otherarch):
++        if not sysconf.get("rpm-strict-multilib") \
++		and getArchColor(selfarch) != getArchColor(otherarch):
+             return True
+         if not pkgconf.testFlag("multi-version", self):
+             return False
+--- smart/commands/install.py	2007-04-26 15:30:58 +0000
++++ smart/commands/install.py	2009-09-27 14:30:47 +0000
+@@ -24,6 +24,8 @@
+ from smart.option import OptionParser
+ from smart.cache import Package
+ from smart import *
++if sysconf.get("rpm-strict-multilib"):
++    from smart.backends.rpm.rpmver import splitarch
+ import string
+ import re
+ import os
+@@ -144,6 +146,14 @@
+                 break
+             if installed:
+                 continue
++            if len(names) == 2 and sysconf.get("rpm-strict-multilib"):
++                if splitarch(pkgs[0].version)[0] == splitarch(pkgs[1].version)[0]:
++                    if cmp(pkgs[0], pkgs[1]) == 1:
++                        pkg = pkgs[0]
++                    else:
++                        pkg = pkgs[1]
++                    names.pop(pkg.name)
++                    pkgs.remove(pkg)
+             if len(names) > 1:
+                 raise Error, _("There are multiple matches for '%s':\n%s") % \
+                               (arg, "\n".join(["    "+str(x) for x in pkgs]))
+
