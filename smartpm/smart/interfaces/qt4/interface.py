@@ -1,7 +1,11 @@
+#-*- coding: utf-8 -*-
 #
 # Copyright (c) 2004 Conectiva, Inc.
 #
 # Written by Gustavo Niemeyer <niemeyer@conectiva.com>
+#
+# 2014-2015 Many blackPanther specific modification and fixes by:
+# Charles Barcza and Miklos Horvath  - info AT blackpanther DOT hu
 #
 # This file is part of Smart Package Manager.
 #
@@ -26,8 +30,8 @@ from smart.interface import Interface, getScreenWidth
 from smart.fetcher import Fetcher
 from smart.const import DEBUG
 from smart import *
-import PyQt4.QtGui as QtGui
-import PyQt4.QtCore as QtCore
+from PyQt4 import QtGui as QtGui
+from PyQt4 import QtCore as QtCore
 import sys
 
 
@@ -51,10 +55,10 @@ class QtInterface(Interface):
         return result
 
     def eventsPending(self):
-        return QtGui.QApplication.instance().hasPendingEvents()
+        return QtGui.QCoreApplication.instance().hasPendingEvents()
     
     def processEvents(self):
-        QtGui.QApplication.instance().processEvents(QtCore.QEventLoop.AllEvents)
+        QtGui.QCoreApplication.instance().processEvents(QtCore.QEventLoop.AllEvents)
 
     def getProgress(self, obj, hassub=False):
         if hassub:

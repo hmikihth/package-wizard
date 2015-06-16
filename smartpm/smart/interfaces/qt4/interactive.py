@@ -1,7 +1,11 @@
+#-*- coding: utf-8 -*-
 #
 # Copyright (c) 2004 Conectiva, Inc.
 #
 # Written by Anders F Bjorklund <afb@users.sourceforge.net>
+#
+# 2014-2015 Many blackPanther specific modification and fixes by:
+# Charles Barcza and Miklos Horvath  - info AT blackpanther DOT hu
 #
 # This file is part of Smart Package Manager.
 #
@@ -37,8 +41,8 @@ from smart.cache import Package
 from smart import *
 import shlex, re
 import fnmatch
-import PyQt4.QtGui as QtGui
-import PyQt4.QtCore as QtCore
+from PyQt4 import QtGui as QtGui
+from PyQt4 import QtCore as QtCore
 
 MENUBAR = [
     ( "file", [
@@ -818,7 +822,7 @@ class QtInteractiveInterface(QtInterface):
     def setBusy(self, flag):
         if flag:
             QtGui.QApplication.setOverrideCursor( QtGui.QCursor(QtCore.Qt.WaitCursor) )
-            #while QtGui.QApplication.eventLoop().hasPendingEvents():
+            #while QtGui.QCoreApplication.eventLoop().hasPendingEvents():
             #    QtGui.QApplication.eventLoop().processEvents(QtGui.QEventLoop.AllEvents)
         else:
             QtGui.QApplication.restoreOverrideCursor()

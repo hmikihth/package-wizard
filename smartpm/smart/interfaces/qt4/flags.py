@@ -1,8 +1,13 @@
+#-*- coding: utf-8 -*-
 #
 # Copyright (c) 2004 Conectiva, Inc.
 #
 # Written by Anders F Bjorklund <afb@users.sourceforge.net>
 #
+# 2014-2015 Many blackPanther specific modification and fixes by:
+# Charles Barcza and Miklos Horvath  - info AT blackpanther DOT hu
+#
+
 # This file is part of Smart Package Manager.
 #
 # Smart Package Manager is free software; you can redistribute it and/or
@@ -21,8 +26,8 @@
 #
 from smart.interfaces.qt4 import getPixmap, centerWindow
 from smart import *
-import PyQt4.QtGui as QtGui
-import PyQt4.QtCore as QtCore
+from PyQt4 import QtGui as QtGui
+from PyQt4 import QtCore as QtCore
 import re
 
 TARGETRE = re.compile(r"^\s*(\S+?)\s*(?:([<>=]+)\s*(\S+))?\s*$")

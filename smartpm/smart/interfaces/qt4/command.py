@@ -1,7 +1,11 @@
+#-*- coding: utf-8 -*-
 #
 # Copyright (c) 2004 Conectiva, Inc.
 #
 # Written by Gustavo Niemeyer <niemeyer@conectiva.com>
+#
+# 2014-2015 Many blackPanther specific modification and fixes by:
+# Charles Barcza and Miklos Horvath  - info AT blackpanther DOT hu
 #
 # This file is part of Smart Package Manager.
 #
@@ -22,8 +26,9 @@
 from smart.interfaces.qt4.interface import QtInterface
 from smart.interfaces.qt4 import getPixmap, centerWindow
 from smart import *
-import time
-import PyQt4 
+import time, sys
+from PyQt4 import *
+#import PyQt4 
 
 class QtCommandInterface(QtInterface):
 
@@ -33,21 +38,21 @@ class QtCommandInterface(QtInterface):
 
     def showStatus(self, msg):
         self._status.show(msg)
-        while QtGui.QApplication.eventLoop().hasPendingEvents():
-            QtGui.QApplication.eventLoop().processEvents(QtGui.QEventLoop.AllEvents)
+        while QtCore.QEventLoop().isRunning():
+            QtGui.QCoreApplication.eventLoop().processEvents(QtGui.QEventLoop.AllEvents)
 
     def hideStatus(self):
         self._status.hide()
-        while QtGui.QApplication.eventLoop().hasPendingEvents():
-            QtGui.QApplication.eventLoop().processEvents(QtGui.QEventLoop.AllEvents)
+        while QtCore.QEventLoop().isRunning():
+            QtGui.QCoreApplication.eventLoop().processEvents(QtGui.QEventLoop.AllEvents)
 
     def run(self, command=None, argv=None):
         result = QtInterface.run(self, command, argv)        
         self._status.wait()
         while self._log.isVisible():
             time.sleep(0.1)
-            while QtGui.QApplication.eventLoop().hasPendingEvents():
-                QtGui.QApplication.eventLoop().processEvents(QtGui.QEventLoop.AllEvents)
+            while QtCore.QEventLoop().isRunning():
+                QtGui.QCoreApplication.eventLoop().processEvents(QtGui.QEventLoop.AllEvents)
         return result
 
 class QtStatus(object):
@@ -58,7 +63,9 @@ class QtStatus(object):
         self._window.setWindowTitle(_("Status"))
         self._window.setModal(True)
         self._vbox = QtGui.QWidget(self._window)
-        self._vbox.setMargin(20)
+        #self._vbox.setMargin(20)
+        #self._vbox.setMargin(0)
+        #self._vbox.setSpacing(5)
 
         self._label = QtGui.QLabel(self._vbox)
         self._label.show()
@@ -72,8 +79,8 @@ class QtStatus(object):
         self._window.show()
         centerWindow(self._window)
         self._lastshown = time.time()
-        while QtGui.QApplication.eventLoop().hasPendingEvents():
-            QtGui.QApplication.eventLoop().processEvents(QtGui.QEventLoop.AllEvents)
+        while QtCore.QEventLoop().isRunning():
+            QtCore.QEventLoop().processEvents(QtGui.QEventLoop.AllEvents)
 
     def hide(self):
         self._window.hide()
@@ -84,7 +91,7 @@ class QtStatus(object):
     def wait(self):
         while self.isVisible() and self._lastshown+3 > time.time():
             time.sleep(0.3)
-            while QtGui.QApplication.eventLoop().hasPendingEvents():
-                QtGui.QApplication.eventLoop().processEvents(QtGui.QEventLoop.AllEvents)
+            while QtCore.QEventLoop().isRunning():
+                QtCore.QEventLoop().processEvents(QtGui.QEventLoop.AllEvents)
 
 # vim:ts=4:sw=4:et

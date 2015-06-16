@@ -1,7 +1,11 @@
+#-*- coding: utf-8 -*-
 #
 # Copyright (c) 2004 Conectiva, Inc.
 #
 # Written by Gustavo Niemeyer <niemeyer@conectiva.com>
+#
+# 2014-2015 Many blackPanther specific modification and fixes by:
+# Charles Barcza and Miklos Horvath  - info AT blackpanther DOT hu
 #
 # This file is part of Smart Package Manager.
 #
@@ -22,8 +26,8 @@
 from smart.const import ERROR, WARNING, DEBUG
 from smart.interfaces.qt4 import getPixmap
 from smart import *
-import PyQt4.QtGui as QtGui
-import PyQt4.QtCore as QtCore
+from PyQt4 import QtGui as QtGui
+from PyQt4 import QtCore as QtCore
 import locale
 
 try:

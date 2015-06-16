@@ -1,6 +1,9 @@
-#
+#-*- coding: utf-8 -*-
 # Copyright (c) 2005 Canonical
 # Copyright (c) 2004 Conectiva, Inc.
+#
+# 2014-2015 Many blackPanther specific modification and fixes by:
+# Charles Barcza and Miklos Horvath  - info AT blackpanther DOT hu
 #
 # Written by Gustavo Niemeyer <niemeyer@conectiva.com>
 #
@@ -25,7 +28,7 @@ from smart import *
 import os
 
 try:
-    import PyQt4 
+    from PyQt4 import QtCore, QtGui
 except ImportError:
     from smart.const import DEBUG
     if sysconf.get("log-level") == DEBUG:
@@ -48,7 +51,7 @@ def getPixmap(name):
     if name not in _pixmap:
         filename = getImagePath(name)
         if os.path.isfile(filename):
-            pixmap = PyQt4.QtGui.QPixmap(filename)
+            pixmap = QtGui.QPixmap(filename)
             _pixmap[name] = pixmap
         else:
             raise Error, _("Image '%s' not found") % name
@@ -57,12 +60,12 @@ def getPixmap(name):
 def centerWindow(window):
     w = window.topLevelWidget()
     if w:
-        scrn = PyQt4.QtGui.QApplication.desktop().screenNumber(w)
-    elif PyQt4.QtGui.QApplication.desktop().isVirtualDesktop():
-        scrn = PyQt4.QtGui.QApplication.desktop().screenNumber(PyQt4.QtGui.QCursor.pos())
+        scrn = QtGui.QApplication.desktop().screenNumber(w)
+    elif QtGui.QApplication.desktop().isVirtualDesktop():
+        scrn = QtGui.QApplication.desktop().screenNumber(QtGui.QCursor.pos())
     else:
-        scrn = PyQt4.QtGui.QApplication.desktop().screenNumber(window)
-    desk = PyQt4.QtGui.QApplication.desktop().availableGeometry(scrn)
+        scrn = QtGui.QApplication.desktop().screenNumber(window)
+    desk = QtGui.QApplication.desktop().availableGeometry(scrn)
     window.move((desk.width() - window.frameGeometry().width()) / 2, \
                 (desk.height() - window.frameGeometry().height()) / 2)
 

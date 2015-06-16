@@ -1,7 +1,11 @@
+#-*- coding: utf-8 -*-
 #
 # Copyright (c) 2004 Conectiva, Inc.
 #
 # Written by Gustavo Niemeyer <niemeyer@conectiva.com>
+#
+# 2014-2015 Many blackPanther specific modification and fixes by:
+# Charles Barcza and Miklos Horvath  - info AT blackpanther DOT hu
 #
 # This file is part of Smart Package Manager.
 #
@@ -24,8 +28,15 @@ from smart.interfaces.qt4 import getPixmap, centerWindow
 from smart.util.strtools import sizeToStr
 from smart.report import Report
 from smart import *
-import PyQt4.QtGui as QtGui
-import PyQt4.QtCore as QtCore
+#import PyQt4.QtGui as QtGui
+#import PyQt4.QtCore as QtCore
+from PyQt4 import QtGui as QtGui
+from PyQt4 import QtCore as QtCore
+
+try:
+    _fromUtf8 = QtCore.QString.fromUtf8
+except AttributeError:
+    _fromUtf8 = lambda s: s
 
 class QtChanges(QtGui.QDialog):
 
@@ -79,7 +90,7 @@ class QtChanges(QtGui.QDialog):
         report = Report(changeset)
         report.compute()
         
-        class Sorter(str):
+        class Sorter(unicode):
             ORDER = [_("Remove"), _("Downgrade"), _("Reinstall"),
                      _("Install"), _("Upgrade")]
             def _index(self, s):
@@ -90,7 +101,7 @@ class QtChanges(QtGui.QDialog):
                     i += 1
                 return i
             def __cmp__(self, other):
-                return cmp(self._index(str(self)), self._index(str(other)))
+                return cmp(self._index(unicode(self)), self._index(unicode(other)))
             def __lt__(self, other):
                 return cmp(self, other) < 0
 
@@ -134,15 +145,13 @@ class QtChanges(QtGui.QDialog):
                 else:
                     install[pkg] = package
             if reinstall:
-                packages[Sorter(_("Reinstall (%d)") % len(reinstall))] = \
-                                                                    reinstall
+                packages[Sorter(_("Reinstall (%d)") % len(reinstall))] = reinstall
             if install:
                 packages[Sorter(_("Install (%d)") % len(install))] = install
             if upgrade:
                 packages[Sorter(_("Upgrade (%d)") % len(upgrade))] = upgrade
             if downgrade:
-                packages[Sorter(_("Downgrade (%d)") % len(downgrade))] = \
-                                                                    downgrade
+                packages[Sorter(_("Downgrade (%d)") % len(downgrade))] = downgrade
 
         if report.removed:
             remove = {}
@@ -164,8 +173,7 @@ class QtChanges(QtGui.QDialog):
                         package.setdefault(_("Conflicts"), []).append(cnfpkg)
                 remove[pkg] = package
             if remove:
-                packages[Sorter(_("Remove (%d)") % len(report.removed))] = \
-                                                                        remove
+                packages[Sorter(_("Remove (%d)") % len(report.removed))] = remove
 
         if keep:
             packages[Sorter(_("Keep (%d)") % len(keep))] = keep

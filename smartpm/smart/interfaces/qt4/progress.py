@@ -1,7 +1,11 @@
+#-*- coding: utf-8 -*-
 #
 # Copyright (c) 2004 Conectiva, Inc.
 #
 # Written by Anders F Bjorklund <afb@users.sourceforge.net>
+#
+# 2014-2015 Many blackPanther specific modification and fixes by:
+# Charles Barcza and Miklos Horvath  - info AT blackpanther DOT hu
 #
 # This file is part of Smart Package Manager.
 #
@@ -23,8 +27,8 @@ from smart.util.strtools import ShortURL, sizeToStr
 from smart.progress import Progress, INTERVAL
 from smart.interfaces.qt4 import getPixmap, centerWindow
 from smart import *
-import PyQt4.QtGui as QtGui
-import PyQt4.QtCore as QtCore
+from  PyQt4 import QtGui as QtGui
+from PyQt4 import QtCore as QtCore
 import posixpath
 import thread
 import time
@@ -124,8 +128,8 @@ class QtProgress(Progress, QtGui.QDialog):
         while not self._stopticking:
             self.lock()
             ## Note: it's NOT safe to call processEvents from threads other than main
-            #while QtGui.QApplication.instance().hasPendingEvents():
-            #    QtGui.QApplication.instance().processEvents()
+            #while QtGui.QCoreApplication.instance().hasPendingEvents():
+            #    QtGui.QCoreApplication.instance().processEvents()
             self.unlock()
             time.sleep(INTERVAL)
         self._ticking = False
@@ -228,8 +232,8 @@ class QtProgress(Progress, QtGui.QDialog):
             if self._hassub:
                 self._listview.update()
 
-        while QtGui.QApplication.instance().hasPendingEvents():
-            QtGui.QApplication.instance().processEvents()
+        while QtGui.QCoreApplication.instance().hasPendingEvents():
+            QtGui.QCoreApplication.instance().processEvents()
 
 
 def test():
@@ -249,8 +253,8 @@ def test():
         for i in range(0,subtotal+1):
             prog.setSub(n, i, subtotal, subdata=data)
             prog.show()
-            while QtGui.QApplication.instance().hasPendingEvents():
-                QtGui.QApplication.instance().processEvents()
+            while QtGui.QCoreApplication.instance().hasPendingEvents():
+                QtGui.QCoreApplication.instance().processEvents()
             time.sleep(0.01)
     prog.stop()
 
