@@ -2,9 +2,6 @@
 # Copyright (c) 2005 Canonical
 # Copyright (c) 2004 Conectiva, Inc.
 #
-# 2014-2015 Many blackPanther specific modification and fixes by:
-# Charles Barcza and Miklos Horvath  - info AT blackpanther DOT hu
-#
 # Written by Gustavo Niemeyer <niemeyer@conectiva.com>
 #
 # This file is part of Smart Package Manager.

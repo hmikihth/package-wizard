@@ -1,0 +1,10 @@
+%lang(de) /usr/share/locale/de/LC_MESSAGES/smart.mo
+%lang(es_ES) /usr/share/locale/es_ES/LC_MESSAGES/smart.mo
+%lang(fr) /usr/share/locale/fr/LC_MESSAGES/smart.mo
+%lang(hu) /usr/share/locale/hu/LC_MESSAGES/smart.mo
+%lang(it) /usr/share/locale/it/LC_MESSAGES/smart.mo
+%lang(pt_BR) /usr/share/locale/pt_BR/LC_MESSAGES/smart.mo
+%lang(ru) /usr/share/locale/ru/LC_MESSAGES/smart.mo
+%lang(sv) /usr/share/locale/sv/LC_MESSAGES/smart.mo
+%lang(zh_CN) /usr/share/locale/zh_CN/LC_MESSAGES/smart.mo
+%lang(zh_TW) /usr/share/locale/zh_TW/LC_MESSAGES/smart.mo
