@@ -1,30 +1,15 @@
 #-*- coding: utf-8 -*-
 #
-# Copyright (c) 2004 Conectiva, Inc.
+# Copyright (c) 2015 blackPanther OS - Charles Barcza
 #
-# Written by Gustavo Niemeyer <niemeyer@conectiva.com>
-#
-# This file is part of Smart Package Manager.
-#
-# Smart Package Manager is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License as published
-# by the Free Software Foundation; either version 2 of the License, or (at
-# your option) any later version.
-#
-# Smart Package Manager is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Smart Package Manager; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 from smart.const import ERROR, WARNING, DEBUG
-from smart.interfaces.qt4 import getPixmap
+from smart.interfaces.qt5 import getPixmap
 from smart import *
-from PyQt4 import QtGui as QtGui
-from PyQt4 import QtCore as QtCore
+from PyQt5 import QtGui as QtGui, QtWidgets
+
+from PyQt5 import QtCore as QtCore, QtWidgets
+
 import locale
 
 try:
@@ -39,43 +24,43 @@ except AttributeError:
         return s
 
 try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
+    _encoding = QtWidgets.QApplication.UnicodeUTF8
     def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+        return QtCore.QCoreApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
+        return QtCore.QCoreApplication.translate(context, text, disambig)
 
-class BackgroundScrollView(QtGui.QScrollArea):
+class BackgroundScrollView(QtWidgets.QScrollArea):
     def __init__(self, parent):
-        QtGui.QScrollArea.__init__(self, parent)
+        QtWidgets.QScrollArea.__init__(self, parent)
         self.setSizePolicy(
-            QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding))
+            QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding))
 
     def drawContents(self, *args):
         if len(args)==1:
-            return apply(QtGui.QFrame.drawContents, (self,)+args)
+            return apply(QtWidgets.QFrame.drawContents, (self,)+args)
         else:
             painter, clipx, clipy, clipw, cliph = args
         color = self.eraseColor()
         painter.fillRect(clipx, clipy, clipw, cliph, QtGui.QBrush(color))
-        QtGui.QScrollArea.drawContents(self, painter, clipx, clipy, clipw, cliph)
+        QtWidgets.QScrollArea.drawContents(self, painter, clipx, clipy, clipw, cliph)
 
-class QtLog(QtGui.QDialog):
+class QtLog(QtWidgets.QDialog):
 
     def __init__(self, parent=None):
-        QtGui.QDialog.__init__(self, parent)
+        QtWidgets.QDialog.__init__(self, parent)
 
         self.setWindowIcon(QtGui.QIcon(getPixmap("smart")))
         self.setWindowTitle(_("Log"))
         self.setMinimumSize(400, 300)
         #self.setModal(True)
 
-        layout = QtGui.QVBoxLayout(self)
+        layout = QtWidgets.QVBoxLayout(self)
         #layout.setResizeMode(QtGui.QLayout.FreeResize)
 
-        self._vbox = QtGui.QWidget(self)
-        QtGui.QVBoxLayout(self._vbox)
+        self._vbox = QtWidgets.QWidget(self)
+        QtWidgets.QVBoxLayout(self._vbox)
         self._vbox.layout().setMargin(10)
         self._vbox.layout().setSpacing(10)
         self._vbox.show()
@@ -87,20 +72,20 @@ class QtLog(QtGui.QDialog):
         #self._scrollview = QtGui.QScrollArea(self._vbox)
         self._scrollview.setGeometry(QtCore.QRect(5, 1, 380, 225))
         self._scrollview.setMinimumSize(QtCore.QSize(380, 225))
-        self._scrollview.setFrameShape(QtGui.QFrame.Box)
-        self._scrollview.setFrameShadow(QtGui.QFrame.Plain)
+        self._scrollview.setFrameShape(QtWidgets.QFrame.Box)
+        self._scrollview.setFrameShadow(QtWidgets.QFrame.Plain)
         self._scrollview.setLineWidth(0)
         self._scrollview.setMidLineWidth(0)
         self._scrollview.setWidgetResizable(True)
         self._scrollview.setObjectName(_fromUtf8("_scrollview"))
-        self.scrollAreaWidgetContents = QtGui.QWidget()
+        self.scrollAreaWidgetContents = QtWidgets.QWidget()
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 378, 223))
         self.scrollAreaWidgetContents.setObjectName(_fromUtf8("scrollAreaWidgetContents"))
         self._scrollview.setWidget(self.scrollAreaWidgetContents)
 
         self._vbox.layout().addWidget(self._scrollview)
 
-        self._textview = QtGui.QLabel(self._scrollview.viewport())
+        self._textview = QtWidgets.QLabel(self._scrollview.viewport())
         self._textview.setAlignment(QtCore.Qt.AlignTop)
         self._textview.setTextFormat(QtCore.Qt.LogText)
         self._textview.setAutoFillBackground(True)
@@ -111,22 +96,22 @@ class QtLog(QtGui.QDialog):
         #self._textview.setEraseColor(self._scrollview.eraseColor())
         self._scrollview.setWidget(self._textview)
 
-        self._buttonbox = QtGui.QWidget(self._vbox)
-        QtGui.QHBoxLayout(self._buttonbox)
+        self._buttonbox = QtWidgets.QWidget(self._vbox)
+        QtWidgets.QHBoxLayout(self._buttonbox)
         self._buttonbox.layout().setSpacing(10)
         self._buttonbox.layout().addStretch(1)
         self._buttonbox.show()
         self._buttonbox.setMinimumSize(QtCore.QSize(500, 50))
         self._vbox.layout().addWidget(self._buttonbox)
 
-        self._clearbutton = QtGui.QPushButton(_("Clear"), self._buttonbox)
+        self._clearbutton = QtWidgets.QPushButton(_("Clear"), self._buttonbox)
         self._clearbutton.show()
-        QtCore.QObject.connect(self._clearbutton, QtCore.SIGNAL("clicked()"), self.clearText)
+        self._clearbutton.clicked[()].connect(self.clearText)
         self._buttonbox.layout().addWidget(self._clearbutton)
 
-        self._closebutton = QtGui.QPushButton(_("Close"), self._buttonbox)
+        self._closebutton = QtWidgets.QPushButton(_("Close"), self._buttonbox)
         self._closebutton.show()
-        QtCore.QObject.connect(self._closebutton, QtCore.SIGNAL("clicked()"), self, QtCore.SLOT("hide()"))
+        self._closebutton.clicked[()].connect(self.hide)
         self._buttonbox.layout().addWidget(self._closebutton)
 
         self._closebutton.setDefault(True)
@@ -137,7 +122,7 @@ class QtLog(QtGui.QDialog):
         self._textview.clear()
     
     def isVisible(self):
-        return QtGui.QDialog.isVisible(self)
+        return QtWidgets.QDialog.isVisible(self)
 
     def message(self, level, msg):
         prefix = {ERROR: _("error"), WARNING: _("warning"),
@@ -155,6 +140,6 @@ class QtLog(QtGui.QDialog):
         self._textview.adjustSize()
 
         if level == ERROR:
-            response = QtGui.QMessageBox.critical(self, "", msg)
+            response = QtWidgets.QMessageBox.critical(self, "", msg)
         else:
             self.show()

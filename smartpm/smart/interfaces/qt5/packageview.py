@@ -1,30 +1,15 @@
 #-*- coding: utf-8 -*-
 #
-# Copyright (c) 2004 Conectiva, Inc.
+# Copyright (c) 2015 blackPanther OS - Charles Barcza
+# GPL
 #
-# Written by Anders F Bjorklund <afb@users.sourceforge.net>
-#
-# This file is part of Smart Package Manager.
-#
-# Smart Package Manager is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License as published
-# by the Free Software Foundation; either version 2 of the License, or (at
-# your option) any later version.
-#
-# Smart Package Manager is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Smart Package Manager; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#
-from smart.interfaces.qt4 import getPixmap
+from smart.interfaces.qt5 import getPixmap
 from smart.const import INSTALL, REMOVE
 from smart import *
-from PyQt4 import QtGui as QtGui
-from PyQt4 import QtCore as QtCore
+from PyQt5 import QtGui as QtGui
+from PyQt5 import QtWidgets as QtWidgets
+from PyQt5 import QtCore as QtCore
+
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -33,37 +18,37 @@ except AttributeError:
         return s
 
 try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
+    _encoding = QtWidgets.QApplication.UnicodeUTF8
     def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+        return QtCore.QCoreApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
+        return QtCore.QCoreApplication.translate(context, text, disambig)
 
-class PackageListViewItem(QtGui.QTreeWidgetItem):
+class PackageListViewItem(QtWidgets.QTreeWidgetItem):
     def __init__(self, parent, package = None):
-        QtGui.QTreeWidgetItem.__init__(self, parent)
+        QtWidgets.QTreeWidgetItem.__init__(self, parent)
         self._pkg = package
 
-class QtPackageView(QtGui.QWidget):
+class QtPackageView(QtWidgets.QWidget):
 
     def __init__(self, parent=None):
-        QtGui.QWidget.__init__(self, parent)
+        QtWidgets.QWidget.__init__(self, parent)
 
         self.show()
         self._expandPackages = True
 
         self._changeset = {}
-        self._vbox = QtGui.QVBoxLayout(self)
+        self._vbox = QtWidgets.QVBoxLayout(self)
         # Tree View
         
-        self._treeview = QtGui.QTreeWidget(self)
+        self._treeview = QtWidgets.QTreeWidget(self)
         
         # Tree View Style start
         
         self._treeview.setEnabled(True)
         self._treeview.setGeometry(QtCore.QRect(10, 10, 500, 200))
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(5)
         sizePolicy.setVerticalStretch(4)
         sizePolicy.setHeightForWidth(self._treeview.sizePolicy().hasHeightForWidth())
@@ -76,14 +61,14 @@ class QtPackageView(QtGui.QWidget):
         self._treeview.setMouseTracking(True)
         self._treeview.setAcceptDrops(True)
         self._treeview.setAutoFillBackground(False)
-        self._treeview.setFrameShape(QtGui.QFrame.StyledPanel)
-        self._treeview.setFrameShadow(QtGui.QFrame.Raised)
+        self._treeview.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self._treeview.setFrameShadow(QtWidgets.QFrame.Raised)
         self._treeview.setLineWidth(2)
         self._treeview.setMidLineWidth(1)
         self._treeview.setAutoScroll(False)
         self._treeview.setTabKeyNavigation(True)
         self._treeview.setAlternatingRowColors(True)
-        self._treeview.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self._treeview.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self._treeview.setAnimated(True)
         self._treeview.setHeaderHidden(False)
         self._treeview.setExpandsOnDoubleClick(True)
@@ -97,10 +82,10 @@ class QtPackageView(QtGui.QWidget):
 
         # Tree View Style end
 
-        QtCore.QObject.connect(self._treeview, QtCore.SIGNAL("itemClicked(QTreeWidgetItem *, int)"), self._clicked)
-        QtCore.QObject.connect(self._treeview, QtCore.SIGNAL("itemDoubleClicked(QTreeWidgetItem *, int)"), self._doubleClicked)
-        QtCore.QObject.connect(self._treeview, QtCore.SIGNAL("itemPressed(QTreeWidgetItem *, int)"), self._pressed)
-        QtCore.QObject.connect(self._treeview, QtCore.SIGNAL("itemSelectionChanged()"), self._selectionChanged)
+        self._treeview.itemClicked[QTreeWidgetItem.connect(self._clicked)
+        self._treeview.itemDoubleClicked[QTreeWidgetItem.connect(self._doubleClicked)
+        self._treeview.itemPressed[QTreeWidgetItem.connect(self._pressed)
+        self._treeview.itemSelectionChanged.connect(self._selectionChanged)
         #self._treeview.setAllColumnsShowFocus(True)
         #self._treeview.setRootIsDecorated(True)
         self._treeview.show()
@@ -358,12 +343,12 @@ class QtPackageView(QtGui.QWidget):
          if not self._expandpackage and hasattr(value, "name"):
              pkgs = self.getSelectedPkgs()
              if len(pkgs) > 1:
-                 self.emit(QtCore.SIGNAL("packageActivated"), pkgs)
+                 self.packageActivated.emit(pkgs)
              else:
-                 self.emit(QtCore.SIGNAL("packageActivated"), [value])
+                 self.packageActivated.emit([value])
 
     def _pressed(self, item, c):
-        btn = QtGui.QApplication.instance().mouseButtons()
+        btn = QtWidgets.QApplication.instance().mouseButtons()
         if bool(btn & QtCore.Qt.RightButton):
             pnt = QtCore.QPoint(item.treeWidget().pos())
             return self._rightButtonPressed(item, pnt, c)
@@ -375,22 +360,22 @@ class QtPackageView(QtGui.QWidget):
          if item and hasattr(value, "name"):
              pkgs = self.getSelectedPkgs()
              if len(pkgs) > 1:
-                 self.emit(QtCore.SIGNAL("packagePopup"), self, pkgs, pnt)
+                 self.packagePopup.emit(self, pkgs, pnt)
              else:
-                 self.emit(QtCore.SIGNAL("packagePopup"), self, [value], pnt)
+                 self.packagePopup.emit(self, [value], pnt)
 
     def _clicked(self, item, c):
         if not item:
             return
         value = item._pkg
         if c == 0 and hasattr(value, "name"):
-            self.emit(QtCore.SIGNAL("packageActivated"), [value])
+            self.packageActivated.emit([value])
 
     def _selectionChanged(self):
         item = self._treeview.currentItem()
         if item and hasattr(item._pkg, "name"):
-            self.emit(QtCore.SIGNAL("packageSelected"), item._pkg)
+            self.packageSelected.emit(item._pkg)
         else:
-            self.emit(QtCore.SIGNAL("packageSelected"), None)
+            self.packageSelected.emit(None)
 
-# vim:ts=4:sw=4:et
+

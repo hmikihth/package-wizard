@@ -1,45 +1,31 @@
 #-*- coding: utf-8 -*-
 #
-# Copyright (c) 2004 Conectiva, Inc.
+# Copyright (c) 2015 blackPanther OS - Charles Barcza
+# GPL
 #
-# Written by Gustavo Niemeyer <niemeyer@conectiva.com>
-#
-# This file is part of Smart Package Manager.
-#
-# Smart Package Manager is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License as published
-# by the Free Software Foundation; either version 2 of the License, or (at
-# your option) any later version.
-#
-# Smart Package Manager is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Smart Package Manager; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#
-from smart.interfaces.qt4.packageview import QtPackageView
-from smart.interfaces.qt4 import getPixmap, centerWindow
+from smart.interfaces.qt5.packageview import QtPackageView
+from smart.interfaces.qt5 import getPixmap, centerWindow
 from smart.util.strtools import sizeToStr
 from smart.report import Report
 from smart import *
 #import PyQt4.QtGui as QtGui
 #import PyQt4.QtCore as QtCore
-from PyQt4 import QtGui as QtGui
-from PyQt4 import QtCore as QtCore
-from PyQt4 import QtCore as QtWidgets
+from PyQt5 import QtGui as QtGui, QtWidgets
+
+from PyQt5 import QtCore as QtCore, QtWidgets
+
+from PyQt5 import QtCore as QtWidgets, QtWidgets
+
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
     _fromUtf8 = lambda s: s
 
-class QtChanges(QtGui.QDialog):
+class QtChanges(QtWidgets.QDialog):
 
     def __init__(self, parent=None):
-        QtGui.QDialog.__init__(self, parent)
+        QtWidgets.QDialog.__init__(self, parent)
 
         self.setWindowIcon(QtGui.QIcon(getPixmap("smart")))
         self.setWindowTitle(_("Change Summary"))
@@ -50,15 +36,15 @@ class QtChanges(QtGui.QDialog):
         #self.setMinimumSize(500, 350)
         centerWindow(self)
         
-        self._vbox = QtGui.QVBoxLayout(self)
-        self._vbox.setMargin(5)
+        self._vbox = QtWidgets.QVBoxLayout(self)
+        self._vbox.setContentsMargins(5, 5, 5, 5)
         self._vbox.setSpacing(5)
 
         # Label summary
-        self._label = QtGui.QLabel(self)
+        self._label = QtWidgets.QLabel(self)
         # Label style start
         self._label.setGeometry(QtCore.QRect(20, 220, 490, 35))
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self._label.sizePolicy().hasHeightForWidth())
@@ -71,8 +57,8 @@ class QtChanges(QtGui.QDialog):
         font.setWeight(50)
         self._label.setFont(font)
         self._label.setCursor(QtGui.QCursor(QtCore.Qt.WhatsThisCursor))
-        self._label.setFrameShape(QtGui.QFrame.StyledPanel)
-        self._label.setFrameShadow(QtGui.QFrame.Raised)
+        self._label.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self._label.setFrameShadow(QtWidgets.QFrame.Raised)
         self._label.setLineWidth(2)
         self._label.setWordWrap(True)
         self._label.setMargin(7)
@@ -90,9 +76,9 @@ class QtChanges(QtGui.QDialog):
         self._pv.show()
         self._vbox.addWidget(self._pv)
 
-        self._lineLabel = QtGui.QLabel(self)
+        self._lineLabel = QtWidgets.QLabel(self)
         self._lineLabel.setGeometry(QtCore.QRect(10, 250, 500, 10))
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self._lineLabel.sizePolicy().hasHeightForWidth())
@@ -103,8 +89,8 @@ class QtChanges(QtGui.QDialog):
         self._lineLabel.setToolTip(_fromUtf8("Information"))
         self._lineLabel.setWhatsThis(_fromUtf8("We will apply this changes on sytem..."))
         self._lineLabel.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self._lineLabel.setFrameShape(QtGui.QFrame.HLine)
-        self._lineLabel.setFrameShadow(QtGui.QFrame.Plain)
+        self._lineLabel.setFrameShape(QtWidgets.QFrame.HLine)
+        self._lineLabel.setFrameShadow(QtWidgets.QFrame.Plain)
         self._lineLabel.setLineWidth(1)
         self._lineLabel.setText(_fromUtf8(""))
         self._lineLabel.setAlignment(QtCore.Qt.AlignCenter)
@@ -116,12 +102,12 @@ class QtChanges(QtGui.QDialog):
 
         # Size Label
 
-        self._sizelabel = QtGui.QLabel("", self)
+        self._sizelabel = QtWidgets.QLabel("", self)
         
         # Size Label Style start
         
         self._sizelabel.setGeometry(QtCore.QRect(10, 250, 500, 35))
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self._sizelabel.sizePolicy().hasHeightForWidth())
@@ -135,8 +121,8 @@ class QtChanges(QtGui.QDialog):
         self._sizelabel.setFont(font)
         self._sizelabel.setCursor(QtGui.QCursor(QtCore.Qt.WhatsThisCursor))
         self._sizelabel.setMouseTracking(True)
-        self._sizelabel.setFrameShape(QtGui.QFrame.StyledPanel)
-        self._sizelabel.setFrameShadow(QtGui.QFrame.Plain)
+        self._sizelabel.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self._sizelabel.setFrameShadow(QtWidgets.QFrame.Plain)
         self._sizelabel.setLineWidth(2)
         self._sizelabel.setWordWrap(True)
         self._sizelabel.setMargin(5)
@@ -146,8 +132,8 @@ class QtChanges(QtGui.QDialog):
 
         self._vbox.addWidget(self._sizelabel)
 
-        self._confirmbbox = QtGui.QWidget(self)
-        layout = QtGui.QHBoxLayout(self._confirmbbox)
+        self._confirmbbox = QtWidgets.QWidget(self)
+        layout = QtWidgets.QHBoxLayout(self._confirmbbox)
         layout.setSpacing(10)
         layout.addStretch(1)
         #self._confirmbbox = QtGui.QWidget(self)
@@ -163,25 +149,25 @@ class QtChanges(QtGui.QDialog):
 #        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
 #        self.frame.setObjectName("frame")
 
-        self._okbutton = QtGui.QPushButton(_("OK"), self._confirmbbox)
+        self._okbutton = QtWidgets.QPushButton(_("OK"), self._confirmbbox)
         self._okbutton.setGeometry(QtCore.QRect(10, 10, 90, 26))
         self._okbutton.setObjectName(_fromUtf8("_okbutton"))
 #        self._okbutton.setGeometry(QtCore.QRect(10, 20, 90, 26))
-        QtCore.QObject.connect( self._okbutton, QtCore.SIGNAL("clicked()"), self, QtCore.SLOT("accept()"))
-        self._cancelbutton = QtGui.QPushButton(_("Cancel"), self._confirmbbox)
+        self._okbutton.clicked[()].connect(self.accept)
+        self._cancelbutton = QtWidgets.QPushButton(_("Cancel"), self._confirmbbox)
         self._cancelbutton.setGeometry(QtCore.QRect(110, 10, 90, 26))
         #self._cancelbutton.setGeometry(QtCore.QRect(110, 20, 90, 26))
         self._cancelbutton.setObjectName(_fromUtf8("_cancelbutton"))
-        QtCore.QObject.connect( self._cancelbutton, QtCore.SIGNAL("clicked()"), self, QtCore.SLOT("reject()"))
+        self._cancelbutton.clicked[()].connect(self.reject)
 
-        self._closebbox = QtGui.QWidget(self)
-        layout = QtGui.QHBoxLayout(self._closebbox)
+        self._closebbox = QtWidgets.QWidget(self)
+        layout = QtWidgets.QHBoxLayout(self._closebbox)
         layout.setSpacing(10)
         layout.addStretch(1)
         self._vbox.addWidget(self._closebbox)
 
-        self._closebutton = QtGui.QPushButton(_("Close"), self._closebbox)
-        QtCore.QObject.connect( self._closebutton, QtCore.SIGNAL("clicked()"), self, QtCore.SLOT("close()"))
+        self._closebutton = QtWidgets.QPushButton(_("Close"), self._closebbox)
+        self._closebutton.clicked[()].connect(self.close)
         
     def showChangeSet(self, changeset, keep=None, confirm=False, label=None):
 
@@ -315,8 +301,8 @@ class QtChanges(QtGui.QDialog):
         self._result = False
         self.show()
         dialogResult = self.exec_()
-        self._result = (dialogResult == QtGui.QDialog.Accepted)
+        self._result = (dialogResult == QtWidgets.QDialog.Accepted)
 
         return self._result
 
-# vim:ts=4:sw=4:et
+
