@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Smart Software Installer (gtk)
+Name[hu]=Smart Szoftvertelepítő (gtk)
+Comment=Graphical front end to install RPM files
+Comment[hu]=Grafikus felületű RPM csomagtelepítő
+Exec=smart-pkexec --interface=gtk install "%F"
+Terminal=false
+Icon=smart-package-manager
+Type=Application
+StartupNotify=true
+Categories=Qt;X-blackPantherOS-.hidden;
+MimeType=application/x-rpm;application/x-urpmi;

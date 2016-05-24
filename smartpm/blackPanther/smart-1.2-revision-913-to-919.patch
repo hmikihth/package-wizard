@@ -146,7 +146,7 @@
 +
 +    for media in urpmi_cfg:
 +        name = media["name"]
-+        alias = "urpmisync-%s" % name
++        alias = "sync-%s" % name
 +        priority = 0
 +        baseurl = None
 +        
@@ -230,7 +230,7 @@
 +        # Delete the entries which were not seen in current files.
 +        channels = sysconf.get("channels")
 +        for alias in sysconf.keys("channels"):
-+            if alias.startswith("urpmisync-") and alias not in seen:
++            if alias.startswith("sync-") and alias not in seen:
 +                sysconf.remove(("channels", alias)) 
 +
 +    except:
@@ -243,10 +243,10 @@
 +        syncURPMIChannels(sysconf.get("urpmi-config", URPMI_CONFIG),
 +                sysconf.get("urpmi-media-dir", URPMI_MEDIA_DIR))
 +    else:
-+        # Delete the urpmisync channels if plugin disabled.
++        # Delete the sync channels if plugin disabled.
 +        channels = sysconf.get("channels")
 +        for alias in sysconf.keys("channels"):
-+            if alias.startswith("urpmisync-"):
++            if alias.startswith("sync-"):
 +                sysconf.remove(("channels", alias)) 
 +
 +# vim:ts=4:sw=4:et

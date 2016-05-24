@@ -188,8 +188,6 @@ class YaST2Loader(Loader):
                     raise Error("Error loading YaST2 channel info. Possibly " \
                                 "corrupted file.\n%s" % self._pkginfofile)
                 
-                if getArchScore(arch) == 0:
-                    return
                 name = nameparts[0]
                 self.curpkgname = name
                 version = nameparts[1]

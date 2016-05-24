@@ -139,6 +139,14 @@ class Fetcher(object):
             filename = os.path.basename(path)
         if self._localpathprefix:
             filename = self._localpathprefix+filename
+        # pathconf requires the path existed
+        if not os.path.exists(self._localdir):
+            os.makedirs(self._localdir)
+        name_max = os.pathconf(self._localdir, 'PC_NAME_MAX')
+        # The length of the filename should be less than NAME_MAX
+        if len(filename) > name_max:
+            iface.debug(_("Truncate %s to %s") % (filename, filename[-name_max:]))
+            filename = filename[-name_max:]
         return os.path.join(self._localdir, filename)
 
     def setForceCopy(self, value):
@@ -290,7 +298,7 @@ class Fetcher(object):
                 else:
                     item.setSucceeded(uncomppath)
             prog.show()
-            time.sleep(0.1)
+            time.sleep(handler._sleep)
         for handler in handlers:
             handler.stop()
         if not progress:
@@ -688,6 +696,7 @@ class FetcherHandler(object):
         self._fetcher = fetcher
         self._queue = []
         self._cancel = False
+        self._sleep = 0.1
 
     def getQueue(self):
         return self._queue
@@ -1526,6 +1535,7 @@ class PyCurlHandler(FetcherHandler):
         self._running = False
         self._multi = pycurl.CurlMulti()
         self._lock = thread.allocate_lock()
+        self._sleep = 0
 
     def tick(self):
         import pycurl

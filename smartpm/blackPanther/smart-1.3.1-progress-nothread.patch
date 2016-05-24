@@ -1,0 +1,25 @@
+=== modified file 'smart/interfaces/gtk/progress.py'
+--- smart/interfaces/gtk/progress.py	2010-02-03 12:16:20 +0000
++++ smart/interfaces/gtk/progress.py	2010-05-12 18:33:12 +0000
+@@ -151,8 +151,8 @@
+     def tick(self):
+         while not self._stopticking:
+             self.lock()
+-            while gtk.events_pending():
+-                gtk.main_iteration()
++            #while gtk.events_pending():
++            #    gtk.main_iteration()
+             self.unlock()
+             time.sleep(INTERVAL)
+         self._ticking = False
+@@ -237,6 +237,9 @@
+             if self._hassub:
+                 self._treeview.queue_draw()
+ 
++        while gtk.events_pending():
++            gtk.main_iteration()
++
+ gobject.type_register(GtkProgress)
+ 
+ class ProgressCellRenderer(gtk.GenericCellRenderer):
+

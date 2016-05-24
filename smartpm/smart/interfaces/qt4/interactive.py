@@ -982,7 +982,7 @@ class QtInteractiveInterface(QtInterface):
         self.setBusy(False)
 
     def showAbout(self):
-        copyright = "2010 Smart Team, 2006 Canonical Ltd., 2004 Conectiva, Inc."
+        copyright = "2010-2014 Smart PM Team, 2006 Canonical Ltd., 2004 Conectiva, Inc."
         license = """
             This program is free software; you can redistribute it and/or modify
             it under the terms of the GNU General Public License as published by
@@ -1005,7 +1005,7 @@ class QtInteractiveInterface(QtInterface):
             """Unity Linux - Smart development and deployment support.""",
             """And many others - Check our website for the complete list.""",
             ]
-        website = "http://smartpm.org/"
+        website = "http://smartpm.github.io/smart"
 
         QtGui.QMessageBox.about(self._window, "About " + "Smart Package Manager",
             "<h2>" + "Smart Package Manager" + " " + VERSION + "</h2>" + \

@@ -1,0 +1,13 @@
+--- smart-1.4.1/smart/transaction.py.orig	2014-04-11 12:57:43.118456955 +0200
++++ smart-1.4.1/smart/transaction.py	2014-04-11 12:58:38.540543222 +0200
+@@ -983,10 +983,6 @@
+                 try:
+                     cs = changeset.copy()
+                     lk = locked.copy()
+-                    if op is REMOVE:
+-                        self._install(pkg, cs, lk, None, depth)
+-                    elif op is INSTALL:
+-                        self._remove(pkg, cs, lk, None, depth)
+                 except Failed, e:
+                     pass
+                 else:

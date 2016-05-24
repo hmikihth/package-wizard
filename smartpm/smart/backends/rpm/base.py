@@ -46,7 +46,17 @@ __all__ = ["RPMPackage", "RPMProvides", "RPMNameProvides", "RPMPreRequires",
            "rpm", "getTS", "getArchScore", "getArchColor", "system_provides",
            "collapse_libc_requires"]
 
+def rpm_join_dbpath(root, dbpath):
+    if dbpath.startswith('/') and root:
+        return os.path.join(root, dbpath[1:])
+    else:
+        return os.path.join(root, dbpath)
+
 def getTS(new=False):
+    if sysconf.get("rpm-extra-macros"):
+        for key, value in sysconf.get("rpm-extra-macros").items():
+            rpm.addMacro(key, str(value))
+
     rpm_root = os.path.abspath(sysconf.get("rpm-root", "/"))
     if not hasattr(getTS, "ts") or getTS.root != rpm_root:
         getTS.root = rpm_root
@@ -54,9 +64,12 @@ def getTS(new=False):
             rpm.addMacro('_dbpath', "/" + sysconf.get("rpm-dbpath"))
         getTS.ts = rpm.ts(getTS.root)
         if not sysconf.get("rpm-check-signatures", False):
-            getTS.ts.setVSFlags(rpm._RPMVSF_NOSIGNATURES)
+            if hasattr(rpm, '_RPMVSF_NOSIGNATURES'):
+                getTS.ts.setVSFlags(rpm._RPMVSF_NOSIGNATURES)
+            else:
+                raise Error, _("rpm requires checking signatures")
         rpm_dbpath = sysconf.get("rpm-dbpath", "var/lib/rpm")
-        dbdir = os.path.join(getTS.root, rpm_dbpath)
+        dbdir = rpm_join_dbpath(getTS.root, rpm_dbpath)
         if not os.path.isdir(dbdir):
             try:
                 os.makedirs(dbdir)
@@ -72,18 +85,15 @@ def getTS(new=False):
             else:
                 iface.warning(_("Initialized new rpm database at %s")
                               % getTS.root)
-        tmpdir = os.path.join(getTS.root, "var/tmp")
-        if not os.path.isdir(tmpdir):
-            try:
-                os.makedirs(tmpdir)
-            except OSError:
-                pass
     if new:
         if sysconf.get("rpm-dbpath"):
             rpm.addMacro('_dbpath', "/" + sysconf.get("rpm-dbpath"))
         ts = rpm.ts(getTS.root)
         if not sysconf.get("rpm-check-signatures", False):
-            ts.setVSFlags(rpm._RPMVSF_NOSIGNATURES)
+            if hasattr(rpm, '_RPMVSF_NOSIGNATURES'):
+                ts.setVSFlags(rpm._RPMVSF_NOSIGNATURES)
+            else:
+                raise Error, _("rpm requires checking signatures")
         return ts
     else:
         return getTS.ts
@@ -192,6 +202,29 @@ class RPMPackage(Package):
                         break
                 else:
                     return False
+        srecs = fk(self.recommends)
+        orecs = fk(other.recommends)
+        if srecs != orecs:
+            for srec in srecs:
+                if srec.name[0] == "/" or srec in orecs:
+                    continue
+                for orec in orecs:
+                    if (srec.name == orec.name and
+                        srec.relation == orec.relation and
+                        checkver(srec.version, orec.version)):
+                        break
+                else:
+                    return False
+            for orec in orecs:
+                if orec.name[0] == "/" or orec in srecs:
+                    continue
+                for srec in srecs:
+                    if (srec.name == orec.name and
+                        srec.relation == orec.relation and
+                        checkver(srec.version, orec.version)):
+                        break
+                else:
+                    return False
         return True
 
     def coexists(self, other):
@@ -201,6 +234,8 @@ class RPMPackage(Package):
             return False
         selfver, selfarch = splitarch(self.version)
         otherver, otherarch = splitarch(other.version)
+        if selfarch != otherarch:
+            return True
         selfcolor = getArchColor(selfarch)
         othercolor = getArchColor(otherarch)
         if (selfcolor and othercolor and selfcolor != othercolor and

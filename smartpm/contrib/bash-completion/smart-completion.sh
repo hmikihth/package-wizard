@@ -25,7 +25,7 @@ _smart() {
 
     local cur prev opts
 
-    smartdir=$(python -c "import smart; print smart.__file__" \
+    smartdir=$(python2.7 -c "import smart; print smart.__file__" \
 	           | awk '{sub("/__init__.py[c]?","");print}')
 	commands="$(ls ${smartdir}/commands/*.py \
 	            | awk -F '/' '{gsub(/\.py|__init__.py[c]?|\n/,""); print $NF}')"

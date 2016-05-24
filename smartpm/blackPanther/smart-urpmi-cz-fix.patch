@@ -1,0 +1,35 @@
+--- smart-1.4.1/smart/channels/urpmi.py.orig	2011-05-04 08:08:37.000000000 +0200
++++ smart-1.4.1/smart/channels/urpmi.py	2015-06-18 01:05:34.000000000 +0200
+@@ -29,7 +29,8 @@
+ from smart import *
+ import posixpath
+ import re
+-import os
++import os, commands
++import magic
+ 
+ class URPMIChannel(PackageChannel, MirrorsChannel):
+     # It's important for the default to be here so that old pickled
+@@ -211,7 +212,21 @@
+                 if (not os.path.isfile(localpath[:-3]) or
+                     fetcher.getCaching() != ALWAYS):
+                     linkpath = fetcher.getLocalPath(hdlitem)
+-                    linkpath = linkpath[:-2]+"gz"
++                    
++                    # different old vs new cz format detection
++                    #ext = commands.getoutput("file "+linkpath+"|awk -F'cz: ' '{print $2}'|cut -d' ' -f1")
++
++                    ms = magic.open(magic.NONE)
++                    ms.load()
++                    ext = ms.file(linkpath).split(' ')[0]
++
++                    #os.system('echo ' + ext + '>/tmp/RUN')
++                    if ext == "gzip":
++                	linkpath = linkpath[:-2]+"gz"
++            	    else:
++                	linkpath = linkpath[:-2]+"xz"
++
++                    ms.close()
+                     if not os.access(os.path.dirname(linkpath), os.W_OK):
+                         dirname = os.path.join(sysconf.get("user-data-dir"),
+                                                "channels")

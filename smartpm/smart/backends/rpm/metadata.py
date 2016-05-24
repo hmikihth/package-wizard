@@ -144,6 +144,7 @@ class RPMMetaDataLoader(Loader):
         LICENSE     = nstag(NS_RPM, "license")
         ENTRY       = nstag(NS_RPM, "entry")
         REQUIRES    = nstag(NS_RPM, "requires")
+        RECOMMENDS  = nstag(NS_RPM, "recommends")
         PROVIDES    = nstag(NS_RPM, "provides")
         CONFLICTS   = nstag(NS_RPM, "conflicts")
         OBSOLETES   = nstag(NS_RPM, "obsoletes")
@@ -165,6 +166,7 @@ class RPMMetaDataLoader(Loader):
         distepoch = None
         info = {}
         reqdict = {}
+        recdict = {}
         prvdict = {}
         upgdict = {}
         cnfdict = {}
@@ -188,17 +190,15 @@ class RPMMetaDataLoader(Loader):
 
             elif event == "end":
 
-                assert queue.pop() is elem
+                popped = queue.pop()
+                assert popped is elem
 
                 if skip:
                     if tag == skip:
                         skip = None
 
                 elif tag == ARCH:
-                    if getArchScore(elem.text) == 0:
-                        skip = PACKAGE
-                    else:
-                        arch = elem.text
+                    arch = elem.text
 
                 elif tag == NAME:
                     name = elem.text
@@ -290,9 +290,16 @@ class RPMMetaDataLoader(Loader):
                         if elem.get("pre") == "1":
                             reqdict[(RPMPreRequires,
                                      ename, erelation, eversion)] = True
+                        elif elem.get("hint") == "1" or elem.get("missingok") == "1":
+                            recdict[(RPMRequires,
+                                     ename, erelation, eversion)] = True
                         else:
                             reqdict[(RPMRequires,
                                      ename, erelation, eversion)] = True
+
+                    elif lasttag == RECOMMENDS:
+                        recdict[(RPMRequires,
+                                 ename, erelation, eversion)] = True
 
                     elif lasttag == PROVIDES:
                         if ename[0] == "/":
@@ -326,8 +333,14 @@ class RPMMetaDataLoader(Loader):
                     reqargs = [x for x in reqdict
                                if not ((x[2] is None or "=" in x[2]) and
                                        (RPMProvides, x[1], x[3]) in prvdict or
-                                       system_provides.match(*x[:3]))]
+                                       system_provides.match(x[1], x[2], x[3]))]
                     reqargs = collapse_libc_requires(reqargs)
+
+                    recargs = [x for x in recdict
+                               if not ((x[2] is None or "=" in x[2]) and
+                                       (RPMProvides, x[1], x[3]) in prvdict or
+                                       system_provides.match(x[1], x[2], x[3]))]
+
                     prvargs = prvdict.keys()
                     cnfargs = cnfdict.keys()
                     upgargs = upgdict.keys()
@@ -339,7 +352,7 @@ class RPMMetaDataLoader(Loader):
                         versionarch = "%s@%s" % (distversion, arch)
 
                     pkg = self.buildPackage((RPMPackage, name, versionarch),
-                                            prvargs, reqargs, upgargs, cnfargs)
+                                            prvargs, reqargs, upgargs, cnfargs, recargs)
                     pkg.loaders[self] = info
 
                     # Store the provided files for future usage.
@@ -362,6 +375,7 @@ class RPMMetaDataLoader(Loader):
                     distepoch = None
                     pkgid = None
                     reqdict.clear()
+                    recdict.clear()
                     prvdict.clear()
                     upgdict.clear()
                     cnfdict.clear()

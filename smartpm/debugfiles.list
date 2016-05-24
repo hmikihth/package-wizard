@@ -11,14 +11,13 @@
 %dir /usr/lib/debug/usr/lib/python2.7/site-packages/smart/backends/rpm
 %dir /usr/lib/debug/.dwz
 %dir /usr/lib/debug/.build-id
-%dir /usr/lib/debug/.build-id/35
-%dir /usr/lib/debug/.build-id/74
-%dir /usr/lib/debug/.build-id/4c
-%dir /usr/lib/debug/.build-id/87
-%dir /usr/lib/debug/.build-id/5c
-%dir /usr/lib/debug/.build-id/c7
-%dir /usr/lib/debug/.build-id/e9
-%dir /usr/lib/debug/.build-id/f5
+%dir /usr/lib/debug/.build-id/50
+%dir /usr/lib/debug/.build-id/94
+%dir /usr/lib/debug/.build-id/9a
+%dir /usr/lib/debug/.build-id/a3
+%dir /usr/lib/debug/.build-id/b7
+%dir /usr/lib/debug/.build-id/c4
+%dir /usr/lib/debug/.build-id/cc
 /usr/lib/debug/usr/bin/smart-update.debug
 /usr/lib/debug/usr/lib/python2.7/site-packages/smart/util/ctagfile.so.debug
 /usr/lib/debug/usr/lib/python2.7/site-packages/smart/util/cdistance.so.debug
@@ -26,20 +25,20 @@
 /usr/lib/debug/usr/lib/python2.7/site-packages/smart/backends/deb/cdebver.so.debug
 /usr/lib/debug/usr/lib/python2.7/site-packages/smart/backends/deb/_base.so.debug
 /usr/lib/debug/usr/lib/python2.7/site-packages/smart/backends/rpm/crpmver.so.debug
-/usr/lib/debug/.dwz/smart-1.4.1-2bP.i386
-/usr/lib/debug/.build-id/35/ff3d3469e5570791cfc130f414823a49063135
-/usr/lib/debug/.build-id/35/ff3d3469e5570791cfc130f414823a49063135.debug
-/usr/lib/debug/.build-id/74/2e7a0e9c9dd7e2b52092642811773f5ae269fb.debug
-/usr/lib/debug/.build-id/74/2e7a0e9c9dd7e2b52092642811773f5ae269fb
-/usr/lib/debug/.build-id/4c/be82c5d3416caa459f06f9b4f949fe99e640ec.debug
-/usr/lib/debug/.build-id/4c/be82c5d3416caa459f06f9b4f949fe99e640ec
-/usr/lib/debug/.build-id/87/24454a09e663b9332112e08e96764660eff8f6.debug
-/usr/lib/debug/.build-id/87/24454a09e663b9332112e08e96764660eff8f6
-/usr/lib/debug/.build-id/5c/9d47bcb59e5852129197ed818a6f290fa425b5.debug
-/usr/lib/debug/.build-id/5c/9d47bcb59e5852129197ed818a6f290fa425b5
-/usr/lib/debug/.build-id/c7/82b392c68a860de7e4dd62a3a9dfa7d7debbfc.debug
-/usr/lib/debug/.build-id/e9/dd2bdd349e4f1e56410b7a0320d3f1e625d5bb.debug
-/usr/lib/debug/.build-id/e9/dd2bdd349e4f1e56410b7a0320d3f1e625d5bb
-/usr/lib/debug/.build-id/f5/ee3707c1ec7a63478b003bb971350fa17b1eaf
-/usr/lib/debug/.build-id/f5/ee3707c1ec7a63478b003bb971350fa17b1eaf.debug
-/usr/src/debug/smart-1.4.1
+/usr/lib/debug/.dwz/smart-1.5-1bP.i386
+/usr/lib/debug/.build-id/50/bf4b8ca8584966867e00d72dbedc4f77eabe98
+/usr/lib/debug/.build-id/50/bf4b8ca8584966867e00d72dbedc4f77eabe98.debug
+/usr/lib/debug/.build-id/94/667ff0a684c39985d5b12b9237e75098915422
+/usr/lib/debug/.build-id/94/667ff0a684c39985d5b12b9237e75098915422.debug
+/usr/lib/debug/.build-id/9a/9f78ee373276274af81d006b8cef09d798fa0b.debug
+/usr/lib/debug/.build-id/9a/9f78ee373276274af81d006b8cef09d798fa0b
+/usr/lib/debug/.build-id/a3/0d2714d82c2e2340636841ab4b4f53d2f07070.debug
+/usr/lib/debug/.build-id/a3/0d2714d82c2e2340636841ab4b4f53d2f07070
+/usr/lib/debug/.build-id/b7/001af1afd06ef0023101773694d1b91e54adf3
+/usr/lib/debug/.build-id/b7/c16080c309173bc765b4d97c53c1f0c61b8410
+/usr/lib/debug/.build-id/b7/c16080c309173bc765b4d97c53c1f0c61b8410.debug
+/usr/lib/debug/.build-id/b7/001af1afd06ef0023101773694d1b91e54adf3.debug
+/usr/lib/debug/.build-id/c4/c4647bba8623341c2807837ced40427f0c424b.debug
+/usr/lib/debug/.build-id/cc/0b1bebe251df81672e83c861bf82dc4afd6110
+/usr/lib/debug/.build-id/cc/0b1bebe251df81672e83c861bf82dc4afd6110.debug
+/usr/src/debug/smart-1.5

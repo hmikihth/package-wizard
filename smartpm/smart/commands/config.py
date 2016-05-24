@@ -80,6 +80,12 @@ def main(ctrl, opts):
     globals["false"] = False
     globals["no"] = False
 
+    # Check arguments
+    opts.check_args_of_option("set", -1)
+    opts.check_args_of_option("remove", -1)
+    opts.ensure_action("config", ["set", "show", "yaml", "remove"])
+    opts.check_remaining_args()
+
     if opts.set:
         for opt in opts.set:
             m = SETRE.match(opt)
@@ -131,7 +137,10 @@ def main(ctrl, opts):
             pprint.pprint(sysconf.get((), hard=True))
 
     if opts.yaml is not None:
-        import yaml
+        try:
+            import yaml
+        except ImportError:
+            raise Error, _("Please install PyYAML in order to use this function")
         if opts.yaml:
             marker = object()
             for opt in opts.yaml:

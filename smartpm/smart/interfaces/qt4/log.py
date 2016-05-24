@@ -32,20 +32,6 @@ try:
 except locale.Error:
     ENCODING = "C"
 
-try:
-    _fromUtf8 = QtCore.QString.fromUtf8
-except AttributeError:
-    def _fromUtf8(s):
-        return s
-
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
-
 class BackgroundScrollView(QtGui.QScrollArea):
     def __init__(self, parent):
         QtGui.QScrollArea.__init__(self, parent)
@@ -83,21 +69,10 @@ class QtLog(QtGui.QDialog):
         layout.addWidget(self._vbox)
 
         self._scrollview = BackgroundScrollView(self._vbox)
-
-        #self._scrollview = QtGui.QScrollArea(self._vbox)
-        self._scrollview.setGeometry(QtCore.QRect(5, 1, 380, 225))
-        self._scrollview.setMinimumSize(QtCore.QSize(380, 225))
-        self._scrollview.setFrameShape(QtGui.QFrame.Box)
-        self._scrollview.setFrameShadow(QtGui.QFrame.Plain)
-        self._scrollview.setLineWidth(0)
-        self._scrollview.setMidLineWidth(0)
         self._scrollview.setWidgetResizable(True)
-        self._scrollview.setObjectName(_fromUtf8("_scrollview"))
-        self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 378, 223))
-        self.scrollAreaWidgetContents.setObjectName(_fromUtf8("scrollAreaWidgetContents"))
-        self._scrollview.setWidget(self.scrollAreaWidgetContents)
-
+        self._scrollview.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        self._scrollview.setFrameStyle(QtGui.QFrame.StyledPanel | QtGui.QFrame.Sunken)
+        self._scrollview.show()
         self._vbox.layout().addWidget(self._scrollview)
 
         self._textview = QtGui.QLabel(self._scrollview.viewport())
@@ -116,7 +91,6 @@ class QtLog(QtGui.QDialog):
         self._buttonbox.layout().setSpacing(10)
         self._buttonbox.layout().addStretch(1)
         self._buttonbox.show()
-        self._buttonbox.setMinimumSize(QtCore.QSize(500, 50))
         self._vbox.layout().addWidget(self._buttonbox)
 
         self._clearbutton = QtGui.QPushButton(_("Clear"), self._buttonbox)
@@ -131,9 +105,7 @@ class QtLog(QtGui.QDialog):
 
         self._closebutton.setDefault(True)
 
-
     def clearText(self):
-	print "CLEAR"
         self._textview.clear()
     
     def isVisible(self):

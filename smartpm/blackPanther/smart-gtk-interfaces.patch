@@ -13,9 +13,9 @@
      raise Error, _("System has no support for gtk python interface")
  
 +def splitted_error():
-+	print _("ERROR: The Smartpm package is splitted in two subpackages")
-+	print _(" - smartpm-core: Core of the Smart Package Manager")
-+	print _(" - smartpm: The GUI frontend")
++	print _("ERROR: The Smartpm package is splitted in few subpackages")
++	print _(" - smart: Core of the Smart Package Manager")
++	print _(" - smart-gui-*: The Gtk/Qt4 GUI frontend")
 +	print _("It seems that you tried to run the GUI frontend which is not installed yet")
 +	print _("You need to install the smartpm package in order to use the GUI frontend")
 +	sys.exit(1)

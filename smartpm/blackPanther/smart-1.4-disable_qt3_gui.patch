@@ -1,0 +1,11 @@
+diff -Nru smart-1.4.orig//setup.py smart-1.4/setup.py
+--- smart-1.4.orig//setup.py	2011-03-31 20:29:36.000000000 +0200
++++ smart-1.4/setup.py	2011-04-28 03:04:22.265470223 +0200
+@@ -88,7 +88,6 @@
+             "smart.interfaces",
+             "smart.interfaces.gtk",
+             "smart.interfaces.text",
+-            "smart.interfaces.qt",
+             "smart.interfaces.qt4",
+             "smart.interfaces.images",
+             "smart.plugins",

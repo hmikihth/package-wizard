@@ -47,6 +47,11 @@ Currently known flags are:
   multi-version - Flagged packages may have more than one version
                   installed in the system at the same time
                   (backend dependent).
+  exclude-packages - Flagged packages will be excluded, if they are
+                  required, an error will be generated.
+  ignore-recommends - Flagged packages will not be installed, if
+                  they are only recommended by a package to be
+                  installed rather than required.
 
   security      - Flagged packages are updates for security errata.
   bugfix        - Flagged packages are updates for bugfix errata.
@@ -138,7 +143,10 @@ def main(ctrl, opts):
             print
 
     if opts.yaml is not None:
-        import yaml
+        try:
+            import yaml
+        except ImportError:
+            raise Error, _("Please install PyYAML in order to use this function")
         yamlflags = {}
         for flag in opts.yaml or pkgconf.getFlagNames():
             flag = flag.strip()

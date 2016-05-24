@@ -265,9 +265,6 @@ class URPMISynthesisLoader(Loader):
                     version = version.replace("-%s%s" % (disttag, distepoch), "")              
                 versionarch = "%s@%s" % (version, arch)
                 
-                if getArchScore(arch) == 0:
-                    continue
-
                 name = "-".join(rpmnameparts[0:releasepos])
 
                 info = {"nvra": element[0],

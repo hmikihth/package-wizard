@@ -256,8 +256,6 @@ class RPMHeaderLoader(Loader):
             if h[1106]: # RPMTAG_SOURCEPACKAGE
                 continue
             arch = h[1022] # RPMTAG_ARCH
-            if getArchScore(arch) == 0:
-                continue
 
             name = h[1000] # RPMTAG_NAME
             epoch = h[1003] # RPMTAG_EPOCH
@@ -292,6 +290,7 @@ class RPMHeaderLoader(Loader):
                     f = [0]
                 elif type(f) != list:
                     f = [f]
+                recdict = {}
                 reqdict = {}
                 for i in range(len(n)):
                     ni = n[i]
@@ -308,11 +307,48 @@ class RPMHeaderLoader(Loader):
                             # RPMSENSE_SCRIPT_PREUN |
                             # RPMSENSE_SCRIPT_POST |
                             # RPMSENSE_SCRIPT_POSTUN == 7744
-                            reqdict[(f[i]&7744 and PreReq or Req,
-                                     intern(ni), r, vi)] = True
+                            hint = (f[i]&1 << 19) # RPMSENSE_MISSINGOK
+                            if hint:
+                                recdict[(f[i]&7744 and PreReq or Req,
+                                         intern(ni), r, vi)] = True
+                            else:
+                                reqdict[(f[i]&7744 and PreReq or Req,
+                                         intern(ni), r, vi)] = True
+                recargs = collapse_libc_requires(recdict.keys())
                 reqargs = collapse_libc_requires(reqdict.keys())
             else:
+                recargs = []
                 reqargs = None
+
+            n = h[1156] # RPMTAG_SUGGESTSNAME
+            if n:
+                f = h[1158] # RPMTAG_SUGGESTSFLAGS
+                v = h[1157] # RPMTAG_SUGGESTSVERSION
+                if f == None:
+                    f = [0]
+                elif type(f) != list:
+                    f = [f]
+                recdict = {}
+                for i in range(len(n)):
+                    ni = n[i]
+                    if ni[:7] not in ("rpmlib(", "config("):
+                        vi = v[i] or None
+                        if vi and vi[:2] == "0:":
+                            vi = vi[2:]
+                        r = CM.get(f[i]&CF)
+                        if not ((r is None or "=" in r) and
+                                (Prv, ni, vi) in prvdict or
+                                system_provides.match(ni, r, vi)):
+                            # RPMSENSE_PREREQ |
+                            # RPMSENSE_SCRIPT_PRE |
+                            # RPMSENSE_SCRIPT_PREUN |
+                            # RPMSENSE_SCRIPT_POST |
+                            # RPMSENSE_SCRIPT_POSTUN == 7744
+                            strong = (f[i]&1 << 27) # RPMSENSE_STRONG
+                            if strong:
+                                recdict[(f[i]&7744 and PreReq or Req,
+                                         intern(ni), r, vi)] = True
+                recargs.extend(recdict.keys())
 
             n = h[1054] # RPMTAG_CONFLICTNAME
             if n:
@@ -365,7 +401,7 @@ class RPMHeaderLoader(Loader):
                 versionarch = "%s@%s" % (distversion, arch)
 
             pkg = self.buildPackage((Pkg, name, versionarch),
-                                    prvargs, reqargs, upgargs, cnfargs)
+                                    prvargs, reqargs, upgargs, cnfargs, recargs)
             pkg.loaders[self] = offset
             self._offsets[offset] = pkg
             self._groups[pkg] = intern(h[rpm.RPMTAG_GROUP])
@@ -583,8 +619,8 @@ class URPMILoader(RPMHeaderListLoader):
     def setErrataFlags(self, flagdict):
         self._flagdict = flagdict
     
-    def buildPackage(self, pkgargs, prvargs, reqargs, upgargs, cnfargs):
-        pkg = Loader.buildPackage(self, pkgargs, prvargs, reqargs, upgargs, cnfargs)
+    def buildPackage(self, pkgargs, prvargs, reqargs, upgargs, cnfargs, recargs):
+        pkg = Loader.buildPackage(self, pkgargs, prvargs, reqargs, upgargs, cnfargs, recargs)
         name = pkgargs[1]
         if hasattr(self, '_flagdict') and self._flagdict and name in self._flagdict:
             if sysconf.getReadOnly():

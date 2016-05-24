@@ -191,10 +191,7 @@ class XMLParser(object):
         self._release = data
 
     def handleArchEnd(self, name, attrs, data):
-        if getArchScore(data) == 0:
-            self._skip = self.PACKAGE
-        else:
-            self._arch = data
+        self._arch = data
 
     def handleSectionEnd(self, name, attrs, data):
         self._info["group"] = data

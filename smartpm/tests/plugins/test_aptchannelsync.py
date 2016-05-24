@@ -1,9 +1,11 @@
 import os
+import shutil
 
 from smart.plugins.aptchannelsync import syncAptChannels
 from smart import sysconf
 
 from tests.mocker import MockerTestCase
+from tests import TESTDATADIR
 
 
 SOURCES_LIST_1 = """\
@@ -35,20 +37,25 @@ deb ssh://some/url/ distro/name1 comp1 comp2
 """
 
 
+TESTDATA_KEYRING = TESTDATADIR + "/aptdeb/trusted.gpg"
+
 class APTChannelSyncTest(MockerTestCase):
 
     def setUp(self):
         self.apt_dir = self.makeDir()
         self.sources_dir = os.path.join(self.apt_dir, "sources.list.d")
         self.keyring_file = os.path.join(self.apt_dir, "trusted.gpg")
+        self.keydir_file = os.path.join(self.apt_dir, "trusted.gpg.d")
         self.trustdb_file = os.path.join(self.apt_dir, "trustdb.gpg")
         os.mkdir(self.sources_dir)
         sysconf.set("sync-apt-keyring", self.keyring_file)
+        sysconf.set("sync-apt-keydir", self.keydir_file)
         sysconf.set("sync-apt-trustdb", self.trustdb_file)
 
     def tearDown(self):
         sysconf.remove("channels")
         sysconf.remove("sync-apt-keyring")
+        sysconf.remove("sync-apt-keydir")
         sysconf.remove("sync-apt-trustdb")
 
     def test_sychronize_sources_list(self):
@@ -152,7 +159,7 @@ class APTChannelSyncTest(MockerTestCase):
                            "disabled": True})
 
     def test_keyring_is_set_when_present(self):
-        open(self.keyring_file, "w").close()
+        shutil.copyfile(TESTDATA_KEYRING, self.keyring_file)
         filename = self.makeFile(SOURCES_LIST_2, dirname=self.apt_dir,
                                  basename="sources.list")
         syncAptChannels(filename, self.sources_dir)
@@ -167,7 +174,7 @@ class APTChannelSyncTest(MockerTestCase):
                            })
 
     def test_keyring_isnt_reset_after_being_removed(self):
-        open(self.keyring_file, "w").close()
+        shutil.copyfile(TESTDATA_KEYRING, self.keyring_file)
         filename = self.makeFile(SOURCES_LIST_2, dirname=self.apt_dir,
                                  basename="sources.list")
         syncAptChannels(filename, self.sources_dir)
@@ -185,7 +192,7 @@ class APTChannelSyncTest(MockerTestCase):
                           })
 
     def test_keyring_isnt_changed_if_modified(self):
-        open(self.keyring_file, "w").close()
+        shutil.copyfile(TESTDATA_KEYRING, self.keyring_file)
         filename = self.makeFile(SOURCES_LIST_2, dirname=self.apt_dir,
                                  basename="sources.list")
         syncAptChannels(filename, self.sources_dir)

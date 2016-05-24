@@ -26,20 +26,6 @@ from smart import *
 from PyQt4 import QtGui as QtGui
 from PyQt4 import QtCore as QtCore
 
-try:
-    _fromUtf8 = QtCore.QString.fromUtf8
-except AttributeError:
-    def _fromUtf8(s):
-        return s
-
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
-
 class PackageListViewItem(QtGui.QTreeWidgetItem):
     def __init__(self, parent, package = None):
         QtGui.QTreeWidgetItem.__init__(self, parent)
@@ -51,58 +37,18 @@ class QtPackageView(QtGui.QWidget):
         QtGui.QWidget.__init__(self, parent)
 
         self.show()
-        self._expandPackages = True
+        self._expandpackage = False
 
         self._changeset = {}
         self._vbox = QtGui.QVBoxLayout(self)
-        # Tree View
         
         self._treeview = QtGui.QTreeWidget(self)
-        
-        # Tree View Style start
-        
-        self._treeview.setEnabled(True)
-        self._treeview.setGeometry(QtCore.QRect(10, 10, 500, 200))
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(5)
-        sizePolicy.setVerticalStretch(4)
-        sizePolicy.setHeightForWidth(self._treeview.sizePolicy().hasHeightForWidth())
-        self._treeview.setSizePolicy(sizePolicy)
-        self._treeview.setMinimumSize(QtCore.QSize(500, 200))
-        font = QtGui.QFont()
-        font.setFamily(_fromUtf8("FreeSans"))
-        font.setPointSize(11)
-        self._treeview.setFont(font)
-        self._treeview.setMouseTracking(True)
-        self._treeview.setAcceptDrops(True)
-        self._treeview.setAutoFillBackground(False)
-        self._treeview.setFrameShape(QtGui.QFrame.StyledPanel)
-        self._treeview.setFrameShadow(QtGui.QFrame.Raised)
-        self._treeview.setLineWidth(2)
-        self._treeview.setMidLineWidth(1)
-        self._treeview.setAutoScroll(False)
-        self._treeview.setTabKeyNavigation(True)
-        self._treeview.setAlternatingRowColors(True)
-        self._treeview.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
-        self._treeview.setAnimated(True)
-        self._treeview.setHeaderHidden(False)
-        self._treeview.setExpandsOnDoubleClick(True)
-        self._treeview.setObjectName(_fromUtf8("_treeview"))
-        self._treeview.headerItem().setText(0, _fromUtf8("1"))
-        self._treeview.header().setCascadingSectionResizes(True)
-        self._treeview.header().setDefaultSectionSize(160)
-        self._treeview.header().setHighlightSections(True)
-        self._treeview.header().setMinimumSectionSize(50)
-        self._treeview.header().setSortIndicatorShown(True)
-
-        # Tree View Style end
-
         QtCore.QObject.connect(self._treeview, QtCore.SIGNAL("itemClicked(QTreeWidgetItem *, int)"), self._clicked)
         QtCore.QObject.connect(self._treeview, QtCore.SIGNAL("itemDoubleClicked(QTreeWidgetItem *, int)"), self._doubleClicked)
         QtCore.QObject.connect(self._treeview, QtCore.SIGNAL("itemPressed(QTreeWidgetItem *, int)"), self._pressed)
         QtCore.QObject.connect(self._treeview, QtCore.SIGNAL("itemSelectionChanged()"), self._selectionChanged)
-        #self._treeview.setAllColumnsShowFocus(True)
-        #self._treeview.setRootIsDecorated(True)
+        self._treeview.setAllColumnsShowFocus(True)
+        self._treeview.setRootIsDecorated(True)
         self._treeview.show()
         self._vbox.addWidget(self._treeview)
         
@@ -183,10 +129,6 @@ class QtPackageView(QtGui.QWidget):
     
     def expandAll(self):
         self._doTree(self._treeview, self._treeview.expandItem)
-
-    def setExpandAll(self):
-        self._doTree(self._treeview, self._treeview.expandItem)
-        #self._doTree(self._treeview, self._treeview.expandAll)
 
     def collapseAll(self):
         self._doTree(self._treeview, self._treeview.collapseItem)

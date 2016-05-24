@@ -1,0 +1,18 @@
+[Desktop Entry]
+Name=Smart Package Manager (gtk)
+Name[pt_BR]=Gerenciador de Pacotes Smart
+Name[hu]=Smart Gtk Csomagkezelő
+Comment=Next generation package handling tool
+Comment[pt_BR]=Gerenciador de pacotes de próxima geração
+Comment[hu]=Új generációs csomagkezelő eszköz
+GenericName=Next generation package handling tool
+GenericName[hu]=Új generációs csomagkezelő eszköz
+GenericName[it]=Gestione pacchetti Smart
+GenericName[pt_BR]=Gerenciador de Pacotes Smart
+Icon=smart-package-manager
+Exec=smart-pkexec --interface=gtk %F
+Type=Application
+Terminal=false
+StartupNotify=true
+Categories=GTK;Settings;PackageManager;System;
+X-Desktop-File-Install-Version=0.2
