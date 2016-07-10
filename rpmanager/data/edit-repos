@@ -1,0 +1,19 @@
+#!/usr/bin/perl
+
+
+use strict;
+use lib qw(/usr/lib/libDrakX);
+use lib qw(/usr/share/rpmanager/edit-repos);
+use Rpmdrake::init;
+use standalone;
+use rpmdrake;
+use common;
+use Rpmdrake::edit_repos;
+
+require_root_capability();
+
+readconf();
+
+run();
+
+myexit 0;

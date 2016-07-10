@@ -1,0 +1,34 @@
+#!/bin/sh
+
+## Startap script written by Charles Barcza for blackPanther OS
+## Copryright 2005
+
+
+SU=`which gksu 2>/dev/null || which gnomesu 2>/dev/null || which gsu 2>/dev/null || which kdesu 2>/dev/null || echo "Error1"`
+
+if [ "$SU" = Error1 ]
+then 
+ if [[ -n "$KDE_FULL_SESSION" ]];then
+    mess="kdialog --error"
+  else
+    mess="zenity --error --text"
+ fi
+    [ ! -n $DISPLAY ]&& echo "[Warning! The SU manager not found. Please check your installation]"
+    [ -n $DISPLAY ]&& $mess "Please restart RPManager with root rights or install kdesu or gnomesu.."
+    exit 
+fi
+
+if [ "$1" = "" ];then
+    CMD="$HOME"
+else
+    CMD=$@
+fi
+
+#if [ "$UID" = "0" ]; then
+cd /usr/share/rpmanager
+python ./rpmanager-wizard $CMD
+ #else
+#    $SU -c programtelepito $1
+#    exit 1
+#fi
+

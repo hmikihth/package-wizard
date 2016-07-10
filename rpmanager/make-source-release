@@ -1,0 +1,7 @@
+#!/bin/sh
+
+exclusions=\
+'--exclude *.pyc'
+
+target=rpmanager-source-`date +%F-%H.%M`.tar.bz2
+. common.sh

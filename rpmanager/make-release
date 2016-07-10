@@ -1,0 +1,21 @@
+#!/bin/sh
+
+exclusions=\
+'--exclude [^rpmanager]*.py '\
+'--exclude [^rpmanager]*.sav '\
+'--exclude TODO'\
+#'--exclude [^rpmanager]*.old '\
+'--exclude *.old '\
+'--exclude *.sav '\
+'--exclude *.back* '\
+'--exclude make-release '\
+'--exclude make-source-release '\
+'--exclude RPManager.e3s '\
+'--exclude RPManager.e3p '\
+'--exclude RPManager.e3t '\
+'--exclude messages.po'
+
+target=rpmanager-`date +%F-%H.%M`.tar.bz2
+
+python -c "from compileall import *; compile_dir('.')"
+. common.sh
