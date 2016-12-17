@@ -5,9 +5,8 @@ Various package manager what supported by blackPanther OS
 
 Current:
 Smart PM
-
-Plan:
 RPManager
 RPMWizard
 
-
+Soon:
+PackageKit
