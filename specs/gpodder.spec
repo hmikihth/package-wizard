@@ -1,5 +1,6 @@
 Name: 	 	gpodder
 Summary: 	A graphical podcast catcher
+Summary(hu): 	Egy grafikus podcast lekapó program
 Version: 	3.7.0
 Release: 	%mkrel 2
 Source:		http://gpodder.org/src/%{name}-%{version}.tar.gz
@@ -24,9 +25,13 @@ Requires:	python-webkitgtk
 Suggests:	bluez-utils bluez-gnome
 
 %description
+
 gPodder is a Podcast reciever/catcher written in Python, using GTK. It manages
 podcast feeds for you and automatically downloads all podcasts from as many
 feeds as you like.
+
+%description -l hu
+KEDVES ANDRÁS IDE KELL A SZÖVEGT LEFORDÍTANI
 
 %prep
 %setup -q
