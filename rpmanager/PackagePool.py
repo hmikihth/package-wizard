@@ -8,6 +8,11 @@ import gzip
 import gtk
 import commands
 
+try:
+    from backports import lzma
+except ImportError:
+    import lzma
+
 import singletons
 from common import *
 import common; _ = common._
@@ -130,11 +135,13 @@ class PackagePool:
     def RegisterInstallablePackages(self):
         """Get the list of every packages that are installable on the system."""
         for source in self.GetActiveSources():
-            file = gzip.open(source.hdlist)
+            #disable gzip file = gzip.open(source.hdlist)
+            print "DEBUG " + lzma.open(source.hdlist).read()
+            file = lzma.open(source.hdlist)
             for line in file:
                 if line[:6] != '@info@':
                     continue
-                fields = line.strip()[6:].split('@')
+                fields = line.strip()[7:].split('@')
                 longname = fields[0]
                 size = int(fields[2])
                 category = fields[3]
@@ -208,7 +215,7 @@ class PackagePool:
         active_sources = self.GetActiveSources()  #[source for source in self.all_sources if not source.ignore]   
         containing_longnames = {}
         for source in active_sources:
-            file = gzip.open(source.hdlist)
+            file = lzma.open(source.hdlist)
             for line in file:
                 if line[:9] == '@summary@':
                     fields = line.strip().split('@')
