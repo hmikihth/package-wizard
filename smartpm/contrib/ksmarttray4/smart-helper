@@ -1,3 +1,0 @@
-#!/bin/sh
-PATH="`kde4-config --exec-prefix`/lib/kde4/libexec":$PATH
-exec kdesu -- smart "$@"
