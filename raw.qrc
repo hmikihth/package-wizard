@@ -1,0 +1,11 @@
+<RCC>
+  <qresource prefix="raw" >
+    <file>pics/bg.png</file>
+    <file>pics/package.png</file>
+    <file>pics/keyboards.png</file>
+    <file>pics/nepomuk.png</file>
+    <file>pics/cr64-app-profiler.png</file>
+    <file>pics/multiple.png</file>
+    <file>pics/mouse.png</file>
+  </qresource>
+</RCC>
