@@ -14,6 +14,7 @@ from modules.packagewizardMain import Ui_packagewizardUI
 #import modules.welcomeWidget as welcomeWidget
 # END
 import modules.ScrWelcome as welcomeWidget
+import modules.ScrAbout as aboutWidget
 #import modules.ScrRecommend  as recommendWidget
 #import modules.ScrGoodbye  as goodbyeWidget
 
@@ -46,8 +47,8 @@ if isLiveCD():
     # ide be lehet allitani majd, hogy csak a választott dialogok jelenjenek meg
 #    availableScreens = [recommendWidget, goodbyeWidget]
 else:
-    #availableScreens = [welcomeWidget]
-    availableScreens = []
+    availableScreens = [welcomeWidget, aboutWidget]
+    #availableScreens = []
 
 class PackageWizard(QWidget):
     def __init__(self):
@@ -166,12 +167,12 @@ class PackageWizard(QWidget):
     #    return "<b>" + unicode("  ") + item + "</b><br>"
 
     def putBr(self, item):
-        #return "» " + item + "<br>"
-        return unicode("» ", encoding='utf-8') + item + "<br>"
+        return "» " + item + "<br>"
+        #return unicode("» ", encoding='utf-8') + item + "<br>"
 
     def putBold(self, item):
-        #return "<b>  " + item + "</b><br>"
-        return "<b><u>" +  item + unicode(" »", encoding='utf-8') +"</u></b><br>"
+        return "<b>  " + item + " »" + "</b><br>"
+        #return "<b><u>" +  item + unicode(" »", encoding='utf-8') +"</u></b><br>"
 
     # move to id numbered stack
     def stackMove(self, id):
