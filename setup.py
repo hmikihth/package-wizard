@@ -22,6 +22,7 @@ from distutils.cmd import Command
 from distutils.command.build import build
 from distutils.command.install import install
 from setuptools import setup
+import subprocess
     
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -52,15 +53,21 @@ def makeDirs(dir):
     except OSError:
         pass
 
+def have_gettext():
+    return subprocess.getoutput("pyuic5 --help").find("--gettext") > -1
+    
 class Build(build):
     def run(self):
         os.system("rm -rf build")
-        os.system("mkdir -p build/modules")
+        os.system("mkdir -p build/package_wizard")
         print ("Copying PYs Src...")
-        os.system("cp src/*.py build/modules")
+        os.system("cp src/*.py build/package_wizard")
         print ("Generating UIs...")
         for filename in glob.glob1("modules_uic", "*.ui"):
-            os.system("pyuic5 -o build/modules/%s.py modules_uic/%s" % (filename.split(".")[0], filename))
+            if have_gettext():
+                os.system("pyuic5 -g -o build/package_wizard/%s.py modules_uic/%s" % (filename.split(".")[0], filename))
+            else:
+                os.system("pyuic5 -o build/package_wizard/%s.py modules_uic/%s" % (filename.split(".")[0], filename))
         print ("Generating RCs for build...")
         for filename in glob.glob1("./", "*.qrc"):
             os.system("pyrcc5 %s -o build/%s_rc.py" % (filename, filename.split(".")[0]))
