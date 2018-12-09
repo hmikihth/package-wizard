@@ -1,19 +1,21 @@
 # -*- coding: utf-8 -*-
 #
+import gettext
+_ = gettext.gettext
 
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from modules.ScreenWidget import ScreenWidget
-from modules.welcomeWidget import Ui_welcomeWidget
+from package_wizard.ScreenWidget import ScreenWidget
+from package_wizard.welcomeWidget import Ui_welcomeWidget
 
 import os, shutil, subprocess
 
 class Widget(QWidget, ScreenWidget):
-    title = ("Welcome")
-    desc = ("Welcome to Package Wizard")
+    title = _("Welcome")
+    desc = _("Welcome to Package Wizard")
 
     def __init__(self, *args):
         QWidget.__init__(self,None)
@@ -27,7 +29,7 @@ class Widget(QWidget, ScreenWidget):
             self.ext = self.getRelease().split()[3]
 
         #welcomeStr = "Welcome to " + self.release + " " + self.ext
-        relStr = "v" + self.ext
+        relStr = self.ext
         self.ui.label_2.setText(relStr)
 
     def getRelease(self):

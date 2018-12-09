@@ -1,22 +1,27 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+import gettext
+gettext.install("package_wizard", "/usr/share/locale")
+
 import sys, getopt
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-import modules, subprocess, os, dbus
 
-from modules.packagewizardMain import Ui_packagewizardUI
+import subprocess, os, dbus
+#import package_wizard
+
+from package_wizard.packagewizardMain import Ui_packagewizardUI
 # FOR ANOTHER TEST 
 #import modules.welcomeWidget as welcomeWidget
 # END
-import modules.ScrWelcome as welcomeWidget
-import modules.ScrAbout as aboutWidget
-#import modules.ScrRecommend  as recommendWidget
-#import modules.ScrGoodbye  as goodbyeWidget
+import package_wizard.ScrWelcome as welcomeWidget
+import package_wizard.ScrAbout as aboutWidget
+#import package_wizard.ScrRecommend  as recommendWidget
+#import package_wizard.ScrGoodbye  as goodbyeWidget
 
 #def usage() :
 #      print """ -m <module1> <module2> <module3> <module4> <module5> """  % (sys.argv[0],sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4])
@@ -67,10 +72,10 @@ class PackageWizard(QWidget):
 
         self.ui.labelMenu.setText(self.menuText)
 
-        #widget.signal.connect(self.ui.buttonNext, QtCore.SIGNAL("clicked()"), self.slotNext)
-        #widget.signal.connect(self.ui.buttonBack, QtCore.SIGNAL("clicked()"), self.slotBack)
-        #widget.signal.connect(self.ui.buttonFinish, QtCore.SIGNAL("clicked()"), QtGui.qApp, QtCore.SLOT("quit()"))
-        #widget.signal.connect(self.ui.buttonCancel, QtCore.SIGNAL("clicked()"), QtGui.qApp, QtCore.SLOT("quit()"))
+        self.ui.buttonNext.clicked.connect(self.slotNext)
+        self.ui.buttonBack.clicked.connect(self.slotBack)
+        self.ui.buttonFinish.clicked.connect(self.close)
+        self.ui.buttonCancel.clicked.connect(self.close)
 
     def slotFinished(self):
         if wallpaperWidget.Widget.selectedWallpaper:

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 #
+import gettext
+_ = gettext.gettext
 
 import os
 from PyQt5 import QtCore, QtGui
@@ -8,12 +10,12 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 import subprocess, sys
-from modules.ScreenWidget import ScreenWidget
-from modules.aboutWidget import Ui_aboutWidget
+from package_wizard.ScreenWidget import ScreenWidget
+from package_wizard.aboutWidget import Ui_aboutWidget
 
 class Widget(QWidget, ScreenWidget):
-    title = ("About")
-    desc = ("Program Informations & Developers")
+    title = _("About")
+    desc = _("Program Informations & Developers")
 
     def __init__(self, *args):
         QWidget.__init__(self,None)
