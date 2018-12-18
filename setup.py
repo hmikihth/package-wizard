@@ -59,15 +59,15 @@ def have_gettext():
 class Build(build):
     def run(self):
         os.system("rm -rf build")
-        os.system("mkdir -p build/package_wizard")
+        os.system("mkdir -p build/fusionlogic/packagewizard")
         print ("Copying PYs Src...")
-        os.system("cp src/*.py build/package_wizard")
+        os.system("cp src/*.py build/fusionlogic/packagewizard")
         print ("Generating UIs...")
         for filename in glob.glob1("modules_uic", "*.ui"):
             if have_gettext():
-                os.system("pyuic5 -g -o build/package_wizard/%s.py modules_uic/%s" % (filename.split(".")[0], filename))
+                os.system("pyuic5 -g -o build/fusionlogic/packagewizard/%s.py modules_uic/%s" % (filename.split(".")[0], filename))
             else:
-                os.system("pyuic5 -o build/package_wizard/%s.py modules_uic/%s" % (filename.split(".")[0], filename))
+                os.system("pyuic5 -o build/fusionlogic/packagewizard/%s.py modules_uic/%s" % (filename.split(".")[0], filename))
         print ("Generating RCs for build...")
         for filename in glob.glob1("./", "*.qrc"):
             os.system("pyrcc5 %s -o build/%s_rc.py" % (filename, filename.split(".")[0]))
@@ -131,13 +131,13 @@ if "update_messages" in sys.argv:
     sys.exit(0)
 
 setup(
-    name="package-wizard",
+    name="fusionlogic-packagewizard",
 
     version="0.0.1",
 
-    description="The Package-wizard is a PyQt5 package installer.",
+    description="The FusionLogic-PackageWizard is a PyQt5 package installer.",
     long_description = """
-    The Package-wizard is a PyQt5 based package installer via PackageKit.
+    The FusionLogic-PackageWizard is a PyQt5 based package installer via PackageKit.
     Project idea and design: Charles K. Barcza
     Maintainer: Miklos Horvath 
     """,
@@ -171,8 +171,8 @@ setup(
         "Programming Language :: Python :: 3.7",
     ],
 
-    packages=["package_wizard"],
-    scripts=["bin/package-wizard"],
+    packages=["packagewizard"],
+#    scripts=["bin/package-wizard"],
     install_requires = ["argparse", "configparser"],
     cmdclass = {
             'build': Build,

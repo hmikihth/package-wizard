@@ -8,8 +8,8 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from package_wizard.ScreenWidget import ScreenWidget
-from package_wizard.welcomeWidget import Ui_welcomeWidget
+from fusionlogic.packagewizard.ScreenWidget import ScreenWidget
+from fusionlogic.packagewizard.welcomeWidget import Ui_welcomeWidget
 
 import os, shutil, subprocess
 

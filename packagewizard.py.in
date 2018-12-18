@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import gettext
-gettext.install("package_wizard", "/usr/share/locale")
+gettext.install("fusionlogic", "/usr/share/locale")
 
 import sys, getopt
 from PyQt5 import QtCore, QtGui
@@ -14,14 +14,14 @@ from PyQt5.QtWidgets import *
 import subprocess, os, dbus
 #import package_wizard
 
-from package_wizard.packagewizardMain import Ui_packagewizardUI
+from fusionlogic.packagewizard.packagewizardMain import Ui_packagewizardUI
 # FOR ANOTHER TEST 
 #import modules.welcomeWidget as welcomeWidget
 # END
-import package_wizard.ScrWelcome as welcomeWidget
-import package_wizard.ScrAbout as aboutWidget
-#import package_wizard.ScrRecommend  as recommendWidget
-#import package_wizard.ScrGoodbye  as goodbyeWidget
+import fusionlogic.packagewizard.ScrWelcome as welcomeWidget
+import fusionlogic.packagewizard.ScrAbout as aboutWidget
+#import fusionlogic.packagewizard.ScrRecommend  as recommendWidget
+#import fusionlogic.packagewizard.ScrGoodbye  as goodbyeWidget
 
 #def usage() :
 #      print """ -m <module1> <module2> <module3> <module4> <module5> """  % (sys.argv[0],sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4])
