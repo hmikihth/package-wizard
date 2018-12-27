@@ -27,34 +27,32 @@ import subprocess
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+def have_gettext():
+    return subprocess.getoutput("pyuic5 --help").find("--gettext") > -1
+
 def update_messages():
     # Create empty directory
+    pkgname="fusionlogic-common"
     os.system("rm -rf .tmp")
     os.makedirs(".tmp")
     # Collect UI files
     for filename in glob.glob1("modules_uic", "*.ui"):
-        os.system("pyuic5 -o .tmp/ui_%s.py modules_uic/%s" % (filename.split(".")[0], filename))
+        if have_gettext():
+            os.system("pyuic5 -g -o .tmp/ui_%s.py modules_uic/%s" % (filename.split(".")[0], filename))
+        else:
+            os.system("pyuic5 -o .tmp/ui_%s.py modules_uic/%s" % (filename.split(".")[0], filename))
     # Collect Python files
     for filename in glob.glob1("modules_uic", "*.py"):
         shutil.copy("modules_uic/%s" % filename, ".tmp")
     # Generate POT file
-    os.system("xgettext --default-domain=%s --keyword=_ --keyword=i18n --keyword=ki18n -o po/%s.pot .tmp/*" % (about.catalog, about.catalog))
+    os.system("xgettext --default-domain=%s --keyword=_ --keyword=i18n --keyword=ki18n -o po/%s.pot .tmp/* src/*.py" % (pkgname,pkgname))
     # Update PO files
     for item in os.listdir("po"):
         if item.endswith(".po"):
-            os.system("msgmerge -q -o .tmp/temp.po po/%s po/%s.pot" % (item, about.catalog))
+            os.system("msgmerge -q -o .tmp/temp.po po/%s po/%s.pot" % (item,pkgname))
             os.system("cp .tmp/temp.po po/%s" % item)
     # Remove temporary directory
     os.system("rm -rf .tmp")
-
-def makeDirs(dir):
-    try:
-        os.makedirs(dir)
-    except OSError:
-        pass
-
-def have_gettext():
-    return subprocess.getoutput("pyuic5 --help").find("--gettext") > -1
     
 class Build(build):
     def run(self):
@@ -70,61 +68,17 @@ class Build(build):
                 os.system("pyuic5 -o build/fusionlogic/packagewizard/%s.py modules_uic/%s" % (filename.split(".")[0], filename))
         print ("Generating RCs for build...")
         for filename in glob.glob1("./", "*.qrc"):
-            os.system("pyrcc5 %s -o build/%s_rc.py" % (filename, filename.split(".")[0]))
-            print ("Generating RCs for tests...")
-            os.system("pyrcc5 %s -o test/%s_rc.py" % (filename, filename.split(".")[0]))
-        for filename in glob.glob1("./", "*.in"):
-            os.system("cat %s > build/%s.py" % (filename, filename.split(".")[0]))
+            os.system("pyrcc5 %s -o build/fusionlogic/packagewizard/%s_rc.py" % (filename, filename.split(".")[0]))
+#            print ("Generating RCs for tests...")
+#            os.system("pyrcc5 %s -o test/%s_rc.py" % (filename, filename.split(".")[0]))
+        for filename in glob.glob1("./", "*.py"):
+            if filename not in ["setup.py"]:
+                os.system("cat %s > build/%s" % (filename, filename[:-3]))
 
 
 class Install(install):
     def run(self):
-        os.system("./setup.py build")
-        if self.root:
-            kde_dir = "%s/usr" % self.root
-        bin_dir = os.path.join(kde_dir, "bin")
-        locale_dir = os.path.join(kde_dir, "share/locale")
-        autostart_dir = os.path.join(kde_dir, "share/autostart")
-        project_dir = os.path.join(kde_dir, "share/apps", about.appName)
-        # Make directories
-        print ("Making directories...")
-        sys.exit()
-        makeDirs(bin_dir)
-        #makeDirs(locale_dir)
-        makeDirs(autostart_dir)
-        makeDirs(project_dir)
-        # Install desktop files
-        print ("Installing desktop files...")
-        for filename in glob.glob1("data", "*.desktop"):
-            shutil.copy("data/%s" % filename, autostart_dir)
-        # Install codes
-        print ("Installing codes...")
-        os.system("cp -R build/* %s/" % project_dir)
-        # Install locales
-        print ("Installing locales...")
-        for filename in glob.glob1("po", "*.po"):
-            lang = filename.rsplit(".", 1)[0]
-            os.system("msgfmt po/%s.po -o po/%s.mo" % (lang, lang))
-            try:
-                os.makedirs(os.path.join(locale_dir, "%s/LC_MESSAGES" % lang))
-            except OSError:
-                pass
-            shutil.copy("po/%s.mo" % lang, os.path.join(locale_dir, "%s/LC_MESSAGES" % lang, "%s.mo" % about.catalog))
-        # Rename
-        print ("Renaming application.py...")
-        #shutil.move(os.path.join(project_dir, "application.py"), os.path.join(project_dir, "%s.py" % about.appName))
-        # Modes
-        print ("Changing file modes...")
-        os.chmod(os.path.join(project_dir, "%s.py" % about.appName), "0755")
-        # Symlink
-        try:
-            if self.root:
-                os.symlink(os.path.join(project_dir.replace(self.root, ""), "%s.py" % about.appName), os.path.join(bin_dir, about.appName))
-            else:
-                os.symlink(os.path.join(project_dir, "%s.py" % about.appName), os.path.join(bin_dir, about.appName))
-        except OSError:
-            pass
-
+        install.run(self)
 
 if "update_messages" in sys.argv:
     update_messages()
@@ -171,11 +125,13 @@ setup(
         "Programming Language :: Python :: 3.7",
     ],
 
-    packages=["packagewizard"],
-#    scripts=["bin/package-wizard"],
-    install_requires = ["argparse", "configparser"],
+    package_dir={"fusionlogic-packagewizard":"build/lib/fusionlogic/packagewizard"},
+    packages=["fusionlogic-packagewizard"],
+    scripts=["packagewizard"],
+    data_files  = [('/'.join(['usr']+e.split('/')[1:-1]), [e]) for e in subprocess.getoutput("find build/locale").split() if ".mo" in e],
+    install_requires = ["argparse", "configparser","fusionlogic-common"],
     cmdclass = {
-            'build': Build,
-            'install': Install,
-                }
+        'build': Build,
+        'install': Install,
+    }
 )
