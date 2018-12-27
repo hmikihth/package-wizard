@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import gettext
-gettext.install("fusionlogic", "/usr/share/locale")
+gettext.install("fusionlogic-common", "/usr/share/locale")
+#gettext.install("fusionlogic-packagewizard", "/usr/share/locale")
 
 import sys, getopt
 from PyQt5 import QtCore, QtGui
@@ -18,8 +19,8 @@ from fusionlogic.packagewizard.packagewizardMain import Ui_packagewizardUI
 # FOR ANOTHER TEST 
 #import modules.welcomeWidget as welcomeWidget
 # END
-import fusionlogic.packagewizard.ScrWelcome as welcomeWidget
-import fusionlogic.packagewizard.ScrAbout as aboutWidget
+from fusionlogic import ScrWelcome as welcomeWidget
+from fusionlogic import ScrAbout as aboutWidget
 #import fusionlogic.packagewizard.ScrRecommend  as recommendWidget
 #import fusionlogic.packagewizard.ScrGoodbye  as goodbyeWidget
 

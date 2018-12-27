@@ -57,23 +57,25 @@ def update_messages():
 class Build(build):
     def run(self):
         os.system("rm -rf build")
-        os.system("mkdir -p build/fusionlogic/packagewizard")
+        os.system("mkdir -p build/lib/fusionlogic/packagewizard")
+        os.system("mkdir -p build/bin")
         print ("Copying PYs Src...")
-        os.system("cp src/*.py build/fusionlogic/packagewizard")
+        os.system("cp src/*.py build/lib/fusionlogic/packagewizard")
         print ("Generating UIs...")
         for filename in glob.glob1("modules_uic", "*.ui"):
             if have_gettext():
-                os.system("pyuic5 -g -o build/fusionlogic/packagewizard/%s.py modules_uic/%s" % (filename.split(".")[0], filename))
+                os.system("pyuic5 -g -o build/lib/fusionlogic/packagewizard/%s.py modules_uic/%s" % (filename.split(".")[0], filename))
             else:
-                os.system("pyuic5 -o build/fusionlogic/packagewizard/%s.py modules_uic/%s" % (filename.split(".")[0], filename))
+                os.system("pyuic5 -o build/lib/fusionlogic/packagewizard/%s.py modules_uic/%s" % (filename.split(".")[0], filename))
+        os.system("sed -i 's/import raw_rc/from fusionlogic import raw_rc\\nfrom fusionlogic.packagewizard import raw_rc/g' build/lib/fusionlogic/packagewizard/packagewizardMain.py")
         print ("Generating RCs for build...")
         for filename in glob.glob1("./", "*.qrc"):
-            os.system("pyrcc5 %s -o build/fusionlogic/packagewizard/%s_rc.py" % (filename, filename.split(".")[0]))
+            os.system("pyrcc5 %s -o build/lib/fusionlogic/packagewizard/%s_rc.py" % (filename, filename.split(".")[0]))
 #            print ("Generating RCs for tests...")
 #            os.system("pyrcc5 %s -o test/%s_rc.py" % (filename, filename.split(".")[0]))
         for filename in glob.glob1("./", "*.py"):
             if filename not in ["setup.py"]:
-                os.system("cat %s > build/%s" % (filename, filename[:-3]))
+                os.system("cat %s > build/bin/%s" % (filename, filename[:-3]))
 
 
 class Install(install):
@@ -125,9 +127,9 @@ setup(
         "Programming Language :: Python :: 3.7",
     ],
 
-    package_dir={"fusionlogic-packagewizard":"build/lib/fusionlogic/packagewizard"},
-    packages=["fusionlogic-packagewizard"],
-    scripts=["packagewizard"],
+    package_dir={"fusionlogic":"build/lib/fusionlogic"},
+    packages=["fusionlogic"],
+    scripts=["build/bin/packagewizard"],
     data_files  = [('/'.join(['usr']+e.split('/')[1:-1]), [e]) for e in subprocess.getoutput("find build/locale").split() if ".mo" in e],
     install_requires = ["argparse", "configparser","fusionlogic-common"],
     cmdclass = {
