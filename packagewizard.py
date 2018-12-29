@@ -21,6 +21,9 @@ from fusionlogic.packagewizard.packagewizardMain import Ui_packagewizardUI
 # END
 from fusionlogic import ScrWelcome as welcomeWidget
 from fusionlogic import ScrAbout as aboutWidget
+from fusionlogic.packagewizard import ScrInstallator as installatorWidget
+from fusionlogic.packagewizard import ScrMultipleInstallator as mInstallatorWidget
+from fusionlogic.packagewizard import ScrInstallProgress as InstallProgressWidget
 #import fusionlogic.packagewizard.ScrRecommend  as recommendWidget
 #import fusionlogic.packagewizard.ScrGoodbye  as goodbyeWidget
 
@@ -53,7 +56,9 @@ if isLiveCD():
     # ide be lehet allitani majd, hogy csak a választott dialogok jelenjenek meg
 #    availableScreens = [recommendWidget, goodbyeWidget]
 else:
-    availableScreens = [welcomeWidget, aboutWidget]
+    availableScreens = [installatorWidget, InstallProgressWidget, aboutWidget]
+    if len(sys.argv) > 2:
+        availableScreens[0] = mInstallatorWidget
     #availableScreens = []
 
 class PackageWizard(QWidget):
