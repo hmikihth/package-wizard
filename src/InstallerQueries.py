@@ -27,7 +27,6 @@ def resolve_package(package):
 def get_rpm_file_info(filename):
     d = {e:'' for e in INFO_LINES}
     query = "rpm -qp " + filename + " --qf " + "'%{NAME}\\n%{VERSION}\\n%{RELEASE}\\n%{ARCH}\\n%{SUMMARY}\\n%{LICENSE}\\n%{GROUP}\\n%{SIZE}\\n%{URL}\\n%{DESCRIPTION}\\n'"
-    print(query)
     raw = subprocess.getoutput(query)
     for i,e in enumerate(raw.split('\n')):
         if i<9:
@@ -73,6 +72,8 @@ def get_package_info(name):
             if i>6+HAVE_SUMMARY:
                 d["Description"] = '\n'.join([d["Description"], l])
         i+=1
+    if not HAVE_SUMMARY:
+        d['Summary'] = d["Description"][:100].strip()+'...'
     return d
     
 if __name__ == "__main__":

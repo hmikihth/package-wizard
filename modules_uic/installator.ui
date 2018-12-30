@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>More</string>
+   <string>Informations</string>
   </property>
   <property name="styleSheet">
    <string notr="true">color: rgb(234, 225, 228);</string>

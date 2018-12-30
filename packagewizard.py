@@ -24,6 +24,7 @@ from fusionlogic import ScrAbout as aboutWidget
 from fusionlogic.packagewizard import ScrInstallator as installatorWidget
 from fusionlogic.packagewizard import ScrMultipleInstallator as mInstallatorWidget
 from fusionlogic.packagewizard import ScrInstallProgress as InstallProgressWidget
+from fusionlogic.packagewizard.InstallerQueries import get_rpm_file_info, get_deb_file_info, get_package_info
 #import fusionlogic.packagewizard.ScrRecommend  as recommendWidget
 #import fusionlogic.packagewizard.ScrGoodbye  as goodbyeWidget
 
@@ -82,6 +83,23 @@ class PackageWizard(QWidget):
         self.ui.buttonBack.clicked.connect(self.slotBack)
         self.ui.buttonFinish.clicked.connect(self.close)
         self.ui.buttonCancel.clicked.connect(self.close)
+        
+        self.load_package_info(self.ui.mainStack.currentWidget().ui)
+
+    def load_package_info(self, widget):
+        info = {}
+        if len(sys.argv)==2:
+            if sys.argv[1].endswith('.rpm'):
+                info = get_rpm_file_info(sys.argv[1])
+            elif sys.argv[1].endswith('.deb'):
+                info = get_deb_file_info(sys.argv[1])
+            else:
+                info = get_package_info(sys.argv[1])
+        widget.packageName.setText("{}".format(info["Name"]))
+        widget.labelSummary.setText("Version: {} Release: {} Architecture: {}".format(info["Version"],info["Release"],info['Architecture']))
+        widget.label.setText("{}".format(info["Summary"]))
+        widget.packagedescription.setText(_('{}\nSize: {} License: {}\nURL: {}').format(
+                info["Description"], info["Size"], info["License"], info["URL"]))
 
     def slotFinished(self):
         if wallpaperWidget.Widget.selectedWallpaper:
