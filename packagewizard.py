@@ -11,61 +11,43 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-
 import subprocess, os, dbus
-#import package_wizard
 
 from fusionlogic.packagewizard.packagewizardMain import Ui_packagewizardUI
-# FOR ANOTHER TEST 
-#import modules.welcomeWidget as welcomeWidget
-# END
 from fusionlogic import ScrWelcome as welcomeWidget
 from fusionlogic import ScrAbout as aboutWidget
 from fusionlogic.packagewizard import ScrInstallator as installatorWidget
 from fusionlogic.packagewizard import ScrMultipleInstallator as mInstallatorWidget
 from fusionlogic.packagewizard import ScrInstallProgress as InstallProgressWidget
 from fusionlogic.packagewizard.InstallerQueries import get_rpm_file_info, get_deb_file_info, get_package_info
-#import fusionlogic.packagewizard.ScrRecommend  as recommendWidget
-#import fusionlogic.packagewizard.ScrGoodbye  as goodbyeWidget
+from fusionlogic.packagewizard.InstallerThreads import PKConInstallerThread
 
-#def usage() :
-#      print """ -m <module1> <module2> <module3> <module4> <module5> """  % (sys.argv[0],sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4])
+from argparse import ArgumentParser
 
-def loadFile(_file):
-    try:
-        f = file(_file)
-        d = [a.strip() for a in f]
-        d = (x for x in d if x and x[0] != "#")
-        f.close()
-        return d
-    except:
-        return []
+parser = ArgumentParser()
+parser.add_argument("--install", dest="pkg_install", help=_("Install packages with pkcon"), metavar=_("package [package] [package] ..."), nargs='*')
+parser.add_argument("--uninstall", dest="pkg_uninstall", help=_("Uninstall packages with pkcon"), metavar=_("package [package] [package] ..."), nargs='*')
+parser.add_argument("--noninteractive", dest="pkg_noninteractive", help=_("pkcon --noninteractive"), action='store_true')
+parser.add_argument("--only-download", dest="pkg_only_download", help=_("pkcon --only-download"), action='store_true')
+parser.add_argument("--allow-downgrade", dest="pkg_allow_downgrade", help=_("pkcon --allow-downgrade"), action='store_true')
+parser.add_argument("--allow-reinstall", dest="pkg_allow_reinstall", help=_("pkcon --allow-reinstall"), action='store_true')
+parser.add_argument("--allow-untrusted", dest="pkg_allow_untrusted", help=_("pkcon --allow-untrusted"), action='store_true')
+#parser.add_argument("--background", dest="pkg_background", help=_("pkcon --background"), action='store_true')
+#parser.add_argument("--filter", dest="pkg_filter", help=_("pkcon --filter"), metavar=_("<filter>"), nargs=1)
+arguments = parser.parse_args()
 
-def isLiveCD():
-    try:
-        liveCDcheck = open('/var/run/blackPanther')
-    except IOError:
-        return False
 
-    return True
-
-if isLiveCD():
-    availableScreens = [welcomeWidget, keyboardWidget, mouseWidget, menuWidget, wallpaperWidget, networkWidget, summaryWidget, goodbyeWidget]
-#elif profileSended():
-#    availableScreens = [welcomeWidget, mouseWidget, styleWidget, menuWidget, wallpaperWidget, searchWidget, networkWidget, packageWidget, summaryWidget, goodbyeWidget]
-#elif paramGet():
-    # ide be lehet allitani majd, hogy csak a választott dialogok jelenjenek meg
-#    availableScreens = [recommendWidget, goodbyeWidget]
+if arguments.pkg_uninstall or len(arguments.pkg_install)>1:
+    availableScreens = [mInstallatorWidget, InstallProgressWidget, aboutWidget]
 else:
     availableScreens = [installatorWidget, InstallProgressWidget, aboutWidget]
-    if len(sys.argv) > 2:
-        availableScreens[0] = mInstallatorWidget
-    #availableScreens = []
 
 class PackageWizard(QWidget):
     def __init__(self):
         super().__init__()
         
+        self.install_started = False
+        self.details_visible = False
         self.ui = Ui_packagewizardUI()
 
         self.ui.setupUi(self)
@@ -86,54 +68,113 @@ class PackageWizard(QWidget):
         
         self.load_package_info(self.ui.mainStack.currentWidget().ui)
 
-    def load_package_info(self, widget):
+    def load_package_info(self, ui):
         info = {}
-        if len(sys.argv)==2:
-            if sys.argv[1].endswith('.rpm'):
-                info = get_rpm_file_info(sys.argv[1])
-            elif sys.argv[1].endswith('.deb'):
-                info = get_deb_file_info(sys.argv[1])
+        if len(arguments.pkg_install)==1:
+            if arguments.pkg_install[0].endswith('.rpm'):
+                info = get_rpm_file_info(arguments.pkg_install[0])
+            elif arguments.pkg_install[0].endswith('.deb'):
+                info = get_deb_file_info(arguments.pkg_install[0])
             else:
-                info = get_package_info(sys.argv[1])
-        widget.packageName.setText("{}".format(info["Name"]))
-        widget.labelSummary.setText("Version: {} Release: {} Architecture: {}".format(info["Version"],info["Release"],info['Architecture']))
-        widget.label.setText("{}".format(info["Summary"]))
-        widget.packagedescription.setText(_('{}\nSize: {} License: {}\nURL: {}').format(
+                info = get_package_info(arguments.pkg_install[0])
+        ui.packageName.setText("{}".format(info["Name"]))
+        ui.labelSummary.setText("Version: {} Release: {} Architecture: {}".format(info["Version"],info["Release"],info['Architecture']))
+        ui.label.setText("{}".format(info["Summary"]))
+        ui.packagedescription.setText(_('{}\nSize: {} License: {}\nURL: {}').format(
                 info["Description"], info["Size"], info["License"], info["URL"]))
 
-    def slotFinished(self):
-        if wallpaperWidget.Widget.selectedWallpaper:
-            #config =  KConfig("plasma-desktop-appletsrc")
-            #group = config.group("Containments")
-            #for each in list(group.groupList()):
-            #    subgroup = group.group(each)
-            #    subcomponent = subgroup.readEntry('plugin')
-            #    if subcomponent == 'desktop' or subcomponent == 'folderview':
-            #        subg = subgroup.group('Wallpaper')
-            #        subg_2 = subg.group('image')
-            #        subg_2.writeEntry("wallpaper", wallpaperWidget.Widget.selectedWallpaper)
-            self.killPlasma()
-            QtGui.qApp.quit()
+    def set_progressbar(self, value, text):
+        self.progress_ui.progressBar.setFormat(text + " (%p%)")
+        self.progress_ui.progressBar.setValue(value)
+    
+    def installer_sent_message(self, message):
+        if message.startswith("Downloaded") or message.startswith("Installed"):
+            self.progress_ui.statusLabel.setText(message)
+        self.progress_ui.textBrowser.insertHtml(message)
+        sb = self.progress_ui.textBrowser.verticalScrollBar()
+        sb.setValue(sb.maximum())
+
+    def installer_ask(self, question):
+        self.progress_ui.questionLabel.setText(question)
+        self.showYesNo()
+        
+    def installer_finished(self):
+        self.enableBack()
+        self.enableNext()
+        self.showBackNext()
+
+    def clear_label(self):
+        self.progress_ui.questionLabel.setText("")
+
+    def detailsPressed(self):
+        if self.details_visible:
+            self.details_visible = False
+            self.progress_ui.textBrowser.hide()
         else:
-            QtGui.qApp.quit()
+            self.details_visible = True
+            self.progress_ui.textBrowser.show()
 
-    def killPlasma(self):
-        p = subprocess.Popen(["pidof", "-s", "plasmashell"], stdout=subprocess.PIPE)
-        out, err = p.communicate()
-        pidOfPlasma = int(out)
+    def startInstallProgress(self):
+        if not self.install_started:
+            self.install_started = True
+            self.disableBack()
+            self.disableNext()
+            self.progress_ui = self.ui.mainStack.currentWidget().ui
+            self.progress_ui.yesButton.clicked.connect(self.yesPressed)
+            self.progress_ui.noButton.clicked.connect(self.noPressed)
+            self.progress_ui.detailsButton.clicked.connect(self.detailsPressed)
+            self.hideYesNo()
+            self.hideBackNext()
 
-        try:
-            os.kill(pidOfPlasma, 15)
-            self.startPlasma()
-        except:
-#        except OSError, e:
-#            print 'WARNING: failed os.kill: %s' % e
-#            print "Trying SIGKILL"
-            os.kill(pidOfPlasma, 9)
-            self.startPlasma()
+            self.installer_thread = PKConInstallerThread(self)
+            self.installer_thread.start()
+            self.progress_ui.textBrowser.setHidden(True)
+            env = os.environ
+            env["LC_ALL"] = "C"
+            pkcon_args = ['pkcon','-p']
+            if arguments.pkg_install:
+                if ".rpm" in arguments.pkg_install[0]:
+                    pkcon_args += ["install-local"]
+                else:
+                    pkcon_args += ["install"]
+            if arguments.pkg_uninstall: pkcon_args += ["remove"]
+            if arguments.pkg_noninteractive: pkcon_args += ["--noninteractive"]
+            if arguments.pkg_only_download: pkcon_args += ["--only-download"]
+            if arguments.pkg_allow_downgrade: pkcon_args += ["--allow-downgrade"]
+            if arguments.pkg_allow_reinstall: pkcon_args += ["--allow-reinstall"]
+            if arguments.pkg_allow_untrusted: pkcon_args += ["--allow-untrusted"]
+#            if arguments.pkg_background: pkcon_args += ["--background"]
+#            if arguments.pkg_filter: pkcon_args += ["--filter", arguments.pgk_filter]
+            if arguments.pkg_install: pkcon_args += arguments.pkg_install
+            if arguments.pkg_uninstall: pkcon_args += arguments.pkg_uninstall
+            self.installer_thread.set_job(pkcon_args, env)
 
-    def startPlasma(self):
-        p = subprocess.Popen(["plasmashell"], stdout=subprocess.PIPE)
+    def hideBackNext(self):
+        self.ui.buttonNext.hide()
+        self.ui.buttonBack.hide()
+
+    def showBackNext(self):
+        self.ui.buttonNext.show()
+        self.ui.buttonBack.show()
+
+    def hideYesNo(self):
+        self.progress_ui.yesButton.hide()
+        self.progress_ui.noButton.hide()
+        
+    def showYesNo(self):
+        self.progress_ui.yesButton.show()
+        self.progress_ui.noButton.show()
+
+    def yesPressed(self):
+        self.hideYesNo()
+        self.installer_thread.yes_sig.emit()
+
+    def noPressed(self):
+        self.hideYesNo()
+        self.installer_thread.no_sig.emit()
+        
+    def slotFinished(self):
+        QtGui.qApp.quit()
 
     # returns the id of current stack
     def getCur(self, d):
@@ -168,6 +209,8 @@ class PackageWizard(QWidget):
         if ret:
             self.stackMove(self.getCur(self.moveInc))
             self.moveInc = 1
+        if curIndex == 1:
+            self.startInstallProgress()
 
     # execute previous step
     def slotBack(self):
@@ -243,22 +286,22 @@ class PackageWizard(QWidget):
         self.stackMove(0)
 
     def disableNext(self):
-        self.buttonNext.setEnabled(False)
+        self.ui.buttonNext.setEnabled(False)
 
     def disableBack(self):
-        self.buttonBack.setEnabled(False)
+        self.ui.buttonBack.setEnabled(False)
 
     def enableNext(self):
-        self.buttonNext.setEnabled(True)
+        self.ui.buttonNext.setEnabled(True)
 
     def enableBack(self):
-        self.buttonBack.setEnabled(True)
+        self.ui.buttonBack.setEnabled(True)
 
     def isNextEnabled(self):
-        return self.buttonNext.isEnabled()
+        return self.ui.buttonNext.isEnabled()
 
     def isBackEnabled(self):
-        return self.buttonBack.isEnabled()
+        return self.ui.buttonBack.isEnabled()
 
     #def __del__(self):
     #    group = self.config.group("General")

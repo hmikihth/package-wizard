@@ -51,7 +51,7 @@ class PKConInstallerThread(QThread):
         QThread.__init__(self)
         self.parent = parent
         self.progress_sig.connect(self.parent.set_progressbar)
-        self.disable_sig.connect(self.parent.disable_yesno_buttons)
+        self.disable_sig.connect(self.parent.hideYesNo)
         self.result_sig.connect(self.parent.installer_sent_message)
         self.console_sig.connect(self.console_switch)
         self.ask_sig.connect(self.parent.installer_ask)
