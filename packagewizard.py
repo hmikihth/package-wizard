@@ -66,7 +66,33 @@ class PackageWizard(QWidget):
         self.ui.buttonFinish.clicked.connect(self.close)
         self.ui.buttonCancel.clicked.connect(self.close)
         
-        self.load_package_info(self.ui.mainStack.currentWidget().ui)
+        if arguments.pkg_uninstall:
+            ui = self.ui.mainStack.currentWidget().ui
+            ui.label.setText(_("Packages to remove"))
+            ui.descLabel.setText(_("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+                                     "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+                                     "p, li { white-space: pre-wrap; }\n"
+                                     "</style></head><body style=\" font-family:\'URW Gothic L\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+                                     "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">"
+                                     "The following packages will be removed from your system</p></body></html>"))
+            self.load_multiple_packages_info(ui)
+        elif len(arguments.pkg_install)>1:
+            self.load_multiple_packages_info(self.ui.mainStack.currentWidget().ui)
+        else:
+            self.load_package_info(self.ui.mainStack.currentWidget().ui)
+
+    def load_multiple_packages_info(self, ui):
+        content = ""
+        for e in (arguments.pkg_install or arguments.pkg_uninstall):
+            info = {}
+            if arguments.pkg_install[0].endswith('.rpm'):
+                info = get_rpm_file_info(arguments.pkg_install[0])
+            elif arguments.pkg_install[0].endswith('.deb'):
+                info = get_deb_file_info(arguments.pkg_install[0])
+            else:
+                info = get_package_info(arguments.pkg_install[0])
+            content += "<h1>{}</h1><p>{}</p>".format(info["Name"], info["Summary"])
+        ui.textBrowser.setHtml(content)
 
     def load_package_info(self, ui):
         info = {}
@@ -88,7 +114,7 @@ class PackageWizard(QWidget):
         self.progress_ui.progressBar.setValue(value)
     
     def installer_sent_message(self, message):
-        if message.startswith("Downloaded") or message.startswith("Installed"):
+        if message.startswith("Downloaded") or message.startswith("Installed") or message.startswith("Fatal error"):
             self.progress_ui.statusLabel.setText(message)
         self.progress_ui.textBrowser.insertHtml(message)
         sb = self.progress_ui.textBrowser.verticalScrollBar()
@@ -133,7 +159,7 @@ class PackageWizard(QWidget):
             env["LC_ALL"] = "C"
             pkcon_args = ['pkcon','-p']
             if arguments.pkg_install:
-                if ".rpm" in arguments.pkg_install[0]:
+                if arguments.pkg_install[0].endswith(".rpm") or arguments.pkg_install[0].endswith(".deb"):
                     pkcon_args += ["install-local"]
                 else:
                     pkcon_args += ["install"]

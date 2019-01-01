@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Wallpaper</string>
+   <string>Progress</string>
   </property>
   <property name="styleSheet">
    <string>color: rgb(234, 225, 228);</string>
