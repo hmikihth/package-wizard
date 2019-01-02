@@ -58,7 +58,7 @@ class Build(build):
     def run(self):
         os.system("rm -rf build")
         os.system("mkdir -p build/lib/fusionlogic/packagewizard")
-        os.system("mkdir -p build/bin")
+        os.system("mkdir -p build/scripts-3.7")
         print ("Copying PYs Src...")
         os.system("cp src/*.py build/lib/fusionlogic/packagewizard")
         print ("Generating UIs...")
@@ -75,7 +75,7 @@ class Build(build):
 #            os.system("pyrcc5 %s -o test/%s_rc.py" % (filename, filename.split(".")[0]))
         for filename in glob.glob1("./", "*.py"):
             if filename not in ["setup.py"]:
-                os.system("cat %s > build/bin/%s" % (filename, filename[:-3]))
+                os.system("cat %s > build/scripts-3.7/%s" % (filename, filename[:-3]))
 
 
 class Install(install):
@@ -129,7 +129,7 @@ setup(
 
     package_dir={"fusionlogic":"build/lib/fusionlogic"},
     packages=["fusionlogic"],
-    scripts=["build/bin/packagewizard"],
+    scripts=["build/scripts-3.7/packagewizard"],
     data_files  = [('/'.join(['usr']+e.split('/')[1:-1]), [e]) for e in subprocess.getoutput("find build/locale").split() if ".mo" in e],
     install_requires = ["argparse", "configparser","fusionlogic-common"],
     cmdclass = {
