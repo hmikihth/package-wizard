@@ -37,12 +37,13 @@ parser.add_argument("--allow-untrusted", dest="pkg_allow_untrusted", help=_("pkc
 arguments = parser.parse_args()
 
 try:
-    files = arguments.pkg_install+arguments.pkg_uninstall
+    files = arguments.pkg_install or arguments.pkg_uninstall
     if not files:
         raise Exception('No files')
     for file in files:
-        f=open(file,'r')
-        f.close()
+        if file.endswith(".rpm") or file.endswith(".deb"):
+            f=open(file,'r')
+            f.close()
     if arguments.pkg_uninstall or len(arguments.pkg_install)>1:
         availableScreens = [mInstallatorWidget, InstallProgressWidget, aboutWidget]
     else:
