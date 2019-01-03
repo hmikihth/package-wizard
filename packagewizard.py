@@ -99,11 +99,11 @@ class PackageWizard(QWidget):
         for e in (arguments.pkg_install or arguments.pkg_uninstall):
             info = {}
             if not arguments.pkg_uninstall and arguments.pkg_install[0].endswith('.rpm'):
-                info = get_rpm_file_info(arguments.pkg_install[0])
+                info = get_rpm_file_info(e)
             elif not arguments.pkg_uninstall and  arguments.pkg_install[0].endswith('.deb'):
-                info = get_deb_file_info(arguments.pkg_install[0])
+                info = get_deb_file_info(e)
             else:
-                info = get_package_info(arguments.pkg_install[0])
+                info = get_package_info(e)
             content += "<h1>{}</h1><p>{}</p>".format(info["Name"], info["Summary"])
         ui.textBrowser.setHtml(content)
 
