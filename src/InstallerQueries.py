@@ -22,6 +22,7 @@ def resolve_package(package):
     p = r.rfind('-')
     version = r[p+1:]
     name = r[:p]
+    print("N:", name, package)
     return {'Name':name, 'Version':version, 'Release':release, 'Architecture':arch}
 
 def get_rpm_file_info(filename):
@@ -63,7 +64,7 @@ def get_package_info(name):
     for l in lines:
         if i<=6+HAVE_SUMMARY or i>len(lines):
             if i == 0:
-                d.update(resolve_package(l.split(':')[1].strip()))
+                d.update(resolve_package(l.split(': ')[1].strip()))
                 i = 3
             else:
                 p = l.index(':')+1

@@ -104,7 +104,10 @@ class PackageWizard(QWidget):
                 info = get_deb_file_info(e)
             else:
                 info = get_package_info(e)
-            content += "<h1>{}</h1><p>{}</p>".format(info["Name"], info["Summary"])
+            if arguments.pkg_install:
+                content += "<h1>{}</h1><p>{}</p>".format(info["Name"], info["Summary"])
+            else:
+                content += "<h1>{}</h1>{}-{}-{}".format(info["Name"], info["Version"], info["Release"], info["Architecture"])
         ui.textBrowser.setHtml(content)
 
     def load_package_info(self, ui):
