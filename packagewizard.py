@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import gettext
-gettext.install("fusionlogic-common", "/usr/share/locale")
-#gettext.install("fusionlogic-packagewizard", "/usr/share/locale")
+gettext.install("fusionlogic-packagewizard", "/usr/share/locale")
 
 import sys, getopt
 from PyQt5 import QtCore, QtGui
@@ -27,6 +26,7 @@ from argparse import ArgumentParser
 parser = ArgumentParser()
 parser.add_argument("--install", dest="pkg_install", help=_("Install packages with pkcon"), metavar=_("package [package] [package] ..."), nargs='*')
 parser.add_argument("--uninstall", dest="pkg_uninstall", help=_("Uninstall packages with pkcon"), metavar=_("package [package] [package] ..."), nargs='*')
+parser.add_argument("--info", dest="info", help=_("Uninstall with information page"), action='store_true')
 parser.add_argument("--noninteractive", dest="pkg_noninteractive", help=_("pkcon --noninteractive"), action='store_true')
 parser.add_argument("--only-download", dest="pkg_only_download", help=_("pkcon --only-download"), action='store_true')
 parser.add_argument("--allow-downgrade", dest="pkg_allow_downgrade", help=_("pkcon --allow-downgrade"), action='store_true')
@@ -45,7 +45,8 @@ try:
             f=open(file,'r')
             f.close()
     if arguments.pkg_uninstall or len(arguments.pkg_install)>1:
-        availableScreens = [mInstallatorWidget, InstallProgressWidget, aboutWidget]
+        availableScreens = [mInstallatorWidget] * bool(arguments.pkg_install or arguments.info)
+        availableScreens += [InstallProgressWidget, aboutWidget]
     else:
         availableScreens = [installatorWidget, InstallProgressWidget, aboutWidget]
 except:
@@ -77,15 +78,18 @@ class PackageWizard(QWidget):
         
         try:
             if arguments.pkg_uninstall:
-                ui = self.ui.mainStack.currentWidget().ui
-                ui.label.setText(_("Packages to remove"))
-                ui.descLabel.setText(_("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+                if arguments.info:
+                    ui = self.ui.mainStack.currentWidget().ui
+                    ui.label.setText(_("Packages to remove"))
+                    ui.descLabel.setText(_("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
                                      "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
                                      "p, li { white-space: pre-wrap; }\n"
                                      "</style></head><body style=\" font-family:\'URW Gothic L\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
                                      "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">"
                                      "The following packages will be removed from your system</p></body></html>"))
-                self.load_multiple_packages_info(ui)
+                    self.load_multiple_packages_info(ui)
+                else:
+                    self.startInstallProgress()
             elif len(arguments.pkg_install)>1:
                 self.load_multiple_packages_info(self.ui.mainStack.currentWidget().ui)
             else:
