@@ -11,13 +11,10 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>More</string>
+   <string>Informations</string>
   </property>
   <property name="styleSheet">
    <string notr="true">color: rgb(234, 225, 228);</string>
-  </property>
-  <property name="locale">
-   <locale language="English" country="UnitedStates"/>
   </property>
   <layout class="QGridLayout" name="gridLayout_7">
    <item row="2" column="0">
@@ -186,48 +183,6 @@
            </widget>
           </item>
           <item row="1" column="3">
-           <widget class="QPushButton" name="pushButton">
-            <property name="minimumSize">
-             <size>
-              <width>130</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Files of Package</string>
-            </property>
-            <property name="icon">
-             <iconset theme="view-list-text">
-              <normaloff>.</normaloff>.</iconset>
-            </property>
-            <property name="autoDefault">
-             <bool>false</bool>
-            </property>
-            <property name="default">
-             <bool>false</bool>
-            </property>
-            <property name="flat">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="5">
-           <spacer name="horizontalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Expanding</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>30</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="1" column="4">
            <widget class="QPushButton" name="buttonHelpPages">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -245,31 +200,43 @@
              <font>
               <family>URW Gothic L</family>
               <pointsize>10</pointsize>
-              <weight>50</weight>
-              <bold>false</bold>
+              <weight>75</weight>
+              <bold>true</bold>
              </font>
             </property>
             <property name="text">
              <string>Help and Support</string>
             </property>
-            <property name="icon">
-             <iconset theme="help-about">
-              <normaloff>.</normaloff>.</iconset>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QPushButton" name="pushButton">
+            <property name="minimumSize">
+             <size>
+              <width>130</width>
+              <height>0</height>
+             </size>
             </property>
-            <property name="flat">
-             <bool>true</bool>
+            <property name="text">
+             <string>Files of Package</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
-           <widget class="QCheckBox" name="checkBox">
-            <property name="text">
-             <string>Skip errors</string>
+          <item row="1" column="4">
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
-            <property name="checkable">
-             <bool>false</bool>
+            <property name="sizeType">
+             <enum>QSizePolicy::Expanding</enum>
             </property>
-           </widget>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>30</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </widget>

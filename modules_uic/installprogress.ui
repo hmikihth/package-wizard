@@ -124,7 +124,7 @@ p, li { white-space: pre-wrap; }
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>40</height>
+       <height>50</height>
       </size>
      </property>
      <property name="font">
@@ -179,46 +179,21 @@ p, li { white-space: pre-wrap; }
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
         <widget class="QPushButton" name="noButton">
-         <property name="font">
-          <font>
-           <family>URW Gothic L</family>
-           <pointsize>11</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
          <property name="styleSheet">
-          <string notr="true">background-color: qlineargradient(spread:pad, x1:0.985294, y1:0.789, x2:1, y2:0, stop:0.470588 rgba(0, 141, 37, 213), stop:1 rgba(255, 255, 255, 255));</string>
+          <string notr="true">background-color:red;</string>
          </property>
          <property name="text">
-          <string>Cancel </string>
-         </property>
-         <property name="icon">
-          <iconset theme="dialog-cancel"/>
+          <string>No</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="yesButton">
-         <property name="font">
-          <font>
-           <family>URW Gothic L</family>
-           <pointsize>11</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="autoFillBackground">
-          <bool>false</bool>
-         </property>
          <property name="styleSheet">
-          <string notr="true">background-color: qlineargradient(spread:pad, x1:0.985294, y1:0.789, x2:1, y2:0, stop:0.470588 rgba(141, 0, 0, 213), stop:1 rgba(255, 255, 255, 255));</string>
+          <string notr="true">background-color:green;</string>
          </property>
          <property name="text">
-          <string>Remove all</string>
-         </property>
-         <property name="icon">
-          <iconset theme="dialog-warning-symbolic"/>
+          <string>Yes</string>
          </property>
         </widget>
        </item>
@@ -276,12 +251,6 @@ p, li { white-space: pre-wrap; }
         <widget class="QPushButton" name="detailsButton">
          <property name="text">
           <string>Details</string>
-         </property>
-         <property name="icon">
-          <iconset theme="help-about"/>
-         </property>
-         <property name="flat">
-          <bool>true</bool>
          </property>
         </widget>
        </item>
