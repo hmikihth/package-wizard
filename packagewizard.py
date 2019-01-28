@@ -126,7 +126,7 @@ class PackageWizard(QWidget):
         ui.packageName.setText("{}".format(info["Name"]))
         ui.labelSummary.setText("Version: {} Release: {} Architecture: {}".format(info["Version"],info["Release"],info['Architecture']))
         ui.label.setText("{}".format(info["Summary"]))
-        ui.packagedescription.setText(_('{}\nSize: {} License: {}\nURL: {}').format(
+        ui.packagedescription.setHtml(_('{}<br>Size: {} License: {}<br>URL: {}').format(
                 info["Description"], info["Size"], info["License"], info["URL"]))
 
     def set_progressbar(self, value, text):

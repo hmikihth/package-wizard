@@ -32,7 +32,7 @@ def have_gettext():
 
 def update_messages():
     # Create empty directory
-    pkgname="fusionlogic-common"
+    pkgname="fusionlogic-packagewizard"
     os.system("rm -rf .tmp")
     os.makedirs(".tmp")
     # Collect UI files
@@ -45,7 +45,15 @@ def update_messages():
     for filename in glob.glob1("modules_uic", "*.py"):
         shutil.copy("modules_uic/%s" % filename, ".tmp")
     # Generate POT file
-    os.system("xgettext --default-domain=%s --keyword=_ --keyword=i18n --keyword=ki18n -o po/%s.pot .tmp/* src/*.py" % (pkgname,pkgname))
+    os.system("mkdir -p po")
+    os.system("""xgettext --default-domain=%s --keyword=_ --keyword=i18n --keyword=ki18n \
+              --package-name='fusionlogic-packagewizard' \
+              --package-version=1.0.1 \
+              --copyright-holder='blackPanther Europe' \
+              --msgid-bugs-address=info@blackpantheros.eu \
+              -o po/tmp.pot .tmp/* src/*.py""" % (pkgname))
+    os.system("msgcat --use-first po/tmp.pot /usr/lib/python3.7/site-packages/fusionlogic/locale/fusionlogic.pot >po/%s.pot" % (pkgname))
+    os.system("rm po/tmp.pot")
     # Update PO files
     for item in os.listdir("po"):
         if item.endswith(".po"):
@@ -56,6 +64,8 @@ def update_messages():
     
 class Build(build):
     def run(self):
+        pkgname="fusionlogic-packagewizard"
+        locale_dir = "build/share/locale"
         os.system("rm -rf build")
         os.system("mkdir -p build/lib/fusionlogic/packagewizard")
         os.system("mkdir -p build/scripts-3.7")
@@ -76,6 +86,16 @@ class Build(build):
         for filename in glob.glob1("./", "*.py"):
             if filename not in ["setup.py"]:
                 os.system("cat %s > build/scripts-3.7/%s" % (filename, filename[:-3]))
+
+        print ("Build locales...")
+        for filename in glob.glob1("po", "*.po"):
+            lang = filename.rsplit(".", 1)[0]
+            os.system("msgfmt po/%s.po -o po/%s.mo" % (lang, lang))
+            try:
+                os.makedirs(os.path.join(locale_dir, "%s/LC_MESSAGES" % lang))
+            except OSError:
+                pass
+            shutil.copy("po/%s.mo" % lang, os.path.join(locale_dir, "%s/LC_MESSAGES" % lang, "%s.mo" % pkgname))
 
 
 class Install(install):
@@ -130,7 +150,7 @@ setup(
     package_dir={"fusionlogic":"build/lib/fusionlogic"},
     packages=["fusionlogic"],
     scripts=["build/scripts-3.7/packagewizard"],
-    data_files  = [('/'.join(['usr']+e.split('/')[1:-1]), [e]) for e in subprocess.getoutput("find build/locale").split() if ".mo" in e],
+    data_files  = [('/'.join(e.split('/')[1:-1]), [e]) for e in subprocess.getoutput("find build/share/locale").split() if ".mo" in e],
     install_requires = ["argparse", "configparser","fusionlogic-common"],
     cmdclass = {
         'build': Build,
