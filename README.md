@@ -20,5 +20,7 @@ Kattintson és telepítsen bármilyen alkalmazáscsomagot kedvenc rendszerére.
 
 Screenshot
 ----------
-![rpmanager](https://raw.githubusercontent.com/blackPantherOS/packagemanagement/master/rpmanager/data/screenshot.png)
+![package-wizard-distros](https://raw.githubusercontent.com/blackPantherOS/package-wizard/master/data/logos/screenshot-variants.png)
+![package-wizard-main](https://raw.githubusercontent.com/blackPantherOS/package-wizard/master/data/logos/screenshot-main.png)
+
 

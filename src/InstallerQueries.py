@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import subprocess
+import subprocess, functools
 
 HAVE_SUMMARY = 'blackPanther OS' in subprocess.getoutput('cat /etc/os-release')
 if not HAVE_SUMMARY:
@@ -11,6 +11,17 @@ PKCON_INFO_LINES += ['License','Group','Description','Size','URL']
 
 INFO_LINES = ['Name','Version','Release','Architecture','Summary','License','Group','Size','URL','Description']
 DEB_ALIAS = {'Name':'Package', 'Size':'Installed-Size', 'URL':'Homepage', 'Group':'Section'}
+
+DESCRIPTION_LENGTH = 400
+
+def limit_description(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        result = func(*args, **kwargs)
+        if len(result["Description"]) > DESCRIPTION_LENGTH:
+            result["Description"] = result["Description"][:DESCRIPTION_LENGTH] + "..."
+        return result
+    return wrapper
 
 def resolve_package(package):
     p = package.rfind('.')
@@ -25,7 +36,8 @@ def resolve_package(package):
     print("N:", name, package)
     return {'Name':name, 'Version':version, 'Release':release, 'Architecture':arch}
 
-def get_rpm_file_info(filename):
+@limit_description
+def get_rpm_file_info(filename, *args, **kwargs):
     d = {e:'' for e in INFO_LINES}
     query = "rpm -qp " + filename + " --qf " + "'%{NAME}\\n%{VERSION}\\n%{RELEASE}\\n%{ARCH}\\n%{SUMMARY}\\n%{LICENSE}\\n%{GROUP}\\n%{SIZE}\\n%{URL}\\n%{DESCRIPTION}\\n'"
     raw = subprocess.getoutput(query)
@@ -34,9 +46,12 @@ def get_rpm_file_info(filename):
             d[INFO_LINES[i]] = e
         else:
             d["Description"] += e + '\n'
+    if filename.endswith(".src.rpm"):
+        d["Architecture"] = "Source"
     return d
 
-def get_deb_file_info(filename):
+@limit_description
+def get_deb_file_info(filename, *args, **kwargs):
     d = {e:'' for e in INFO_LINES}
     for e in INFO_LINES:
         if e in DEB_ALIAS:
@@ -52,7 +67,8 @@ def get_deb_file_info(filename):
         d['Summary'] = d["Description"][:100].strip()+'...'
     return d
 
-def get_package_info(name):
+@limit_description
+def get_package_info(name, *args, **kwargs):
     raw = subprocess.getoutput('echo 1| pkcon -p get-details '+name)
     d = {e:'' for e in PKCON_INFO_LINES}
     lines = raw.split('\n')

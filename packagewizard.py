@@ -30,7 +30,7 @@ parser.add_argument("--info", dest="info", help=_("Uninstall with information pa
 parser.add_argument("--noninteractive", dest="pkg_noninteractive", help=_("pkcon --noninteractive"), action='store_true')
 parser.add_argument("--only-download", dest="pkg_only_download", help=_("pkcon --only-download"), action='store_true')
 parser.add_argument("--allow-downgrade", dest="pkg_allow_downgrade", help=_("pkcon --allow-downgrade"), action='store_true')
-parser.add_argument("--allow-reinstall", dest="pkg_allow_reinstall", help=_("pkcon --allow-reinstall"), action='store_true')
+#parser.add_argument("--allow-reinstall", dest="pkg_allow_reinstall", help=_("pkcon --allow-reinstall"), action='store_true')
 parser.add_argument("--allow-untrusted", dest="pkg_allow_untrusted", help=_("pkcon --allow-untrusted"), action='store_true')
 #parser.add_argument("--background", dest="pkg_background", help=_("pkcon --background"), action='store_true')
 #parser.add_argument("--filter", dest="pkg_filter", help=_("pkcon --filter"), metavar=_("<filter>"), nargs=1)
@@ -124,9 +124,9 @@ class PackageWizard(QWidget):
             else:
                 info = get_package_info(arguments.pkg_install[0])
         ui.packageName.setText("{}".format(info["Name"]))
-        ui.labelSummary.setText("Version: {} Release: {} Architecture: {}".format(info["Version"],info["Release"],info['Architecture']))
+        ui.labelSummary.setText(_("Version: {} Release: {} Architecture: {}").format(info["Version"],info["Release"],info['Architecture']))
         ui.label.setText("{}".format(info["Summary"]))
-        ui.packagedescription.setHtml(_('{}<br>Size: {} License: {}<br>URL: {}').format(
+        ui.packagedescription.setText(_('{}\n\nSize: {} License: {}\nURL: {}').format(
                 info["Description"], info["Size"], info["License"], info["URL"]))
 
     def set_progressbar(self, value, text):
@@ -187,11 +187,18 @@ class PackageWizard(QWidget):
                     pkcon_args += ["install-local"]
                 else:
                     pkcon_args += ["install"]
-            if arguments.pkg_uninstall: pkcon_args += ["remove"]
+            if arguments.pkg_uninstall: 
+                pkcon_args += ["remove"]
+                self.progress_ui.label.setText(_("Uninstalling"))
+                self.progress_ui.labelMouseDesc.setText(_("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'URW Gothic L\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">The selected package(s) uninstalling are in progress</p></body></html>"))
             if arguments.pkg_noninteractive: pkcon_args += ["--noninteractive"]
             if arguments.pkg_only_download: pkcon_args += ["--only-download"]
             if arguments.pkg_allow_downgrade: pkcon_args += ["--allow-downgrade"]
-            if arguments.pkg_allow_reinstall: pkcon_args += ["--allow-reinstall"]
+            if arguments.pkg_install: pkcon_args += ["--allow-reinstall"]
             if arguments.pkg_allow_untrusted: pkcon_args += ["--allow-untrusted"]
 #            if arguments.pkg_background: pkcon_args += ["--background"]
 #            if arguments.pkg_filter: pkcon_args += ["--filter", arguments.pgk_filter]

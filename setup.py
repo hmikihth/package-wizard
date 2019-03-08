@@ -51,7 +51,7 @@ def update_messages():
               --package-version=1.0.1 \
               --copyright-holder='blackPanther Europe' \
               --msgid-bugs-address=info@blackpantheros.eu \
-              -o po/tmp.pot .tmp/* src/*.py""" % (pkgname))
+              -o po/tmp.pot .tmp/* src/*.py *.py""" % (pkgname))
     os.system("msgcat --use-first po/tmp.pot /usr/lib/python3.7/site-packages/fusionlogic/locale/fusionlogic.pot >po/%s.pot" % (pkgname))
     os.system("rm po/tmp.pot")
     # Update PO files
