@@ -20,7 +20,6 @@ Kattintson és telepítsen bármilyen alkalmazáscsomagot kedvenc rendszerére.
 
 Screenshot
 ----------
-![package-wizard-distros](https://raw.githubusercontent.com/blackPantherOS/package-wizard/master/data/logos/screenshot-variants.png)
-![package-wizard-main](https://raw.githubusercontent.com/blackPantherOS/package-wizard/master/data/logos/screenshot-main.png)
-
+![package-wizard-distros](https://raw.githubusercontent.com/blackPantherOS/package-wizard/master/data/screenshots/screenshot-variants.png)
+![package-wizard-main](https://raw.githubusercontent.com/blackPantherOS/package-wizard/master/data/screenshots/screenshot-main.png)
 
