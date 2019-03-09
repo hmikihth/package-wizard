@@ -9,6 +9,9 @@ and managing. This is a subproject of blackPanther OS distribution development.
 This tool a very easy to use application. 
 Click and install any RPM, DEB packages via PkCon (PackageKit)
 
+*****************
+Összefoglalás
+---------
 == Hungarian ==
 
 Qt5 alapú disztrófüggetlen szoftvercsomag kezelő és telepítő PackageKit alapokon
@@ -50,15 +53,15 @@ Forrásból más disztribúcióra:
 cd /egy/hely/ahova/van/írási/jogod
 git clone --rehttps://github.com/blackPantherOS/package-wizard.git
 cd package-wizard/fusionlogic-common
-python3 ./setup.py build
-python3 ./setup.py install
+python3 setup.py build
+python3 setup.py install
 
 cd ..
-python3 ./setup.py build
-python3 ./setup.py install
+python3 setup.py build
+python3 setup.py install
 
 ```
-###Használat:
+### Használat:
 
 Egy program telepítés PackageKit csomagadatbázisból, például Gimp:
 ```
