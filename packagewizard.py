@@ -1,5 +1,16 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
+#
+#*********************************************************************************************************
+#*   __     __               __     ______                __   __                      _______ _______   *
+#*  |  |--.|  |.---.-..----.|  |--.|   __ \.---.-..-----.|  |_|  |--..-----..----.    |       |     __|  *
+#*  |  _  ||  ||  _  ||  __||    < |    __/|  _  ||     ||   _|     ||  -__||   _|    |   -   |__     |  *
+#*  |_____||__||___._||____||__|__||___|   |___._||__|__||____|__|__||_____||__|      |_______|_______|  *
+#*http://www.blackpantheros.eu | http://www.blackpanther.hu - kbarcza[]blackpanther.hu * Charles K Barcza*
+#*************************************************************************************(c)2002-2019********
+#	Design, FugionLogic idea and Initial code written by Charles K Barcza in december of 2018 
+#       The maintainer of the PackageWizard: Miklos Horvath * hmiki[]blackpantheros.eu
+#		(It's no allowed delete this about label for free usage under GLP3)
 
 import gettext
 gettext.install("fusionlogic-packagewizard", "/usr/share/locale")
@@ -30,7 +41,7 @@ parser.add_argument("--info", dest="info", help=_("Uninstall with information pa
 parser.add_argument("--noninteractive", dest="pkg_noninteractive", help=_("pkcon --noninteractive"), action='store_true')
 parser.add_argument("--only-download", dest="pkg_only_download", help=_("pkcon --only-download"), action='store_true')
 parser.add_argument("--allow-downgrade", dest="pkg_allow_downgrade", help=_("pkcon --allow-downgrade"), action='store_true')
-#parser.add_argument("--allow-reinstall", dest="pkg_allow_reinstall", help=_("pkcon --allow-reinstall"), action='store_true')
+#Temorary! Plan:a option add to gui: parser.add_argument("--allow-reinstall", dest="pkg_allow_reinstall", help=_("pkcon --allow-reinstall"), action='store_true')
 parser.add_argument("--allow-untrusted", dest="pkg_allow_untrusted", help=_("pkcon --allow-untrusted"), action='store_true')
 #parser.add_argument("--background", dest="pkg_background", help=_("pkcon --background"), action='store_true')
 #parser.add_argument("--filter", dest="pkg_filter", help=_("pkcon --filter"), metavar=_("<filter>"), nargs=1)

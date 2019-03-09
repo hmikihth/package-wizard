@@ -1,4 +1,16 @@
 #!/usr/bin/python3
+#
+#*********************************************************************************************************
+#*   __     __               __     ______                __   __                      _______ _______   *
+#*  |  |--.|  |.---.-..----.|  |--.|   __ \.---.-..-----.|  |_|  |--..-----..----.    |       |     __|  *
+#*  |  _  ||  ||  _  ||  __||    < |    __/|  _  ||     ||   _|     ||  -__||   _|    |   -   |__     |  *
+#*  |_____||__||___._||____||__|__||___|   |___._||__|__||____|__|__||_____||__|      |_______|_______|  *
+#*http://www.blackpantheros.eu | http://www.blackpanther.hu - kbarcza[]blackpanther.hu * Charles K Barcza*
+#*************************************************************************************(c)2002-2019********
+#	Design, FugionLogic idea and Initial code written by Charles K Barcza in december of 2018 
+#       The maintainer of the PackageWizard: Miklos Horvath * hmiki[]blackpantheros.eu
+#		(It's no allowed delete this about label for free usage under GLP3)
+
 import subprocess, functools
 
 HAVE_SUMMARY = 'blackPanther OS' in subprocess.getoutput('cat /etc/os-release')
