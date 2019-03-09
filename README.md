@@ -37,6 +37,35 @@ Megvalósításra vár
  - egységes csomaglista, csomagkezelő beépítése a kötegelt csomagkezlésekhez
  - packagekit-python tovébbi integrációja és opcionális váltása
  - egyéb csomagkezelő motorok integrációja és opcionális váltása
+
+Telepítés
+----------
+blackPanther OS magyar disztribúcióra:
+```
+telepites package-wizard
+```
+
+Forrásból más disztribúcióra:
+```
+cd /egy/hely/ahova/van/írási/jogod
+git clone --rehttps://github.com/blackPantherOS/package-wizard.git
+cd package-wizard/fusionlogic-common
+python3 ./setup.py build
+python3 ./setup.py install
+
+cd ..
+python3 ./setup.py build
+python3 ./setup.py install
+
+```
+###Használat:
+
+Egy program telepítés PackageKit csomagadatbázisból, például Gimp:
+```
+package-wizard gimp
+```
+Telepítés egy helyi fájlból:
+package-wizard /ahol/a/fájlod/van/csomagenve.rpm(vagy deb)
  
 Screenshots
 ----------
