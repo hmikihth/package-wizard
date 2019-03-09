@@ -50,10 +50,11 @@ telepites package-wizard
 
 Forrásból más disztribúcióra:
 ```
-cd /egy/hely/ahova/van/írási/jogod
-git clone --rehttps://github.com/blackPantherOS/package-wizard.git
+cd /egy/hely/ahova/van/írási/jogod (vagy root joggal)
+git clone --recurse-submodules https://github.com/blackPantherOS/package-wizard.git
 cd package-wizard/fusionlogic-common
 python3 setup.py build
+# (ezt már root joggal kell futtatnod)
 python3 setup.py install
 
 cd ..
