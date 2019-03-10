@@ -28,7 +28,10 @@ Awaiting implementation:
 Installation
 ----------
 on blackPanther OS, Hungarian distribution:
-```installing package-wizard```
+```
+installing package-wizard
+```
+
 
 On other distributions from source:
 ```
@@ -45,8 +48,21 @@ python3 setup.py install
 ```
 Use:
 
+Get the informations for usage
+```
+package-wizard --help
+```
+
+## Examples
 Application installation from PackageKit package database, e.g. Gimp:
-```package-wizard gimp```
+```
+package-wizard --install gimp
+```
+
+Application Uninstallation from system, e.g. Gimp:
+```
+package-wizard --uninstall gimp
+```
 
 Installation from a local package: 
 ```package-wizard /where/your/package/is/located/packagename.rpm(or deb)```
@@ -109,12 +125,20 @@ python3 setup.py install
 
 Egy program telepítés PackageKit csomagadatbázisból, például Gimp:
 ```
-package-wizard gimp
+package-wizard --install gimp
 ```
+Egy program eltávolítása, például a Gimp:
+
+```
+package-wizard --uninstall gimp
+```
+
+
 Telepítés egy helyi fájlból:
 ```
 package-wizard /ahol/a/fájlod/van/csomagenve.rpm(vagy deb)
 ```
+
 Screenshots
 ----------
 ![package-wizard-distros](https://raw.githubusercontent.com/blackPantherOS/package-wizard/master/data/screenshots/screenshot-variants.png)
