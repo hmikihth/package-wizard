@@ -2,12 +2,54 @@ Summary
 ---------
 == English ==
 
-Qt based Software package manager via PackageKit. 
-Extra features a fancy gui for Python Pip and Node Npm modules install
-and managing. This is a subproject of blackPanther OS distribution development. 
+A Qt5-based distribution-independent package manager and installer on PackageKit grounds. Its extra feature, in addition to a nice-looking interface, is its ability to install and manage Python Pip and Node Npm modules. 
+This development is a modular part of the FusionLogic framework, a sub-project in the development of the blackPanther distribution.
+It is free to use for everyone on the condition of displaying the authors site and observing the GPL3 rules.
+It is a very simple and eye-catching application, simply click on an RPM or DEB package and install it using the systems PackageKit.
 
-This tool a very easy to use application. 
-Click and install any RPM, DEB packages via PkCon (PackageKit)
+This application is a really easy-to-use piece of software. 
+Just click and install any application (RPM,DEB) package on your favourite system.
+
+Under development:
+ - setting the image that can be seen in the pictures as well to fit the distribution as early as the setup phase
+ - improving the look and feel
+ - localising the missing strings
+ - monitoring the use of other package manager applications, suspending the installation process
+ - database preloader for faster startup
+
+Awaiting implementation:
+ - Managing NPM modules
+ - Managing PIP modules
+ - Uniform package list, installation of the package manager for batch package management
+ - further integration and optional switching of packagekit-python
+ - integration and optional switching of other package management engines
+ - Any other request package format support
+
+Installation
+----------
+on blackPanther OS, Hungarian distribution:
+```installing package-wizard```
+
+On other distributions from source:
+```
+cd /a/place/where/you/have/write/permission (or as root)
+git clone --recurse-submodules https://github.com/blackPantherOS/package-wizard.git
+cd package-wizard/fusionlogic-common
+python3 setup.py build
+# (you will have to run it as root)
+python3 setup.py install
+
+cd ..
+python3 setup.py build
+python3 setup.py install
+```
+Use:
+
+Application installation from PackageKit package database, e.g. Gimp:
+```package-wizard gimp```
+
+Installation from a local package: 
+```package-wizard /where/your/package/is/located/packagename.rpm(or deb)```
 
 *****************
 Összefoglalás
@@ -40,6 +82,7 @@ Megvalósításra vár
  - egységes csomaglista, csomagkezelő beépítése a kötegelt csomagkezlésekhez
  - packagekit-python tovébbi integrációja és opcionális váltása
  - egyéb csomagkezelő motorok integrációja és opcionális váltása
+ - bármilyen más kért csomagformátum támogatása
 
 Telepítés
 ----------
@@ -69,10 +112,12 @@ Egy program telepítés PackageKit csomagadatbázisból, például Gimp:
 package-wizard gimp
 ```
 Telepítés egy helyi fájlból:
+```
 package-wizard /ahol/a/fájlod/van/csomagenve.rpm(vagy deb)
- 
+```
 Screenshots
 ----------
 ![package-wizard-distros](https://raw.githubusercontent.com/blackPantherOS/package-wizard/master/data/screenshots/screenshot-variants.png)
 ![package-wizard-main](https://raw.githubusercontent.com/blackPantherOS/package-wizard/master/data/screenshots/screenshot-main.png)
 
+******************
