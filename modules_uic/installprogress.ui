@@ -151,7 +151,10 @@ p, li { white-space: pre-wrap; }
      <item>
       <widget class="QTextBrowser" name="textBrowser">
        <property name="autoFillBackground">
-        <bool>true</bool>
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:qlineargradient(spread:pad, x1:1, y1:0.601, x2:0.509, y2:0.613636, stop:0.220588 rgba(0, 0, 0, 213), stop:1 rgba(34, 19, 12, 234))</string>
        </property>
        <property name="documentTitle">
         <string/>
@@ -194,7 +197,8 @@ p, li { white-space: pre-wrap; }
           <string>No</string>
          </property>
          <property name="icon">
-          <iconset theme="dialog-cancel"/>
+          <iconset theme="dialog-cancel">
+           <normaloff>.</normaloff>.</iconset>
          </property>
         </widget>
        </item>
@@ -218,7 +222,8 @@ p, li { white-space: pre-wrap; }
           <string>Yes</string>
          </property>
          <property name="icon">
-          <iconset theme="dialog-warning-symbolic"/>
+          <iconset theme="dialog-warning-symbolic">
+           <normaloff>.</normaloff>.</iconset>
          </property>
         </widget>
        </item>
@@ -278,7 +283,8 @@ p, li { white-space: pre-wrap; }
           <string>Details</string>
          </property>
          <property name="icon">
-          <iconset theme="help-about"/>
+          <iconset theme="help-about">
+           <normaloff>.</normaloff>.</iconset>
          </property>
          <property name="flat">
           <bool>true</bool>

@@ -401,7 +401,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     packagewizard = PackageWizard()
     packagewizard.show()
-    #rect  = QtGui.QDesktopWidget().screenGeometry()
-    #packagewizard.move(rect.width()/2 - packagewizard.width()/2, rect.height()/2 - packagewizard.height()/2)
+    rect = QDesktopWidget().screenGeometry()
+    packagewizard.move((rect.width()-packagewizard.width())//2, (rect.height()-packagewizard.height())//2)
     app.exec_()
 
