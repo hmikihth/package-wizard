@@ -10,18 +10,18 @@
 #*************************************************************************************(c)2002-2019********
 #	Design, FugionLogic idea and Initial code written by Charles K Barcza in december of 2018 
 #       The maintainer of the PackageWizard: Miklos Horvath * hmiki[]blackpantheros.eu
-#		(It's no allowed delete this about label for free usage under GLP3)
+#		(It's not allowed to delete this about label for free usage under GLP3)
 
 import gettext
 gettext.install("fusionlogic-packagewizard", "/usr/share/locale")
 
-import sys, getopt
+import sys
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-import subprocess, os, dbus
+import os, dbus
 
 from fusionlogic.packagewizard.packagewizardMain import Ui_packagewizardUI
 from fusionlogic import ScrWelcome as welcomeWidget

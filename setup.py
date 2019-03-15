@@ -10,7 +10,7 @@
 #*************************************************************************************(c)2002-2019********
 #	Design, FugionLogic idea and Initial code written by Charles K Barcza in december of 2018 
 #       The maintainer of the PackageWizard: Miklos Horvath * hmiki[]blackpantheros.eu
-#		(It's no allowed delete this about label for free usage under GLP3)
+#		(It's not allowed to delete this about label for free usage under GLP3)
 
 import os
 import glob
@@ -27,6 +27,25 @@ import subprocess
     
 with open("README.md", "r") as fh:
     long_description = fh.read()
+
+DEPENDENCIES = [
+    'PyQt5',
+    'fusionlogic',
+    'argparse',
+    'dbus',
+    'functools',
+    'ptyprocess',
+    'gettext',
+    
+]
+
+def check_modules():
+    for d in DEPENDENCIES:
+        try:
+            __import__(d)
+        except Exception as e:
+            print("Please install the {} module before build! \n{}".format(d,e))
+            exit(1)
 
 def have_gettext():
     return subprocess.getoutput("pyuic5 --help").find("--gettext") > -1
@@ -65,6 +84,7 @@ def update_messages():
     
 class Build(build):
     def run(self):
+        check_modules()
         pkgname="fusionlogic-packagewizard"
         locale_dir = "build/share/locale"
         os.system("rm -rf build")
@@ -75,10 +95,10 @@ class Build(build):
         print ("Distro is: " + dist)
 
         for filename in glob.glob1("./pics", "bg_*.png"):
-                if filename == "bg_"+dist+".png":
+            if filename == "bg_"+dist+".png":
             	    shutil.copy("pics/%s" % (filename),  "pics/bg.png")
-            	else:
-            	    filename = bg_standard.png
+            else:
+            	    filename = "bg_standard.png"
             	    shutil.copy("pics/%s" % (filename),  "pics/bg.png")
             	
         os.system("mkdir -p build/scripts-3.7")
