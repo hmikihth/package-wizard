@@ -1,6 +1,6 @@
 <RCC>
   <qresource prefix="raw" >
-    <file>pics/bg.png</file>
+    <file>pics/pwbg.png</file>
     <file>pics/package.png</file>
     <file>pics/keyboards.png</file>
     <file>pics/nepomuk.png</file>

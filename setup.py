@@ -98,12 +98,10 @@ class Build(build):
         tgz = ["archlinux"]
 
         print ("Set distro background...")
+        shutil.copy("pics/bg_standard.png", "pics/pwbg.png")
         for filename in glob.glob1("./pics", "bg_*.png"):
             if filename == "bg_"+dist+".png":
-                shutil.copy("pics/%s" % (filename),  "pics/bg.png")
-            else:
-                filename = "bg_standard.png"
-                shutil.copy("pics/%s" % (filename),  "pics/bg.png")
+                shutil.copy("pics/%s" % (filename),  "pics/pwbg.png")
 
         print ("Set distro's package based logo...")                 
         if dist in rpm :

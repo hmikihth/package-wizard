@@ -43,7 +43,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#packagewizard{
-	background-image: url(:/raw/pics/bg.png);
+	background-image: url(:/raw/pics/pwbg.png);
        background-repeat: no-repeat;
        background-position: left top;
        background-color: #642437;
