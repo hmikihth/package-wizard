@@ -92,28 +92,51 @@ class Build(build):
         os.system("mkdir -p build/scripts-3.7")
         print ("Detect system...")
         dist = distro.id()
-        print ("Distro is: " + dist)
+        print ("Your distro is a: " + dist)
+        rpm = [ "blackpantheros","redhat","fedora"]
+        deb = [ "ubuntu", "linuxmint", "debian"]
+        tgz = ["archlinux"]
 
+        print ("Set distro background...")
         for filename in glob.glob1("./pics", "bg_*.png"):
             if filename == "bg_"+dist+".png":
-            	    shutil.copy("pics/%s" % (filename),  "pics/bg.png")
+                shutil.copy("pics/%s" % (filename),  "pics/bg.png")
             else:
-            	    filename = "bg_standard.png"
-            	    shutil.copy("pics/%s" % (filename),  "pics/bg.png")
-            	
+                filename = "bg_standard.png"
+                shutil.copy("pics/%s" % (filename),  "pics/bg.png")
+
+        print ("Set distro's package based logo...")                 
+        if distro in rpm :
+            filename = "rpm.png"
+            shutil.copy("data/logos/%s" % (filename), "data/logos/default.png")
+        elif distro in deb :
+            filename = "deb.png"
+            shutil.copy("data/logos/%s" % (filename), "data/logos/default.png")
+        elif distro in tgz :
+            filename = "tgz.png"
+            shutil.copy("data/logos/%s" % (filename), "data/logos/default.png")
+        else:
+            print ("\n ==> Logo still not available for your distro: " 
+                + dist +"\n ==> Please send me your distro name for support!\n")
+            filename = "template.png"
+            shutil.copy("data/logos/%s" % (filename), "data/logos/default.png")
+
         os.system("mkdir -p build/scripts-3.7")
         print ("Copying PYs Src...")
         os.system("cp src/*.py build/lib/fusionlogic/packagewizard")
         print ("Generating UIs...")
         for filename in glob.glob1("modules_uic", "*.ui"):
             if have_gettext():
-                os.system("pyuic5 -g -o build/lib/fusionlogic/packagewizard/%s.py modules_uic/%s" % (filename.split(".")[0], filename))
+                os.system("pyuic5 -g -o build/lib/fusionlogic/packagewizard/%s.py modules_uic/%s" 
+                          % (filename.split(".")[0], filename))
             else:
-                os.system("pyuic5 -o build/lib/fusionlogic/packagewizard/%s.py modules_uic/%s" % (filename.split(".")[0], filename))
+                os.system("pyuic5 -o build/lib/fusionlogic/packagewizard/%s.py modules_uic/%s" 
+                          % (filename.split(".")[0], filename))
         os.system("sed -i 's/import raw_rc/from fusionlogic import raw_rc\\nfrom fusionlogic.packagewizard import raw_rc/g' build/lib/fusionlogic/packagewizard/packagewizardMain.py")
         print ("Generating RCs for build...")
         for filename in glob.glob1("./", "*.qrc"):
-            os.system("pyrcc5 %s -o build/lib/fusionlogic/packagewizard/%s_rc.py" % (filename, filename.split(".")[0]))
+            os.system("pyrcc5 %s -o build/lib/fusionlogic/packagewizard/%s_rc.py" 
+                      % (filename, filename.split(".")[0]))
 #            print ("Generating RCs for tests...")
 #            os.system("pyrcc5 %s -o test/%s_rc.py" % (filename, filename.split(".")[0]))
         for filename in glob.glob1("./", "*.py"):
@@ -128,7 +151,8 @@ class Build(build):
                 os.makedirs(os.path.join(locale_dir, "%s/LC_MESSAGES" % lang))
             except OSError:
                 pass
-            shutil.copy("po/%s.mo" % lang, os.path.join(locale_dir, "%s/LC_MESSAGES" % lang, "%s.mo" % pkgname))
+            shutil.copy("po/%s.mo" % lang, os.path.join(locale_dir, "%s/LC_MESSAGES" 
+                                                        % lang, "%s.mo" % pkgname))
 
 
 class Install(install):
