@@ -206,7 +206,8 @@ setup(
     packages=["fusionlogic"],
     scripts=["build/scripts-3.7/packagewizard"],
     data_files  = [('/'.join(e.split('/')[1:-1]), [e]) for e in subprocess.getoutput("find build/share/locale").split() if ".mo" in e],
-    install_requires = ["argparse", "configparser","fusionlogic-common"],
+    install_requires = ["argparse", "configparser","fusionlogic-common","dbus","functools","ptyprocess","gettext"],
+
     cmdclass = {
         'build': Build,
         'install': Install,
