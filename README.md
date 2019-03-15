@@ -141,7 +141,7 @@ package-wizard /ahol/a/fájlod/van/csomagenve.rpm(vagy deb)
 
 Screenshots
 ----------
-![package-wizard-distros](https://raw.githubusercontent.com/blackPantherOS/package-wizard/master/data/screenshots/screenshot-variants.png)
+![package-wizard-distros](https://raw.githubusercontent.com/blackPantherOS/package-wizard/master/data/screenshots/distro_variants.png)
 ![package-wizard-main](https://raw.githubusercontent.com/blackPantherOS/package-wizard/master/data/screenshots/screenshot-main.png)
 
 ******************
