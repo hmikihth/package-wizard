@@ -106,13 +106,13 @@ class Build(build):
                 shutil.copy("pics/%s" % (filename),  "pics/bg.png")
 
         print ("Set distro's package based logo...")                 
-        if distro in rpm :
+        if dist in rpm :
             filename = "rpm.png"
             shutil.copy("data/logos/%s" % (filename), "data/logos/default.png")
-        elif distro in deb :
+        elif dist in deb :
             filename = "deb.png"
             shutil.copy("data/logos/%s" % (filename), "data/logos/default.png")
-        elif distro in tgz :
+        elif dist in tgz :
             filename = "tgz.png"
             shutil.copy("data/logos/%s" % (filename), "data/logos/default.png")
         else:
