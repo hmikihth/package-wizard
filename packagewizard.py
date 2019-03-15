@@ -120,10 +120,15 @@ class PackageWizard(QWidget):
             else:
                 info = get_package_info(e)
             if arguments.pkg_install:
-                content += "<h1>{}</h1><p>{}</p>".format(info["Name"], info["Summary"])
+                content += "<h1>{}</h1><p>{}</p>".format(info["Name"].capitalize(), info["Summary"])
             else:
-                content += "<h1>{}</h1>{}-{}-{}".format(info["Name"], info["Version"], info["Release"], info["Architecture"])
+                content += "<h1>{}</h1>{}-{}-{}".format(info["Name"].capitalize(), info["Version"], info["Release"], info["Architecture"])
         ui.textBrowser.setHtml(content)
+        ui.textBrowser.selectAll()
+        ui.textBrowser.setAlignment(Qt.AlignRight)
+        c = ui.textBrowser.textCursor()
+        c.clearSelection()
+        ui.textBrowser.setTextCursor(c)
 
     def load_package_info(self, ui):
         info = {}
@@ -134,7 +139,7 @@ class PackageWizard(QWidget):
                 info = get_deb_file_info(arguments.pkg_install[0])
             else:
                 info = get_package_info(arguments.pkg_install[0])
-        ui.packageName.setText("{}".format(info["Name"]))
+        ui.packageName.setText("{}".format(info["Name"].capitalize()))
         ui.labelSummary.setText(_("Version: {} Release: {} Architecture: {}").format(info["Version"],info["Release"],info['Architecture']))
         ui.label.setText("{}".format(info["Summary"]))
         ui.packagedescription.setText(_('{}\n\nSize: {} License: {}\nURL: {}').format(
