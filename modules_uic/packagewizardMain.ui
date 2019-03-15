@@ -198,7 +198,7 @@ padding-top: 10px;</string>
            <enum>Qt::PlainText</enum>
           </property>
           <property name="pixmap">
-           <pixmap resource="../raw.qrc">:/raw/data/logos/default.png</pixmap>
+           <pixmap resource="../raw.qrc">:/raw/data/logos/pwdefault.png</pixmap>
           </property>
           <property name="scaledContents">
            <bool>true</bool>

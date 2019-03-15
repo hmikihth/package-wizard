@@ -106,18 +106,18 @@ class Build(build):
         print ("Set distro's package based logo...")                 
         if dist in rpm :
             filename = "rpm.png"
-            shutil.copy("data/logos/%s" % (filename), "data/logos/default.png")
+            shutil.copy("data/logos/%s" % (filename), "data/logos/pwdefault.png")
         elif dist in deb :
             filename = "deb.png"
-            shutil.copy("data/logos/%s" % (filename), "data/logos/default.png")
+            shutil.copy("data/logos/%s" % (filename), "data/logos/pwdefault.png")
         elif dist in tgz :
             filename = "tgz.png"
-            shutil.copy("data/logos/%s" % (filename), "data/logos/default.png")
+            shutil.copy("data/logos/%s" % (filename), "data/logos/pwdefault.png")
         else:
             print ("\n ==> Logo still not available for your distro: " 
                 + dist +"\n ==> Please send me your distro name for support!\n")
             filename = "template.png"
-            shutil.copy("data/logos/%s" % (filename), "data/logos/default.png")
+            shutil.copy("data/logos/%s" % (filename), "data/logos/pwdefault.png")
 
         os.system("mkdir -p build/scripts-3.7")
         print ("Copying PYs Src...")
