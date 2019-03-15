@@ -8,14 +8,15 @@
 #*  |_____||__||___._||____||__|__||___|   |___._||__|__||____|__|__||_____||__|      |_______|_______|  *
 #*http://www.blackpantheros.eu | http://www.blackpanther.hu - kbarcza[]blackpanther.hu * Charles K Barcza*
 #*************************************************************************************(c)2002-2019********
-#	    Initial code written by Charles K Barcza in december of 2018 
-#          The maintainer of the PackageWizard: Miklos Horvath * hmiki[]blackpantheros.eu
+#	Design, FugionLogic idea and Initial code written by Charles K Barcza in december of 2018 
+#       The maintainer of the PackageWizard: Miklos Horvath * hmiki[]blackpantheros.eu
+#		(It's no allowed delete this about label for free usage under GLP3)
 
 import os
 import glob
 import shutil
 import sys
-#import about
+import distro
 
 from distutils.core import setup
 from distutils.cmd import Command
@@ -68,6 +69,18 @@ class Build(build):
         locale_dir = "build/share/locale"
         os.system("rm -rf build")
         os.system("mkdir -p build/lib/fusionlogic/packagewizard")
+        os.system("mkdir -p build/scripts-3.7")
+        print ("Detect system...")
+        dist = distro.id()
+        print ("Distro is: " + dist)
+
+        for filename in glob.glob1("./pics", "bg_*.png"):
+                if filename == "bg_"+dist+".png":
+            	    shutil.copy("pics/%s" % (filename),  "pics/bg.png")
+            	else:
+            	    filename = bg_standard.png
+            	    shutil.copy("pics/%s" % (filename),  "pics/bg.png")
+            	
         os.system("mkdir -p build/scripts-3.7")
         print ("Copying PYs Src...")
         os.system("cp src/*.py build/lib/fusionlogic/packagewizard")
