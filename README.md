@@ -25,6 +25,8 @@ Awaiting implementation:
  - integration and optional switching of other package management engines
  - Any other request package format support
 
+# (Screenshots bellow)
+
 Installation
 ----------
 on blackPanther OS, Hungarian distribution:
@@ -65,7 +67,9 @@ package-wizard --uninstall gimp
 ```
 
 Installation from a local package: 
-```package-wizard /where/your/package/is/located/packagename.rpm(or deb)```
+```
+package-wizard --install /where/your/package/is/located/packagename.rpm(or deb)
+```
 
 *****************
 Összefoglalás
@@ -136,7 +140,7 @@ package-wizard --uninstall gimp
 
 Telepítés egy helyi fájlból:
 ```
-package-wizard /ahol/a/fájlod/van/csomagenve.rpm(vagy deb)
+package-wizard --install /ahol/a/fájlod/van/csomagenve.rpm(vagy deb)
 ```
 
 Screenshots
