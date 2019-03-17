@@ -36,13 +36,22 @@ DEPENDENCIES = [
     'functools',
     'ptyprocess',
     'gettext',
-    
+    ['dbus.mainloop','pyqt5'],
+    ['pkcon','/usr/bin/']
 ]
 
 def check_modules():
     for d in DEPENDENCIES:
         try:
-            __import__(d)
+            if type(d)==str:
+                __import__(d)
+            elif type(d)==list:
+                if d[1].find('/')==-1:
+                    exec(f"from {d[0]} import {d[1]}")
+                else:
+                    if not os.path.exists(d[1]+d[0]):
+                        print(f"{d[0]} command is not available, please install before build!")
+                        exit(1)
         except Exception as e:
             print("Please install the {} module before build! \n{}".format(d,e))
             exit(1)
