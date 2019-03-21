@@ -37,7 +37,6 @@ DEPENDENCIES = [
     'ptyprocess',
     'gettext',
     ['dbus.mainloop','pyqt5'],
-    ['pkcon','/usr/bin/']
 ]
 
 def check_modules():
@@ -129,6 +128,14 @@ class Build(build):
             shutil.copy("data/logos/%s" % (filename), "data/logos/pwdefault.png")
 
         os.system("mkdir -p build/scripts-3.7")
+        print ("Copying Desktop files...")
+        os.system("mkdir -p build/share/applications/")
+        os.system("cp data/desktop/*.desktop build/share/applications/")
+        print ("Copying Icons...")
+        os.system("mkdir -p build/share/icons/hicolor/scalable/actions/")
+        os.system("mkdir -p build/share/icons/hicolor/scalable/apps/")
+        os.system("cp data/desktop/package-wizard-install.svg build/share/icons/hicolor/scalable/actions/")
+        os.system("cp data/desktop/package-wizard.svg build/share/icons/hicolor/scalable/apps/")
         print ("Copying PYs Src...")
         os.system("cp src/*.py build/lib/fusionlogic/packagewizard")
         print ("Generating UIs...")

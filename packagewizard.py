@@ -26,6 +26,7 @@ import os, dbus
 from fusionlogic.packagewizard.packagewizardMain import Ui_packagewizardUI
 from fusionlogic import ScrWelcome as welcomeWidget
 from fusionlogic import ScrAbout as aboutWidget
+from fusionlogic.packagewizard import ScrErrorsWidget as errorsWidget
 from fusionlogic.packagewizard import ScrInstallator as installatorWidget
 from fusionlogic.packagewizard import ScrMultipleInstallator as mInstallatorWidget
 from fusionlogic.packagewizard import ScrInstallProgress as InstallProgressWidget
@@ -47,21 +48,31 @@ parser.add_argument("--allow-untrusted", dest="pkg_allow_untrusted", help=_("pkc
 #parser.add_argument("--filter", dest="pkg_filter", help=_("pkcon --filter"), metavar=_("<filter>"), nargs=1)
 arguments = parser.parse_args()
 
-try:
-    files = arguments.pkg_install or arguments.pkg_uninstall
-    if not files:
-        raise Exception('No files')
-    for file in files:
-        if file.endswith(".rpm") or file.endswith(".deb"):
-            f=open(file,'r')
-            f.close()
-    if arguments.pkg_uninstall or len(arguments.pkg_install)>1:
-        availableScreens = [mInstallatorWidget] * bool(arguments.pkg_install or arguments.info)
-        availableScreens += [InstallProgressWidget, aboutWidget]
-    else:
-        availableScreens = [installatorWidget, InstallProgressWidget, aboutWidget]
-except:
-    availableScreens = [aboutWidget]
+def chk_commands():
+    path = '/usr/bin/pkcon'
+    if not os.path.exists(path):
+        return {"command":"pkcon","package":"packagekit","type":"Command not found","path":path}
+    return {}
+
+ERRORS = chk_commands()
+if ERRORS:
+    availableScreens = [errorsWidget]
+else:
+    try:
+        files = arguments.pkg_install or arguments.pkg_uninstall
+        if not files:
+            raise Exception('No files')
+        for file in files:
+            if file.endswith(".rpm") or file.endswith(".deb"):
+                f=open(file,'r')
+                f.close()
+        if arguments.pkg_uninstall or len(arguments.pkg_install)>1:
+            availableScreens = [mInstallatorWidget] * bool(arguments.pkg_install or arguments.info)
+            availableScreens += [InstallProgressWidget, aboutWidget]
+        else:
+            availableScreens = [installatorWidget, InstallProgressWidget, aboutWidget]
+    except:
+        availableScreens = [aboutWidget]
 
 class PackageWizard(QWidget):
     def __init__(self):
@@ -88,7 +99,14 @@ class PackageWizard(QWidget):
         self.ui.buttonCancel.clicked.connect(self.close)
         
         try:
-            if arguments.pkg_uninstall:
+            if ERRORS:
+                self.progress_ui = self.ui.mainStack.currentWidget().ui
+                self.progress_ui.statusLabel.setText(_("<h2><b>{type}: <b>{command}<b></h2>").format(**ERRORS))
+                self.progress_ui.textBrowser.setHtml(_("{type}: <b>{command}</b><br>Path: {path}<br>Please install the <b>{package}</b> package!").format(**ERRORS))
+                self.progress_ui.detailsButton.clicked.connect(self.detailsPressed)
+                self.details_visible = False
+                self.progress_ui.textBrowser.hide()
+            elif arguments.pkg_uninstall:
                 if arguments.info:
                     ui = self.ui.mainStack.currentWidget().ui
                     ui.label.setText(_("Packages to remove"))
