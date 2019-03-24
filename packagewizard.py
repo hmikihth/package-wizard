@@ -35,9 +35,12 @@ from fusionlogic.packagewizard.InstallerThreads import PKConInstallerThread
 
 from argparse import ArgumentParser
 
+DEFAULT_WORKDIR = "/var/cache/package-wizard"
+
 parser = ArgumentParser()
 parser.add_argument("--install", dest="pkg_install", help=_("Install packages with pkcon"), metavar=_("package [package] [package] ..."), nargs='*')
 parser.add_argument("--uninstall", dest="pkg_uninstall", help=_("Uninstall packages with pkcon"), metavar=_("package [package] [package] ..."), nargs='*')
+parser.add_argument("--workdir", dest="workdir", help=_("Working directory"), metavar=_("package [package] [package] ..."), nargs='?', default=DEFAULT_WORKDIR)
 parser.add_argument("--info", dest="info", help=_("Uninstall with information page"), action='store_true')
 parser.add_argument("--noninteractive", dest="pkg_noninteractive", help=_("pkcon --noninteractive"), action='store_true')
 parser.add_argument("--only-download", dest="pkg_only_download", help=_("pkcon --only-download"), action='store_true')
@@ -87,6 +90,7 @@ class PackageWizard(QWidget):
         self.screenData = None
         self.moveInc = 1
         self.menuText = ""
+
         #self.config = KConfig("packagewizardrc")
         self.createWidgets(self.screens)
 

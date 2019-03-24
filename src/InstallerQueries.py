@@ -81,7 +81,7 @@ def get_deb_file_info(filename, *args, **kwargs):
 
 @limit_description
 def get_package_info(name, *args, **kwargs):
-    raw = subprocess.getoutput('echo 1| pkcon -p get-details '+name)
+    raw = subprocess.getoutput('pushd /var/tmp && echo 1| pkcon -p get-details '+name)
     d = {e:'' for e in PKCON_INFO_LINES}
     lines = raw.split('\n')
     for i,l in enumerate(lines):
