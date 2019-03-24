@@ -100,6 +100,10 @@ class Build(build):
         os.system("mkdir -p build/scripts-3.7")
         print ("Detect system...")
         dist = distro.id()
+        if os.path.exists("DISTRO"):
+            content = open("DISTRO").read().strip()
+            if content:
+                dist = content
         print ("Your distro is a: " + dist)
         rpm = [ "blackpantheros","redhat","fedora"]
         deb = [ "ubuntu", "linuxmint", "debian"]
