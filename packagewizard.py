@@ -182,6 +182,8 @@ class PackageWizard(QWidget):
         self.showYesNo()
         
     def installer_finished(self):
+        self.details_visible = True
+        self.progress_ui.textBrowser.setHidden(False)
         self.progress_ui.progressBar.setValue(100)
         self.progress_ui.progressBar.setFormat(_("Finished") + " (%p%)")
         self.enableBack()
@@ -213,7 +215,7 @@ class PackageWizard(QWidget):
 
             self.installer_thread = PKConInstallerThread(self)
             self.installer_thread.start()
-#            self.progress_ui.textBrowser.setHidden(True)
+            self.progress_ui.textBrowser.setHidden(True)
             env = os.environ
             env["LC_ALL"] = "C"
             pkcon_args = ['pkcon','-p']
@@ -252,10 +254,8 @@ class PackageWizard(QWidget):
     def hideYesNo(self):
         self.progress_ui.yesButton.hide()
         self.progress_ui.noButton.hide()
-        self.progress_ui.textBrowser.setHidden(False)
         
     def showYesNo(self):
-        self.progress_ui.textBrowser.setHidden(True)
         self.progress_ui.yesButton.show()
         self.progress_ui.noButton.show()
 
