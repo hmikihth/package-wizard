@@ -183,12 +183,19 @@ class PackageWizard(QWidget):
         
     def installer_finished(self):
         self.details_visible = True
-        self.progress_ui.textBrowser.setHidden(False)
+#        self.progress_ui.textBrowser.setHidden(False)
         self.progress_ui.progressBar.setValue(100)
         self.progress_ui.progressBar.setFormat(_("Finished") + " (%p%)")
         self.enableBack()
         self.enableNext()
         self.showBackNext()
+
+    def show_error(self, error_message):
+#        print(error_message)
+        self.progress_ui.label.setText("ERROR")
+        self.progress_ui.labelMouseDesc.hide()
+        self.progress_ui.statusLabel.setText(error_message)
+        self.progress_ui.statusLabel.setWordWrap(True)
 
     def clear_label(self):
         self.progress_ui.questionLabel.setText("")

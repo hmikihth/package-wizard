@@ -16,6 +16,7 @@ _ = gettext.gettext
 
 class PKConInstallerThread(QThread):
     progress_sig = pyqtSignal(int, str)
+    error_sig = pyqtSignal(str)
     disable_sig = pyqtSignal()
     result_sig = pyqtSignal(str)
     console_sig = pyqtSignal(bool)
@@ -62,6 +63,7 @@ class PKConInstallerThread(QThread):
         QThread.__init__(self)
         self.parent = parent
         self.progress_sig.connect(self.parent.set_progressbar)
+        self.error_sig.connect(self.parent.show_error)
         self.disable_sig.connect(self.parent.hideYesNo)
         self.result_sig.connect(self.parent.installer_sent_message)
         self.console_sig.connect(self.console_switch)
@@ -95,11 +97,17 @@ class PKConInstallerThread(QThread):
         lastline = ""
         percentage = 0
         status = ""
+        results = ""
+        got_results = False
         while True:
             if self.work:
                 try:
+                    if "Results:" in lastline:
+                        got_results = True
                     buffer = self.pkg_process.read(1)
                     lastline += buffer
+                    if got_results:
+                        results += buffer
                     if '\n' in lastline:
                         if "Percentage:" in lastline:
                             percentage = int(lastline.strip().split(":")[1])
@@ -123,7 +131,10 @@ class PKConInstallerThread(QThread):
                         lastline = ""
                         self.q = ""
                 except Exception as e:
+                        if "error:" in results.lower():
+                            self.error_sig.emit(results)
                         self.finish_sig.emit()
                         self.work = False
+#                        result = result[result.index("Results:")+10:]
             else:
                 time.sleep(1)
