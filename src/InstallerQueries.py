@@ -51,7 +51,7 @@ def resolve_package(package):
 @limit_description
 def get_rpm_file_info(filename, *args, **kwargs):
     d = {e:'' for e in INFO_LINES}
-    query = "rpm -qp " + filename + " --qf " + "'%{NAME}\\n%{VERSION}\\n%{RELEASE}\\n%{ARCH}\\n%{SUMMARY}\\n%{LICENSE}\\n%{GROUP}\\n%{SIZE}\\n%{URL}\\n%{DESCRIPTION}\\n'"
+    query = "rpm -qp '" + filename + "' --qf " + "'%{NAME}\\n%{VERSION}\\n%{RELEASE}\\n%{ARCH}\\n%{SUMMARY}\\n%{LICENSE}\\n%{GROUP}\\n%{SIZE}\\n%{URL}\\n%{DESCRIPTION}\\n'"
     raw = subprocess.getoutput(query)
     for i,e in enumerate(raw.split('\n')):
         if i<9:
