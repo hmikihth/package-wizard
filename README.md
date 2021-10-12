@@ -1,7 +1,7 @@
 # Package Wizard (DESTROYED)
 # THIS REPO IT WAS OUR PACKAGE MANAGER SOURCE CODE!
 # This loss thanks to Distrowatch.com because:
-- the site does not want to display the correct valid information and released versions of small distros, like: "Architecture: i586" (FAKE)
+- the site does not want to display the correct valid information and released versions of small distros. For example: "Architecture: i586" at the bP is false.
 - [Our BETA1](https://www.blackpantheros.eu/the-first-beta-release-of-blackpanther-os-v18-1-renegade/) it was announced as an new stable release on the DW, [the final](https://www.blackpantheros.eu/blackpanther-os-v18-1-renegade-released/) and [all previous or newer edition was not announced, not displayed on DW](https://hu-blackpanther-hu.translate.goog/tudasbazis/verzio-es-megjelenesek/?_x_tr_sl=hu&_x_tr_tl=en&_x_tr_hl=hu&_x_tr_pto=nui)
 - does not check or moderate false allegations, for example this one from the site:
 
