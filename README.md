@@ -1,9 +1,9 @@
 # Package Wizard (DESTROYED)
-# THIS IS WAS OUR PACKAGE MANAGER SOURCE CODE!
+# THIS REPO IT WAS OUR PACKAGE MANAGER SOURCE CODE!
 # This loss thanks to Distrowatch.com because:
 - the site does not want to display the correct valid information and released versions of small distros
 - the site our BETA1 was announced as an edition, the final edition was not announced
-- does not check or moderate false allegations, example this is one from site:
+- does not check or moderate false allegations, for example this one from the site:
 
 ![ONE OF FAKE ALLEGATIONS](https://raw.githubusercontent.com/blackPantherOS/package-wizard/master/data/screenshots/fake.jpg)
  
